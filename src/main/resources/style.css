@@ -69,8 +69,12 @@
 .MenuMain {
     -fx-background-color: #504f4f;//#47525d;//757575; 
 }
-.button {
-    -fx-padding: 5 22 5 22;   
+.LogoPanel {
+    -fx-alignment: center;
+    -fx-padding: 10px;
+}
+.flatButton {
+    -fx-padding: 5 22 5 22;
     -fx-border-color: #e2e2e2;
     -fx-border-width: 0;
     -fx-background-radius: 0;
@@ -80,23 +84,45 @@
     -fx-text-fill: #504f4f;//d8d8d8;
     -fx-background-insets: 0 0 0 0, 0, 1, 2;
 }
-
-
-
-
+.flatButton:hover {
+    -fx-background-color: #e1e1e2;
+}
+.flatButton:pressed {
+    -fx-background-color: #94959b;
+}
+.LangPanel {
+    -fx-alignment: center;
+    -fx-spacing: 5px;
+    -fx-padding: 10px;
+}
+.LangButton {
+    -fx-padding: 0;
+}
+LangButton .flag :hover {
+    -fx-opacity: 50%;
+}
+LangButton:pressed {
+    -fx-opacity: 0%;
+}
+.flag:hover {
+    //-fx-animated: 
+    -fx-opacity: 50%;
+}
+.ImgUser {
+    -fx-alignment: center;
+    -fx-padding: 10px;
+}
+.ImgUser:hover {
+    -fx-opacity: 50%;
+}
+.ImgUser:selected {
+    -fx-opacity: 0%;
+}
+.tree-cell {
+    -fx-background-color: #94959b;//#47525d;//757575; 
+}
 /*
 #504f4f - mais escuro
 #94959b - botões
 #e1e1e2 - selecionado
 */
-
-/*
-#EEEEEE
-#BDC3C7
-#3d464d
-*/
-
-
-//#47525d
-//#7b8994
-//#3d464d

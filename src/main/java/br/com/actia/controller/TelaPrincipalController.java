@@ -11,7 +11,9 @@ import javafx.stage.Stage;
  */
 public class TelaPrincipalController extends PersistenceController {
     private TelaPrincipalView view;
-
+    
+    //private static ResourceBundle resBundle = ResourceBundle.getBundle("resources/languages/messages");
+    
     public TelaPrincipalController(final Stage mainStage) {
         loadPersistenceContext();
         this.view = new TelaPrincipalView(mainStage);
