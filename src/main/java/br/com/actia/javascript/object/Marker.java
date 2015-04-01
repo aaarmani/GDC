@@ -27,6 +27,7 @@ public class Marker extends JavascriptObject {
 
 
     protected String title;
+    protected LatLong latLong = null;
     
     
     /**
@@ -35,6 +36,7 @@ public class Marker extends JavascriptObject {
      */
     public Marker(MarkerOptions markerOptions) {
         super(GMapObjectType.MARKER, markerOptions);
+        this.latLong = markerOptions.position;
     }
     
     
@@ -68,8 +70,12 @@ public class Marker extends JavascriptObject {
     
     
     public void setPosition( LatLong latLong ) {
+        this.latLong = latLong;
         invokeJavascript( "setPosition", latLong );
     }
     
+    public LatLong getPosition() {
+        return this.latLong;
+    }
     
 }

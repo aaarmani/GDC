@@ -25,7 +25,7 @@ public class ApplicationProperties {
             while (resources.hasMoreElements()) {
                 Manifest manifest = new Manifest(resources.nextElement().openStream());
                 if (manifest.getMainAttributes().getValue("Built-By") != null
-                        && manifest.getMainAttributes().getValue("Built-By").equals("YaW Tecnologia")) {
+                        && manifest.getMainAttributes().getValue("Built-By").equals("Actia do Brasil")) {
                     instance = new ApplicationProperties(manifest);
                     break;
                 }
@@ -68,6 +68,6 @@ public class ApplicationProperties {
     }
 
     public static String getURLLogo() {
-        return "logo_yaw.png";
+        return "actiaLogo.png";
     }
 }

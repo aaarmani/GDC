@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" codebase="http://s3-sa-east-1.amazonaws.com/yaw-site-sp/app/">
   <information>
-    <title>Aplicação Demo das tecnologias JavaFX e JPA</title>
-    <vendor>YaW Tecnologia</vendor>
-    <description>Demo JavaFX e JPA</description>
-    <icon href="logo_yaw.png"/>
+    <title>Gerador de Conteúdo</title>
+    <vendor>Actia do Brasil</vendor>
+    <description>Aplicação que gera conteúdo para o E1 Player</description>
+    <icon href="actiaLogo.png"/>
     <offline-allowed/>
   </information>
 
@@ -37,9 +37,9 @@
     <jar href="lib/javafx-jpa-crud.jar" size="111492" download="eager" />
   </resources>
 
-  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="javafx-jpa-crud" >
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="GeradorDeConteudo" >
     <param name="requiredFXVersion" value="2.2+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="br.com.yaw.jfx.app.MercadoriaApp"  name="javafx-jpa-crud" />
+  <jfx:javafx-desc  width="800" height="600" main-class="br.com.actia.app.GeradorDeConteudoApp"  name="GeradorDeConteudo" />
   <update check="always"/>
 </jnlp>

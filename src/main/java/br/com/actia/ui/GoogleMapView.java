@@ -1,226 +1,133 @@
-/*
- * Copyright 2014 Lynden, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package br.com.actia.ui;
 
-import br.com.actia.javascript.JavaFxWebEngine;
-import br.com.actia.javascript.JavascriptRuntime;
-import br.com.actia.javascript.event.MapStateEventType;
-import br.com.actia.javascript.object.GoogleMap;
-import br.com.actia.javascript.object.LatLong;
-import br.com.actia.javascript.object.MapOptions;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CyclicBarrier;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
-import netscape.javascript.JSObject;
 
 /**
  *
- * @author Rob Terpilowski
+ * @author Armani <anderson.armani@actia.com.br>
  */
-public class GoogleMapView extends AnchorPane {
-
-    protected WebView webview;
-    protected JavaFxWebEngine webengine;
-    protected boolean initialized = false;
-    protected final CyclicBarrier barrier = new CyclicBarrier(2);
-    protected final List<MapComponentInitializedListener> mapInitializedListeners = new ArrayList<>();
-    protected final List<MapReadyListener> mapReadyListeners = new ArrayList<>();
-    protected GoogleMap map;
-
-
+public class GoogleMapView  extends StackPane {
+    private  final int BUTTON_SIZE = 32;
+    private  final int MENU_SIZE = BUTTON_SIZE + 4;
+    
+    private WebView webview;
+    private Button btnZoomIn;
+    private Button btnZoomOut;
+    private Button btnNewBusStop;
+    private Button btnNewPOI;
+    private AnchorPane ap;
+    private VBox vbControl;
     
     public GoogleMapView() {
-        this(false);
-    }
-    
-    
-    /**
-     * Creates a new map view and specifies if the FireBug pane should be displayed in the WebView
-     * @param debug true if the FireBug pane should be displayed in the WebView.
-     */
-    public GoogleMapView( boolean debug ) {
-        String htmlFile;
-        if( debug ) {
-            htmlFile = "/html/maps-debug.html";
-        } else {
-            htmlFile = "/html/maps.html";
-        }
         webview = new WebView();
-        webengine = new JavaFxWebEngine(webview.getEngine());
-        JavascriptRuntime.setDefaultWebEngine( webengine );
-
-        setTopAnchor(webview,0.0);
-        setLeftAnchor(webview,0.0);
-        setBottomAnchor(webview, 0.0);
-        setRightAnchor(webview, 0.0);
-        getChildren().add(webview);
         
-        webview.widthProperty().addListener(e -> mapResized());
-        webview.heightProperty().addListener(e -> mapResized());
+        ap = new AnchorPane();
+        ap.setTopAnchor(webview,0.0);
+        ap.setLeftAnchor(webview,0.0);
+        ap.setBottomAnchor(webview, 0.0);
+        ap.setRightAnchor(webview, 0.0);
+        ap.getChildren().add(webview);
         
-        webview.widthProperty().addListener(e -> mapResized());
-        webview.heightProperty().addListener(e -> mapResized());
+          
+        getChildren().add(ap);
+        setAlignment(Pos.CENTER_RIGHT);
+        getChildren().add(createControlPane());
+    }
+    
+    private VBox createControlPane() {
+        btnNewBusStop = getNewButton("location.png","Novo Ponto de Parada");
+        btnNewPOI = getNewButton("pin.png", "Novo Ponto de Interesse");
+        btnZoomIn = getNewButton("zoom-in.png", "Zoom mais");
+        btnZoomOut = getNewButton("zoom-out.png", "Zoom menos");
         
-        webengine.getLoadWorker().stateProperty().addListener(
-                new ChangeListener<Worker.State>() {
-                    public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
-                        if (newState == Worker.State.SUCCEEDED) {
-                            setInitialized(true);
-                            fireMapInitializedListeners();
-                            
-                        }
-                    }
-                });
-        webengine.load(getClass().getResource(htmlFile).toExternalForm());
+        VBox vbox = new VBox();
+        vbox.setSpacing(4);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setMaxHeight(4 * MENU_SIZE);
+        vbox.setMaxWidth(MENU_SIZE);
+        vbox.getStyleClass().add("MenuMain");
+        vbox.getChildren().addAll(btnNewBusStop, btnNewPOI, btnZoomIn, btnZoomOut);
         
+        return vbox;
     }
     
-    private void mapResized() {
-        if (initialized) {
-            //map.triggerResized();
-//            System.out.println("GoogleMapView.mapResized: triggering resize event");
-            webengine.executeScript("google.maps.event.trigger("+map.getVariableName()+", 'resize')");
-//            System.out.println("GoogleMapView.mapResized: triggering resize event done");
-        }
-    }
-    
-    public void setZoom(int zoom) {
-        checkInitialized();
-        map.setZoom(zoom);
-    }
-
-    public void setCenter(double latitude, double longitude) {
-        checkInitialized();
-        LatLong latLong = new LatLong(latitude, longitude);
-        map.setCenter(latLong);
-    }
-
-    public GoogleMap getMap() {
-        checkInitialized();
-        return map;
-    }
-
-    public GoogleMap createMap( MapOptions mapOptions ) {
-        checkInitialized();
-        map = new GoogleMap(mapOptions);
-        map.addStateEventHandler(MapStateEventType.projection_changed, () -> {
-            if (map.getProjection() != null) {
-                mapResized();
-                fireMapReadyListeners();
-            }
-        });
+    private Button getNewButton(String imgPath, String toolType) {
+        Image img = new Image(imgPath);
+        ImageView imgView = new ImageView(img);
         
-        return map;
-    }
-
-    public GoogleMap createMap() {
-        map = new GoogleMap();
-        return map;
-    }
-
-    public void addMapInializedListener(MapComponentInitializedListener listener) {
-        synchronized (mapInitializedListeners) {
-            mapInitializedListeners.add(listener);
-        }
-    }
-
-    public void removeMapInitializedListener(MapComponentInitializedListener listener) {
-        synchronized (mapInitializedListeners) {
-            mapInitializedListeners.remove(listener);
-        }
+        imgView.maxHeight(BUTTON_SIZE);
+        imgView.minHeight(BUTTON_SIZE);
+        imgView.maxWidth(BUTTON_SIZE);
+        imgView.minWidth(BUTTON_SIZE);
+               
+        Button btn = new Button(null, imgView);
+        btn.setTooltip(new Tooltip(toolType));
+        
+        btn.setMaxWidth(BUTTON_SIZE);
+        btn.setMinWidth(BUTTON_SIZE);
+        btn.setMaxHeight(BUTTON_SIZE);
+        btn.setMinHeight(BUTTON_SIZE);
+        btn.setBackground(Background.EMPTY);
+        btn.getStyleClass().add("flatButton");
+        return btn;
     }
     
-    public void addMapReadyListener(MapReadyListener listener) {
-        synchronized (mapReadyListeners) {
-            mapReadyListeners.add(listener);
-        }
+//##################################
+    public WebView getWebview() {
+        return webview;
     }
 
-    public void removeReadyListener(MapReadyListener listener) {
-        synchronized (mapReadyListeners) {
-            mapReadyListeners.remove(listener);
-        }
-    }
-    
-    public Point2D fromLatLngToPoint(LatLong loc) {
-        checkInitialized();
-        return map.fromLatLngToPoint(loc);
-    }
-    
-    public void panBy(double x, double y) {
-        checkInitialized();
-        map.panBy(x, y);
-    }
-    
-    protected void init() {
-
+    public void setWebview(WebView webview) {
+        this.webview = webview;
     }
 
-    protected void setInitialized(boolean initialized) {
-        this.initialized = initialized;
+    public Button getBtnZoomIn() {
+        return btnZoomIn;
     }
 
-    protected void fireMapInitializedListeners() {
-        synchronized (mapInitializedListeners) {
-            for (MapComponentInitializedListener listener : mapInitializedListeners) {
-                listener.mapInitialized();
-            }
-        }
+    public void setBtnZoomIn(Button btnZoomIn) {
+        this.btnZoomIn = btnZoomIn;
     }
 
-    protected void fireMapReadyListeners() {
-        synchronized (mapReadyListeners) {
-            for (MapReadyListener listener : mapReadyListeners) {
-                listener.mapReady();
-            }
-        }
-    }
-    
-    protected JSObject executeJavascript(String function) {
-        Object returnObject = webengine.executeScript(function);
-        return (JSObject) returnObject;
+    public Button getBtnZoomOut() {
+        return btnZoomOut;
     }
 
-    protected String getJavascriptMethod(String methodName, Object... args) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(methodName).append("(");
-        for (Object arg : args) {
-            sb.append(arg).append(",");
-        }
-        sb.replace(sb.length() - 1, sb.length(), ")");
-
-        return sb.toString();
+    public void setBtnZoomOut(Button btnZoomOut) {
+        this.btnZoomOut = btnZoomOut;
     }
 
-    protected void checkInitialized() {
-        if (!initialized) {
-            throw new MapNotInitializedException();
-        }
+    public Button getBtnNewBusStop() {
+        return btnNewBusStop;
     }
-    
-    public class JSListener { 
-        public void log(String text){
-            System.out.println(text);
-        }
+
+    public void setBtnNewBusStop(Button btnNewBusStop) {
+        this.btnNewBusStop = btnNewBusStop;
     }
-    
+
+    public Button getBtnNewPOI() {
+        return btnNewPOI;
+    }
+
+    public void setBtnNewPOI(Button btnNewPOI) {
+        this.btnNewPOI = btnNewPOI;
+    }
+
+    public VBox getVbControl() {
+        return vbControl;
+    }
+
+    public void setVbControl(VBox vbControl) {
+        this.vbControl = vbControl;
+    }
+
 }

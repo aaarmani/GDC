@@ -1,9 +1,13 @@
 package br.com.actia.model;
 
+import br.com.actia.dao.RSS;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,27 +17,25 @@ import javax.validation.constraints.Size;
  * @author Armani <anderson.armani@actia.com.br>
  */
 @Entity
-@Table (name = "banner")
-public class Banner implements AbstractEntity {
-    /**
-     * Chave primária da entidade <code>Banner</code>. O valor gerado pelo banco de dados.
-     */
+@Table (name = "list_banner")
+public class ListBanner implements AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private int id;
     @NotNull
     @Size(max=16)
     private String name;
-    @NotNull
-    private String image;
-    private String Audio;
+    @ManyToMany @JoinColumn(name="lst_banner_id", referencedColumnName="id")
+    private List<Banner> lstBanner;
+    @ManyToMany @JoinColumn(name="lst_rss_id", referencedColumnName="id")
+    private List<RSS> lstRss;
 
     @Override
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -45,20 +47,20 @@ public class Banner implements AbstractEntity {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
+    public List<Banner> getLstBanner() {
+        return lstBanner;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setLstBanner(List<Banner> listBanner) {
+        this.lstBanner = listBanner;
     }
 
-    public String getAudio() {
-        return Audio;
+    public List<RSS> getListRss() {
+        return lstRss;
     }
 
-    public void setAudio(String Audio) {
-        this.Audio = Audio;
+    public void setListRss(List<RSS> listRss) {
+        this.lstRss = listRss;
     }
 
     @Override

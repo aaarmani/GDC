@@ -1,12 +1,9 @@
 package br.com.actia.model;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,23 +13,28 @@ import javax.validation.constraints.Size;
  * @author Armani <anderson.armani@actia.com.br>
  */
 @Entity
-@Table (name="video")
-public class Video implements AbstractEntity {
+@Table (name="poi_type")
+public class PoiType implements AbstractEntity {
     /**
-     * Chave primária da entidade <code>Video</code>. O valor gerado pelo banco de dados.
+     * Chave primária da entidade <code>PoiType</code>. O valor gerado pelo banco de dados.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @ManyToOne
-    @JoinColumn(name="video_type_id", referencedColumnName="id")
-    private VideoType type;
     @NotNull
     @Size(max=16)
     private String name;
     @NotNull
-    private String filePath;
-
+    private Integer type;
+    
+    public PoiType() {
+    }
+    
+    public PoiType(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
     @Override
     public Integer getId() {
         return id;
@@ -40,14 +42,6 @@ public class Video implements AbstractEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public VideoType getType() {
-        return type;
-    }
-
-    public void setType(VideoType type) {
-        this.type = type;
     }
 
     public String getName() {
@@ -58,12 +52,16 @@ public class Video implements AbstractEntity {
         this.name = name;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public Integer getType() {
+        return type;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setType(Integer type) {
+        this.type = type;
     }
-    
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

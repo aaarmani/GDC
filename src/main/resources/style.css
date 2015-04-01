@@ -113,14 +113,19 @@ LangButton:pressed {
     -fx-padding: 10px;
 }
 .ImgUser:hover {
-    -fx-opacity: 50%;
+    -fx-opacity: 50;
 }
 .ImgUser:selected {
-    -fx-opacity: 0%;
+    -fx-opacity: 0;
 }
 .tree-cell {
     -fx-background-color: #94959b;//#47525d;//757575; 
 }
+.transparentPanel {
+    -fx-background-color: #55504f4f;//#47525d;//757575; 
+    -fx-padding: 10;
+}
+
 /*
 #504f4f - mais escuro
 #94959b - botões

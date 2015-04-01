@@ -24,7 +24,7 @@ public class JPAUtil {
      * Unidade de persistencia definida no arquivo
      * <code>persistence.xml</code>
      */
-    private static final String PERSISTENCE_UNIT_NAME = "appJavaFXUnit";
+    private static final String PERSISTENCE_UNIT_NAME = "GeradorDeConteudoPU";
     private static EntityManagerFactory emf;
 
     static {
