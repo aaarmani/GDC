@@ -1,6 +1,6 @@
-package br.com.actia.dao;
+package br.com.actia.model;
 
-import br.com.actia.model.AbstractEntity;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +23,8 @@ public class RSS implements AbstractEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @NotNull
-    @Size (max=16)
+    @Size(max=16)
+    @Column(unique=true, nullable=false) 
     private String name;
     @NotNull
     private String path;

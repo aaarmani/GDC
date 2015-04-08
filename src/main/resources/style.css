@@ -35,7 +35,7 @@
     -fx-padding: 3 6 3 6;
 }
 
-.buttonBarMain, .buttonBar {
+.buttonBarMain, .buttonBar, .viewPane {
     -fx-alignment: center;
     -fx-padding: 10 0 10 0;
     -fx-spacing: 5;
@@ -108,6 +108,10 @@ LangButton:pressed {
     //-fx-animated: 
     -fx-opacity: 50%;
 }
+.Img {
+    -fx-background-color: #55504f4f;
+    -fx-alignment: center;
+}
 .ImgUser {
     -fx-alignment: center;
     -fx-padding: 10px;
@@ -125,7 +129,13 @@ LangButton:pressed {
     -fx-background-color: #55504f4f;//#47525d;//757575; 
     -fx-padding: 10;
 }
-
+.whitePanel {
+    -fx-background-color: #e1e1e2;//#47525d;//757575; 
+    -fx-padding: 10;
+}
+.titleLabel {
+    -fx-font-size: 14pt;
+}
 /*
 #504f4f - mais escuro
 #94959b - botões

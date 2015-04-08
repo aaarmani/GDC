@@ -1,6 +1,6 @@
 package br.com.actia.validation;
 
-import br.com.actia.model.BusStop;
+import br.com.actia.model.Video;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
@@ -10,7 +10,7 @@ import javax.validation.ValidatorFactory;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class BusStopValidator  implements Validator<BusStop> {
+public class VideoValidator implements Validator<Video> {
 
     private static ValidatorFactory factory;
 
@@ -19,15 +19,15 @@ public class BusStopValidator  implements Validator<BusStop> {
     }
 
     @Override
-    public String validate(BusStop busStop) {
+    public String validate(Video video) {
         StringBuilder sb = new StringBuilder();
-        if (busStop != null) {
+        if (video != null) {
             javax.validation.Validator validator = factory.getValidator();
-            Set<ConstraintViolation<BusStop>> constraintViolations = validator.validate(busStop);
+            Set<ConstraintViolation<Video>> constraintViolations = validator.validate(video);
 
             if (!constraintViolations.isEmpty()) {
-                sb.append("Validação da entidade bus_stop\n");
-                for (ConstraintViolation<BusStop> constraint : constraintViolations) {
+                sb.append("Validação da entidade video\n");
+                for (ConstraintViolation<Video> constraint : constraintViolations) {
                     sb.append(String.format("%n%s: %s", constraint.getPropertyPath(), constraint.getMessage()));
                 }
             }

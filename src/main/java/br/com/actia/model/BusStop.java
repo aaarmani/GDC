@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class BusStop implements AbstractEntity {
     private Integer id;
     @NotNull
     @Size(max=16)
+    @Column(unique=true, nullable=false)
     private String name;
     @Size(max=48)
     private String description;
@@ -40,6 +42,21 @@ public class BusStop implements AbstractEntity {
     private ListPoi pois;
     @ManyToOne @JoinColumn(name="lst_video_id", referencedColumnName="id")
     private ListVideo videos;
+
+    public BusStop(){
+    }
+    
+    public BusStop(Integer id, String name, String description, Double latitude, Double longitude, float radius, Banner banner, ListPoi listPoi, ListVideo listVideo) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.radius = radius;
+        this.banner = banner;
+        this.pois = listPoi;
+        this.videos = listVideo;
+    }
     
     @Override
     public Integer getId() {

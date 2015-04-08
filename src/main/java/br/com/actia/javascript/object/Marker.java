@@ -17,6 +17,7 @@
 package br.com.actia.javascript.object;
 
 import br.com.actia.javascript.JavascriptObject;
+import br.com.actia.model.Poi;
 
 /**
  * Marker which can be placed on a GoogleMap.
@@ -24,21 +25,21 @@ import br.com.actia.javascript.JavascriptObject;
  * @author Rob Terpilowski
  */
 public class Marker extends JavascriptObject {
-
-
     protected String title;
     protected LatLong latLong = null;
+    //protected Poi poi = null;
     
     
     /**
      * Contructs a new map Marker with the specified options
      * @param markerOptions The options to use when constructing this marker.
      */
-    public Marker(MarkerOptions markerOptions) {
+    public Marker(MarkerOptions markerOptions){//, Poi poi) {
         super(GMapObjectType.MARKER, markerOptions);
         this.latLong = markerOptions.position;
+        this.title = markerOptions.title;
+        //this.poi = poi;
     }
-    
     
     /**
      * Sets the title of this Marker
@@ -49,6 +50,10 @@ public class Marker extends JavascriptObject {
         this.title = title;
     }
     
+    
+    public String getTitle() {
+        return this.title;
+    }
     
     /**
      * This method is called from the GoogleMap.addMarker() method, it should not be invoked directory.
@@ -77,5 +82,13 @@ public class Marker extends JavascriptObject {
     public LatLong getPosition() {
         return this.latLong;
     }
+    
+    /*public void setPoi(Poi poi) {
+        this.poi = poi;
+    }
+    
+    public Poi getPoi() {
+        return this.poi;
+    }*/
     
 }

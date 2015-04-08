@@ -131,6 +131,10 @@ public class GoogleMap extends JavascriptObject {
     public void addMarker(Marker marker) {
         marker.setMap(this);
     }
+    
+    public double getMarker() {
+        return invokeJavascriptReturnValue("getMarker", Double.class );
+    }
 
     public void removeMarker(Marker marker) {
         marker.setMap(null);

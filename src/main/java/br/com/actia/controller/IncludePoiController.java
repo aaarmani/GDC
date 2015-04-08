@@ -6,22 +6,24 @@ import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
 import br.com.actia.dao.PoiDAO;
 import br.com.actia.dao.PoiDAOJPA;
+import br.com.actia.dao.PoiTypeDAO;
 import br.com.actia.dao.PoiTypeDAOJPA;
 import br.com.actia.event.IncludePoiEvent;
 import br.com.actia.javascript.object.LatLong;
 import br.com.actia.model.Poi;
 import br.com.actia.model.PoiType;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.IncludePoiView;
 import br.com.actia.validation.PoiValidator;
 import br.com.actia.validation.Validator;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javax.swing.DefaultListCellRenderer;
-import javax.validation.groups.Default;
 
 /**
  *
@@ -32,32 +34,29 @@ public class IncludePoiController extends PersistenceController {
     private IncludePoiView view;
     private Validator<Poi> validador = new PoiValidator();
     private Poi poi;
+    private final ResourceBundle rb;
 
-    public IncludePoiController(AbstractController parent, Pane pane) {
+    public IncludePoiController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
+        this.rb = rb;
         
         this.parentPane = pane;
-        this.view = new IncludePoiView();
+        this.view = new IncludePoiView(this.rb);
         this.view.resetForm();
         this.poi = new Poi();
         
-        ObservableList<PoiType> lst = getPoiTypeList();
-        this.view.setTypeList(lst);
+        ObservableList<PoiType> lstPoiTypes = getPoiTypeList();
+        this.view.getCbPoiType().getItems().addAll(lstPoiTypes);
         
-        registerAction(this.view.getBtnCancelBusStop(), new AbstractAction() {
+        registerAction(this.view.getBtnCancelPOI(), new AbstractAction() {
             @Override
             protected void action() {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        closeView();
-                    }
-                });
+                closeView();
             }
         });
         
-        registerAction(this.view.getBtnSaveBusStop(), 
+        registerAction(this.view.getBtnSavePOI(), 
                 ConditionalAction.build()
                     .addConditional(new BooleanExpression() {
                         @Override
@@ -65,7 +64,7 @@ public class IncludePoiController extends PersistenceController {
                             Poi poi = view.loadPoiFromPanel();
                             String msg = validador.validate(poi);
                             if (!"".equals(msg == null ? "" : msg)) {
-                               // Dialog.showInfo("Validacão", msg, );
+                                //Dialog.showInfo("Validacão", msg, parentPane.);
                                 System.out.println(msg);
                                 return false;
                             }
@@ -104,6 +103,24 @@ public class IncludePoiController extends PersistenceController {
         closeView();
     }
     
+    public void showView(String poiName) {
+        
+        if(poiName != null) {
+            PoiDAOJPA poiDAOJPA = new PoiDAOJPA(getPersistenceContext());
+
+            List<Poi> lstPoi = poiDAOJPA.getPoiByName(poiName);
+
+            for(Poi poi : lstPoi) {
+                if(poi.getName().equals(poiName)) {
+                    refreshForm(poi);
+                    break;
+                }
+            }
+        }
+
+        view.setVisible(true);
+    }
+    
     public void showView() {
         view.setVisible(true);
     }
@@ -122,17 +139,24 @@ public class IncludePoiController extends PersistenceController {
     
     @Override
     protected void cleanUp() {
-        view.resetForm();
-        
         super.cleanUp();
+        view.resetForm();
     }
-
+    
     /**
      * Pega os tipos de Pontos de Interesse cadastrados na base de dados
      * @return observableArrayList com lista de PoiTypes cadastrados no banco
      */
     private ObservableList<PoiType> getPoiTypeList() {
-        PoiTypeDAOJPA poiTypeDAOJPA = new PoiTypeDAOJPA(this.getPersistenceContext());
-        return FXCollections.observableArrayList(poiTypeDAOJPA.getAll());
+        PoiTypeDAO poiTypeDAO = new PoiTypeDAOJPA(this.getPersistenceContext());
+        return FXCollections.observableArrayList(poiTypeDAO.getAll());
+    }
+
+    private void refreshForm(Poi poi) {
+        this.view.getTfId().setText(poi.getId().toString());
+        this.view.getTfName().setText(poi.getName());
+        this.view.getTfLatitude().setText(String.valueOf(poi.getLatitude()));
+        this.view.getTfLongitude().setText(String.valueOf(poi.getLongitude()));
+        this.poi = poi;
     }
 }

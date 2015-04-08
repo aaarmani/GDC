@@ -1,6 +1,7 @@
 package br.com.actia.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,15 +25,25 @@ public class Video implements AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @NotNull
+    @Size(max=16)
+    @Column(unique=true, nullable=false)  
+    private String name;
     @ManyToOne
     @JoinColumn(name="video_type_id", referencedColumnName="id")
     private VideoType type;
     @NotNull
-    @Size(max=16)
-    private String name;
-    @NotNull
     private String filePath;
 
+    public Video() {}
+
+    public Video(Integer id, VideoType type, String name, String filePath) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.filePath = filePath;
+    }
+    
     @Override
     public Integer getId() {
         return id;

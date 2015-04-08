@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "poi")
 public class Poi implements AbstractEntity {
+    public static final Integer POI_DEFAULT = 0;
+    
     /**
      * Chave primária da entidade <code>Poi</code>. O valor gerado pelo banco de dados.
      */
@@ -28,6 +31,7 @@ public class Poi implements AbstractEntity {
     private PoiType type;
     @NotNull
     @Size(max=16)
+    @Column(unique=true, nullable=false)  
     private String name;
     @NotNull
     private double latitude;

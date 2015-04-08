@@ -1,6 +1,5 @@
 package br.com.actia.model;
 
-import br.com.actia.dao.RSS;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

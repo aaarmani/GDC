@@ -51,4 +51,9 @@ public class VideoType implements AbstractEntity{
     public void setType(Integer type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

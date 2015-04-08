@@ -5,6 +5,7 @@ import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -17,11 +18,19 @@ import javafx.stage.Stage;
  */
 public class GeradorDeConteudoApp extends Application {
     private MainScreenController controller;
+    private ResourceBundle rb;
     
     @Override
     public void start(Stage stage){
-        Locale.setDefault(new Locale("pt","BR"));
-        controller = new MainScreenController(stage);
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            rb = ResourceBundle.getBundle("languages.messages");
+            System.out.println(" BUNDLE ret ==  " + rb.getString("MainFrameTitle"));
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        controller = new MainScreenController(stage, rb);
     }
 
     @Override

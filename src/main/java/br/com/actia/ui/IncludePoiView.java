@@ -2,8 +2,7 @@ package br.com.actia.ui;
 
 import br.com.actia.model.Poi;
 import br.com.actia.model.PoiType;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -28,9 +27,10 @@ public class IncludePoiView extends VBox {
     private Button btnCancelPOI;
     private Button btnSavePOI;
     private ComboBox<PoiType> cbPoiType;
-    private ObservableList<PoiType> typeList = null;
-    
-    public IncludePoiView() {
+    private final ResourceBundle rb;
+        
+    public IncludePoiView(ResourceBundle rb) {
+        this.rb = rb;
         this.setMaxHeight(MAX_HEIGHT);
         this.getStyleClass().add("transparentPanel");
         
@@ -46,7 +46,8 @@ public class IncludePoiView extends VBox {
     }
 
     private VBox buildHead() {
-        Label lblTitle = new Label("Novo Ponto de Interesse");
+        Label lblTitle = new Label(rb.getString("NewPoi"));
+        lblTitle.getStyleClass().add("titleLabel");
         Separator separator = new Separator();
 
         VBox vbox = new VBox();
@@ -57,23 +58,21 @@ public class IncludePoiView extends VBox {
     private GridPane buildInputs() {
         tfId = new TextField();
         
-        Label lblName = new Label("nome");
+        Label lblName = new Label(rb.getString("Name"));
         tfName = new TextField();
         tfName.setMinWidth(180);
         tfName.setMaxWidth(180);
         
-        typeList = FXCollections.observableArrayList();
-        
-        Label lblType = new Label("tipo");
-        cbPoiType = new ComboBox(typeList);
+        Label lblType = new Label(rb.getString("Type"));
+        cbPoiType = new ComboBox();
         cbPoiType.setPromptText("escolha um tipo");
         
-        Label lblLat = new Label("latitude");
+        Label lblLat = new Label(rb.getString("Latitude"));
         tfLatitude = new TextField();
         tfLatitude.setMinWidth(180);
         tfLatitude.setMaxWidth(180);
         
-        Label lblLong = new Label("longitude");
+        Label lblLong = new Label(rb.getString("Longitude"));
         tfLongitude = new TextField();
         tfLongitude.setMinWidth(180);
         tfLongitude.setMaxWidth(180);
@@ -86,14 +85,14 @@ public class IncludePoiView extends VBox {
     }
 
     private HBox buildButtons() {
-        btnCancelPOI = new Button("Cancelar");
+        btnCancelPOI = new Button(rb.getString("Cancel"));
         btnCancelPOI.setId("cancelPOI");
-        btnCancelPOI.setDefaultButton(true);
+        btnCancelPOI.setCancelButton(true);
         btnCancelPOI.getStyleClass().add("flatButton");
         
-        btnSavePOI = new Button("Salvar");
+        btnSavePOI = new Button(rb.getString("Save"));
         btnSavePOI.setId("salvePOI");
-        btnSavePOI.setCancelButton(true);
+        btnSavePOI.setDefaultButton(true);
         btnSavePOI.getStyleClass().add("flatButton");
         
         HBox hbox = new HBox();
@@ -184,22 +183,6 @@ public class IncludePoiView extends VBox {
         this.tfLongitude = tfLongitude;
     }
 
-    public Button getBtnSaveBusStop() {
-        return btnSavePOI;
-    }
-
-    public void setBtnSaveBusStop(Button btnSaveBusStop) {
-        this.btnSavePOI = btnSaveBusStop;
-    }
-
-    public Button getBtnCancelBusStop() {
-        return btnCancelPOI;
-    }
-
-    public void setBtnCancelBusStop(Button btnCancelBusStop) {
-        this.btnCancelPOI = btnCancelBusStop;
-    }
-
     public Button getBtnCancelPOI() {
         return btnCancelPOI;
     }
@@ -215,15 +198,6 @@ public class IncludePoiView extends VBox {
     public void setBtnSavePOI(Button btnSavePOI) {
         this.btnSavePOI = btnSavePOI;
     }
-
-    public ObservableList<PoiType> getTypeList() {
-        return typeList;
-    }
-
-    public void setTypeList(ObservableList<PoiType> typeList) {
-        this.typeList = typeList;
-        this.cbPoiType.getItems().addAll(typeList);
-   }
 
     public ComboBox<PoiType> getCbPoiType() {
         return cbPoiType;

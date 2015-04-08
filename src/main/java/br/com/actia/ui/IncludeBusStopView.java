@@ -2,6 +2,9 @@ package br.com.actia.ui;
 
 import br.com.actia.model.Banner;
 import br.com.actia.model.BusStop;
+import br.com.actia.model.ListPoi;
+import br.com.actia.model.ListVideo;
+import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,13 +30,15 @@ public class IncludeBusStopView extends VBox {
     private TextField tfRadius;
     private Button btnSaveBusStop;
     private Button btnCancelBusStop;
-    private ComboBox<Banner> cbBanner;
-    private ComboBox<Object> cbListPois;
-    private ComboBox<Object> cbListVideos;
     private Button btnNewListPoi;
     private Button btnNewListVideo;
-        
-    public IncludeBusStopView() {
+    private ComboBox<Banner> cbBanner;
+    private ComboBox<ListPoi> cbListPois;
+    private ComboBox<ListVideo> cbListVideos;
+    private final ResourceBundle rb;
+    
+    public IncludeBusStopView(ResourceBundle rb) {
+        this.rb = rb;
         this.setMaxHeight(MAX_HEIGHT);
         this.getStyleClass().add("transparentPanel");
         
@@ -49,7 +54,8 @@ public class IncludeBusStopView extends VBox {
     }
 
     private VBox buildHead() {
-        Label lblTitle = new Label("Novo Ponto de Parada");
+        Label lblTitle = new Label(rb.getString("NewBusStop"));
+        lblTitle.getStyleClass().add("titleLabel");
         Separator separator = new Separator();
 
         VBox vbox = new VBox();
@@ -60,68 +66,73 @@ public class IncludeBusStopView extends VBox {
     private GridPane buildInputs() {
         tfId = new TextField();
         
-        Label lblName = new Label("nome");
+        Label lblName = new Label(rb.getString("Name"));
         tfName = new TextField();
         tfName.setMinWidth(180);
         tfName.setMaxWidth(180);
         
-        Label lblDesc = new Label("descricao");
+        Label lblDesc = new Label(rb.getString("Description"));
         tfDescription = new TextField();
         tfDescription.setMinWidth(180);
         tfDescription.setMaxWidth(180);
         
-        Label lblLat = new Label("latitude");
+        Label lblLat = new Label(rb.getString("Latitude"));
         tfLatitude = new TextField();
         tfLatitude.setMinWidth(180);
         tfLatitude.setMaxWidth(180);
         
-        Label lblLong = new Label("longitude");
+        Label lblLong = new Label(rb.getString("Longitude"));
         tfLongitude = new TextField();
         tfLongitude.setMinWidth(180);
         tfLongitude.setMaxWidth(180);
         
-        Label lblRadius = new Label("raio");
+        Label lblRadius = new Label(rb.getString("Radius"));
         tfRadius = new TextField();
         tfRadius.setMinWidth(180);
         tfRadius.setMaxWidth(180);
         
-        Label lblBanner = new Label ("banner");
-        cbBanner = new ComboBox<>();
+        Label lblBanner = new Label(rb.getString("Banner"));
+        cbBanner = new ComboBox<Banner>();
+        cbBanner.setPromptText(rb.getString("ChooseBanner"));
         
-        Label lblListVideo = new Label ("videos");
-        cbListVideos = new ComboBox<>();
-        Label lblNewListVideo = new Label ("Nova Lista");
+        Label lblListVideo = new Label(rb.getString("Video"));
+        cbListVideos = new ComboBox<ListVideo>();
+        cbListVideos.setPromptText(rb.getString("ChooseList"));
         
+        Label lblNewListVideo = new Label(rb.getString("NewVideoList"));
         btnNewListVideo = new Button("+");
-        btnNewListVideo.tooltipProperty().set(new Tooltip("Criar nova lista de vídeos"));
+        btnNewListVideo.tooltipProperty().set(new Tooltip(rb.getString("CreateNewVideoList")));
         btnNewListVideo.getStyleClass().add("flatButton");
+        btnNewListVideo.setId("newLstVideoBusStop");
         
-        Label lblListPoi = new Label ("pois");
-        cbListPois = new ComboBox<>();
+        Label lblListPoi = new Label(rb.getString("Poi"));
+        cbListPois = new ComboBox<ListPoi>();
+        cbListPois.setPromptText(rb.getString("ChooseList"));
         
-        Label lblNewListPoi = new Label ("Nova Lista");
+        Label lblNewListPoi = new Label(rb.getString("NewPoiList"));
         btnNewListPoi = new Button("+");
         btnNewListPoi.getStyleClass().add("flatButton");
-        btnNewListPoi.tooltipProperty().set(new Tooltip("Criar nova lista de POI"));
+        btnNewListPoi.tooltipProperty().set(new Tooltip(rb.getString("CreateNewPoiList")));
+        btnNewListPoi.setId("newLstPoiBusStop");
         
         GridFormBuilder grid = new GridFormBuilder();
-        grid.addRowGenerics(lblName, tfName, lblDesc, tfDescription);
+        grid.addRowGenerics(lblName, tfName, lblDesc, tfDescription, lblBanner, cbBanner);
         grid.addRowGenerics(lblLat, tfLatitude, lblLong, tfLongitude, lblRadius, tfRadius);
-        grid.addRowGenerics(lblBanner, cbBanner, lblListVideo, cbListVideos, lblNewListVideo, btnNewListVideo);
-        grid.addRowGenerics(lblListPoi, cbListPois, lblNewListPoi, btnNewListPoi);
+        grid.addRowGenerics(lblListVideo, cbListVideos, btnNewListVideo, lblNewListVideo);
+        grid.addRowGenerics(lblListPoi, cbListPois, btnNewListPoi, lblNewListPoi);
         
         return grid.build();
     }
 
     private HBox buildButtons() {
-        btnCancelBusStop = new Button("Cancelar");
+        btnCancelBusStop = new Button(rb.getString("Cancel"));
         btnCancelBusStop.setId("cancelBusStop");
-        btnCancelBusStop.setDefaultButton(true);
+        btnCancelBusStop.setCancelButton(true);
         btnCancelBusStop.getStyleClass().add("flatButton");
         
-        btnSaveBusStop = new Button("Salvar");
+        btnSaveBusStop = new Button(rb.getString("Save"));
         btnSaveBusStop.setId("salveBusStop");
-        btnSaveBusStop.setCancelButton(true);
+        btnSaveBusStop.setDefaultButton(true);
         btnSaveBusStop.getStyleClass().add("flatButton");
         
         HBox hbox = new HBox();
@@ -225,19 +236,19 @@ public class IncludeBusStopView extends VBox {
         this.cbBanner = cbBanner;
     }
 
-    public ComboBox<Object> getCbListPois() {
+    public ComboBox<ListPoi> getCbListPois() {
         return cbListPois;
     }
 
-    public void setCbListPois(ComboBox<Object> cbListPois) {
+    public void setCbListPois(ComboBox<ListPoi> cbListPois) {
         this.cbListPois = cbListPois;
     }
 
-    public ComboBox<Object> getCbListVideos() {
+    public ComboBox<ListVideo> getCbListVideos() {
         return cbListVideos;
     }
 
-    public void setCbListVideos(ComboBox<Object> cbListVideos) {
+    public void setCbListVideos(ComboBox<ListVideo> cbListVideos) {
         this.cbListVideos = cbListVideos;
     }
 
@@ -255,6 +266,55 @@ public class IncludeBusStopView extends VBox {
 
     public void setBtnNewListVideo(Button btnNewListVideo) {
         this.btnNewListVideo = btnNewListVideo;
+    }
+
+    public BusStop loadBusStopFromPanel() {
+        Integer id = null;
+        if(!tfId.getText().trim().isEmpty()) {
+            id = Integer.valueOf(tfId.getText());
+        }
+        
+        String name = null;
+        if(!tfName.getText().trim().isEmpty()) {
+            name = tfName.getText();
+        }
+        
+        String description = null;
+        if(!tfDescription.getText().trim().isEmpty()) {
+            description = tfDescription.getText();
+        }
+        
+        Double latitude = null;
+        if(!tfLatitude.getText().trim().isEmpty()) {
+            latitude = Double.valueOf(tfLatitude.getText());
+        }
+        
+        Double longitude = null;
+        if(!tfLongitude.getText().trim().isEmpty()) {
+            latitude = Double.valueOf(tfLongitude.getText());
+        }
+        
+        float radius = 0;
+        if(!tfRadius.getText().trim().isEmpty()) {
+            radius = Float.valueOf(tfRadius.getText());
+        }
+    
+        Banner banner = null;
+        if(!cbBanner.getSelectionModel().isEmpty()) {
+            banner = cbBanner.getSelectionModel().getSelectedItem();
+        }
+    
+        ListPoi listPoi = null;
+        if(!cbListPois.getSelectionModel().isEmpty()) {
+            listPoi = cbListPois.getSelectionModel().getSelectedItem();
+        }
+        
+        ListVideo listVideo = null;
+        if(!cbListVideos.getSelectionModel().isEmpty()) {
+            listVideo = cbListVideos.getSelectionModel().getSelectedItem();
+        }
+        
+        return new BusStop(id, name, description, latitude, longitude, radius, banner, listPoi, listVideo);
     }
     
 }

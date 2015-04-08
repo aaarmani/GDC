@@ -65,6 +65,18 @@ public class MarkerOptions extends JavascriptObject {
         return this;
     }
     
+    public MarkerOptions draggable( Boolean draggable ) {
+        setProperty("draggable", draggable);
+        return this;
+    }
     
+    public MarkerOptions color( String color ) {
+        setProperty("color", color);
+        return this;
+    }
     
+    public MarkerOptions cLabel( char cLabel ) {
+        setProperty("Clabel", cLabel);
+        return this;
+    }
 }

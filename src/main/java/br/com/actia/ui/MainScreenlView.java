@@ -1,11 +1,14 @@
 package br.com.actia.ui;
 
+import java.util.ResourceBundle;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -16,19 +19,28 @@ import javafx.stage.Stage;
 public class MainScreenlView {
 
     private Scene mainScene;
-    BorderPane bpMenu;
-    VBox vboxAction;
-    BorderPane bpCenter;
-    ImageView imgvLogo;
-    ImageView imgBR;
-    ImageView imgES;
-    ImageView imgEN;
-    ImageView imgUser;
+    private BorderPane bpMenu;
+    private VBox vboxAction;
+    private Pane paneCenter;
+    private ImageView imgvLogo;
+    private ImageView imgBR;
+    private ImageView imgES;
+    private ImageView imgEN;
+    private ImageView imgUser;
     
-    Button btnBusStop;
-    Button btnPOI;
+    private Button btnMapEntitys;
+    private Button btnBanner;
+    private Button btnVideo;
+    private Button btnList;
+    
+    private Button btnBR;
+    private Button btnEN;
+    private Button btnES;
+    
+    private ResourceBundle rb;
 
-    public MainScreenlView(Stage stage) {
+    public MainScreenlView(Stage stage, ResourceBundle rb) {
+        this.rb = rb;
         inicializaComponentes();
 
         BorderPane borderPane = new BorderPane();
@@ -38,13 +50,13 @@ public class MainScreenlView {
 
         bpMenu = getBorderPaneMenu();
         vboxAction = createVboxAction();
-        bpCenter = createBpCenter();
+        paneCenter = createPaneCenter();
 
         borderPane.setLeft(bpMenu);
-        borderPane.setCenter(bpCenter);
+        borderPane.setCenter(paneCenter);
         borderPane.setRight(vboxAction);
 
-        stage.setTitle("##MainFrameTitle");
+        stage.setTitle(rb.getString("MainFrameTitle"));
         stage.setWidth(1000);
         stage.setHeight(620);
         stage.setScene(mainScene);
@@ -70,8 +82,8 @@ public class MainScreenlView {
         return borderPane;
     }
 
-    private BorderPane createBpCenter() {
-        return new BorderPane();
+    private Pane createPaneCenter() {
+        return new Pane();
     }
         
     private VBox createVboxAction() {
@@ -92,8 +104,12 @@ public class MainScreenlView {
     private VBox getLogo() {
         Image logoImg = new Image("actiaLogo.png");
         imgvLogo = new ImageView(logoImg);
-        imgvLogo.maxHeight(40);
-        imgvLogo.maxWidth(150);
+        imgvLogo.setFitWidth(130);
+        imgvLogo.setFitHeight(40);
+        imgvLogo.setPreserveRatio(true);
+        imgvLogo.setSmooth(true);
+        imgvLogo.setCache(true);
+        imgvLogo.getStyleClass().add("Img");
 
         VBox logoVBox = new VBox();
         logoVBox.getStyleClass().add("LogoPanel");
@@ -106,19 +122,14 @@ public class MainScreenlView {
      * @return VBox menu
      */
     private VBox getMenu() {
-        
         VBox vbMenu = new VBox();
         
-        btnBusStop = new Button("Paradas");
-        btnBusStop.setMinSize(150, 40);
-        btnBusStop.getStyleClass().add("flatButton");
-        vbMenu.getChildren().add(btnBusStop);
-
-        btnPOI = new Button("POIs");
-        btnPOI.setMinSize(150, 40);
-        btnPOI.getStyleClass().add("flatButton");
-        vbMenu.getChildren().add(btnPOI);
+        btnMapEntitys = newMenuItem(rb.getString("Map"));
+        btnBanner = newMenuItem(rb.getString("Banner"));
+        btnVideo = newMenuItem(rb.getString("Video"));
+        btnList = newMenuItem(rb.getString("List"));
         
+        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnList);
         return vbMenu;
     }
     
@@ -129,28 +140,37 @@ public class MainScreenlView {
     private HBox getFlags() {
         imgBR = new ImageView("gn.png");
         imgBR.getStyleClass().add("flag");
-        Button btnBR = new Button(null, imgBR);
+        btnBR = new Button(null, imgBR);
         btnBR.getStyleClass().add("LangButton");
+        btnBR.setId("btnLanBR");
 
         imgES = new ImageView("es.png");
         imgES.getStyleClass().add("flag");
+        btnES = new Button(null, imgES);
+        btnES.getStyleClass().add("LangButton");
+        btnES.setId("btnLanES");
         
         imgEN = new ImageView("us.png");
         imgEN.getStyleClass().add("flag");
+        btnEN = new Button(null, imgEN);
+        btnEN.getStyleClass().add("LangButton");
+        btnEN.setId("btnLanEN");
 
         HBox flagsPanel = new HBox();
         flagsPanel.getStyleClass().add("LangPanel");
-        flagsPanel.getChildren().add(btnBR);
-        flagsPanel.getChildren().add(imgEN);
-        flagsPanel.getChildren().add(imgES);
+        flagsPanel.getChildren().addAll(btnBR, btnEN, btnES);
         return flagsPanel;
     }
     
     private VBox getUserLogo() {
         Image logoImg = new Image("user_verde.png");
         imgUser = new ImageView(logoImg);
-        imgUser.maxHeight(40);
-        imgUser.maxWidth(40);
+        imgUser.setFitWidth(30);
+        imgUser.setFitHeight(30);
+        imgUser.setPreserveRatio(true);
+        imgUser.setSmooth(true);
+        imgUser.setCache(true);
+        imgUser.getStyleClass().add("Img");
         
         VBox vbox = new VBox();
         vbox.getStyleClass().add("ImgUser");
@@ -158,7 +178,16 @@ public class MainScreenlView {
         
         return vbox;
     }
-
+    
+    private Button newMenuItem(String item) {
+        Button btn = new Button(item);
+        btn.setMinSize(150, 40);
+        btn.getStyleClass().add("flatButton");
+        btn.setId(item);
+        btn.setAlignment(Pos.CENTER_LEFT);
+        return btn;
+    }
+    
     //#####################################################
     public Scene getMainScene() {
         return mainScene;
@@ -224,20 +253,36 @@ public class MainScreenlView {
         this.imgUser = imgUser;
     }
 
-    public Button getBtnBusStop() {
-        return btnBusStop;
+    public Button getBtnMapEntitys() {
+        return btnMapEntitys;
     }
 
-    public void setBtnBusStop(Button btnBusStop) {
-        this.btnBusStop = btnBusStop;
+    public void setBtnMapsEntitys(Button btnMapEntitys) {
+        this.btnMapEntitys = btnMapEntitys;
     }
 
-    public Button getBtnPOI() {
-        return btnPOI;
+    public Button getBtnBanner() {
+        return btnBanner;
     }
 
-    public void setBtnPOI(Button btnPOI) {
-        this.btnPOI = btnPOI;
+    public void setBtnBanner(Button btnBanner) {
+        this.btnBanner = btnBanner;
+    }
+
+    public Button getBtnVideo() {
+        return btnVideo;
+    }
+
+    public void setBtnVideo(Button btnVideo) {
+        this.btnVideo = btnVideo;
+    }
+
+    public Button getBtnList() {
+        return btnList;
+    }
+
+    public void setBtnList(Button btnList) {
+        this.btnList = btnList;
     }
 
     public VBox getVboxAction() {
@@ -248,12 +293,43 @@ public class MainScreenlView {
         this.vboxAction = vboxAction;
     }
 
-    public BorderPane getBpCenter() {
-        return bpCenter;
+    public Pane getPaneCenter() {
+        return paneCenter;
     }
 
-    public void setBpCenter(BorderPane bpCenter) {
-        this.bpCenter = bpCenter;
+    public void setPaneCenter(Pane paneCenter) {
+        this.paneCenter = paneCenter;
     }
 
+    public Button getBtnBR() {
+        return btnBR;
+    }
+
+    public void setBtnBR(Button btnBR) {
+        this.btnBR = btnBR;
+    }
+
+    public Button getBtnEN() {
+        return btnEN;
+    }
+
+    public void setBtnEN(Button btnEN) {
+        this.btnEN = btnEN;
+    }
+
+    public Button getBtnES() {
+        return btnES;
+    }
+
+    public void setBtnES(Button btnES) {
+        this.btnES = btnES;
+    }
+
+    public ResourceBundle getRb() {
+        return rb;
+    }
+
+    public void setRb(ResourceBundle rb) {
+        this.rb = rb;
+    }
 }

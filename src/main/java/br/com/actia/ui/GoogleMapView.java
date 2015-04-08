@@ -1,5 +1,6 @@
 package br.com.actia.ui;
 
+import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -16,7 +17,8 @@ import javafx.scene.web.WebView;
  * @author Armani <anderson.armani@actia.com.br>
  */
 public class GoogleMapView  extends StackPane {
-    private  final int BUTTON_SIZE = 32;
+    private  final int IMG_BUTTON_SIZE = 30;
+    private  final int BUTTON_SIZE = 36;
     private  final int MENU_SIZE = BUTTON_SIZE + 4;
     
     private WebView webview;
@@ -26,8 +28,10 @@ public class GoogleMapView  extends StackPane {
     private Button btnNewPOI;
     private AnchorPane ap;
     private VBox vbControl;
+    private final ResourceBundle rb;
     
-    public GoogleMapView() {
+    public GoogleMapView(ResourceBundle rb) {
+        this.rb = rb;
         webview = new WebView();
         
         ap = new AnchorPane();
@@ -36,18 +40,22 @@ public class GoogleMapView  extends StackPane {
         ap.setBottomAnchor(webview, 0.0);
         ap.setRightAnchor(webview, 0.0);
         ap.getChildren().add(webview);
-        
-          
+
         getChildren().add(ap);
         setAlignment(Pos.CENTER_RIGHT);
         getChildren().add(createControlPane());
     }
     
     private VBox createControlPane() {
-        btnNewBusStop = getNewButton("location.png","Novo Ponto de Parada");
-        btnNewPOI = getNewButton("pin.png", "Novo Ponto de Interesse");
-        btnZoomIn = getNewButton("zoom-in.png", "Zoom mais");
-        btnZoomOut = getNewButton("zoom-out.png", "Zoom menos");
+        btnNewBusStop = getNewButton("location.png",rb.getString("NewBusStop"));
+        btnNewPOI = getNewButton("pin.png", rb.getString("NewPoi"));
+        btnZoomIn = getNewButton("zoom-in.png", rb.getString("ZoomMore"));
+        btnZoomOut = getNewButton("zoom-out.png", rb.getString("ZoomLess"));
+        
+        btnNewBusStop.setId("btnNewBusStop");
+        btnNewPOI.setId("btnNewPOI");
+        btnZoomIn.setId("btnZoomIn");
+        btnZoomOut.setId("btnZoomOut");
         
         VBox vbox = new VBox();
         vbox.setSpacing(4);
@@ -63,11 +71,13 @@ public class GoogleMapView  extends StackPane {
     private Button getNewButton(String imgPath, String toolType) {
         Image img = new Image(imgPath);
         ImageView imgView = new ImageView(img);
-        
-        imgView.maxHeight(BUTTON_SIZE);
-        imgView.minHeight(BUTTON_SIZE);
-        imgView.maxWidth(BUTTON_SIZE);
-        imgView.minWidth(BUTTON_SIZE);
+
+        imgView.setFitWidth(IMG_BUTTON_SIZE);
+        imgView.setFitHeight(IMG_BUTTON_SIZE);
+        imgView.setPreserveRatio(true);
+        imgView.setSmooth(true);
+        imgView.setCache(true);
+        imgView.getStyleClass().add("Img");
                
         Button btn = new Button(null, imgView);
         btn.setTooltip(new Tooltip(toolType));
@@ -129,5 +139,4 @@ public class GoogleMapView  extends StackPane {
     public void setVbControl(VBox vbControl) {
         this.vbControl = vbControl;
     }
-
 }

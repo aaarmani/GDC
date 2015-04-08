@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,10 +24,20 @@ public class Banner implements AbstractEntity {
     private Integer id;
     @NotNull
     @Size(max=16)
+    @Column(unique=true, nullable=false)  
     private String name;
     @NotNull
     private String image;
-    private String Audio;
+    private String audio;
+
+    public Banner() {}
+    
+    public Banner(Integer id, String name, String imagePath, String audioPath) {
+        this.id = id;
+        this.name = name;
+        this.image = imagePath;
+        this.audio = audioPath;
+    }
 
     @Override
     public Integer getId() {
@@ -54,11 +65,11 @@ public class Banner implements AbstractEntity {
     }
 
     public String getAudio() {
-        return Audio;
+        return audio;
     }
 
     public void setAudio(String Audio) {
-        this.Audio = Audio;
+        this.audio = Audio;
     }
 
     @Override
