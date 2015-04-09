@@ -76,5 +76,9 @@ public class Video implements AbstractEntity {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-    
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

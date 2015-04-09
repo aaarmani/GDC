@@ -130,4 +130,9 @@ public class BusStop implements AbstractEntity {
     public void setVideos(ListVideo videos) {
         this.videos = videos;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

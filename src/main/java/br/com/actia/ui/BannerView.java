@@ -34,9 +34,8 @@ public class BannerView extends VBox {
     private ResourceBundle rb;
     
     public BannerView(ResourceBundle rb) {
-        //this.setMaxHeight(MAX_HEIGHT);
-        this.getStyleClass().add("whitePanel");
         this.rb = rb;
+        this.getStyleClass().add("whitePanel");
         initializeComponents();
     }
 
@@ -50,7 +49,7 @@ public class BannerView extends VBox {
     }
 
     private VBox buildHead() {
-        Label lblTitle = new Label(rb.getString("BNNewBanner"));//"Inserir novo Banner");
+        Label lblTitle = new Label(rb.getString("BNNewBanner"));
         lblTitle.getStyleClass().add("titleLabel");
         Separator separator = new Separator();
         return new VBox(lblTitle, separator);

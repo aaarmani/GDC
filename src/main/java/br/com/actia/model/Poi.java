@@ -92,6 +92,6 @@ public class Poi implements AbstractEntity {
     
     @Override
     public String toString() {
-        return "[ " + id +" - " /*+ type*/ + " - " + name + " - " + latitude + " - " + longitude + " ]";
+        return name;
     }
 }

@@ -2,6 +2,8 @@
 package br.com.actia.controller;
 
 import br.com.actia.action.AbstractAction;
+import br.com.actia.model.ListPoi;
+import br.com.actia.model.Poi;
 import br.com.actia.ui.MainScreenlView;
 import br.com.actia.util.JPAUtil;
 import java.util.Locale;
@@ -94,6 +96,8 @@ public class MainScreenController extends PersistenceController {
     
     private void showListController() {
         cleanUpOldControllers();
+        Poi poi = new Poi();
+        EntityListController<ListPoi> elcCtrl = new EntityListController<ListPoi>(this, this.view.getPaneCenter(), this.rb, poi);
     }
     
     private void cleanUpOldControllers() {
