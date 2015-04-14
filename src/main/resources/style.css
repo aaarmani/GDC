@@ -96,14 +96,10 @@
     -fx-padding: 10px;
 }
 .LangButton {
-    -fx-padding: 0 0 0 0;
-    /*-fx-margin: 0 0 0 0;*/
-}
-.LangButton .flag :hover {
-    -fx-opacity: 50%;
+    -fx-padding: 0;
 }
 .LangButton:pressed {
-    -fx-opacity: 0%;
+    -fx-opacity: 50%;
 }
 .Img {
     -fx-background-color: #55504f4f;
