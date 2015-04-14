@@ -140,20 +140,23 @@ public class MainScreenlView {
      * @return HBox with logo images for i18n
      */
     private HBox getFlags() {
-        imgBR = new ImageView("gn.png");
+        imgBR = new ImageView("br.png");
         imgBR.getStyleClass().add("flag");
+        imgBR.setFitHeight(20);
         btnBR = new Button(null, imgBR);
         btnBR.getStyleClass().add("LangButton");
         btnBR.setId("btnLanBR");
 
         imgES = new ImageView("es.png");
         imgES.getStyleClass().add("flag");
+        imgES.setFitHeight(20);
         btnES = new Button(null, imgES);
         btnES.getStyleClass().add("LangButton");
         btnES.setId("btnLanES");
         
         imgEN = new ImageView("us.png");
         imgEN.getStyleClass().add("flag");
+        imgEN.setFitHeight(20);
         btnEN = new Button(null, imgEN);
         btnEN.getStyleClass().add("LangButton");
         btnEN.setId("btnLanEN");
