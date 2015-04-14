@@ -38,6 +38,15 @@ public class ListPoi implements AbstractEntity {
     @NotNull
     @ManyToMany @JoinColumn(name="poi_id", referencedColumnName="id")
     private List<Poi> listPoi;
+
+    public ListPoi(){}
+    
+    public ListPoi(Integer id, String name, String description, List<Poi> listPoi) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.listPoi = listPoi;
+    }
     
     @Override
     public Integer getId() {

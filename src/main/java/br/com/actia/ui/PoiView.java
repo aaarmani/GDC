@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class IncludePoiView extends VBox {
+public class PoiView extends VBox {
     private final int MAX_HEIGHT = 200;
     
     private TextField tfId;
@@ -29,7 +29,7 @@ public class IncludePoiView extends VBox {
     private ComboBox<PoiType> cbPoiType;
     private final ResourceBundle rb;
         
-    public IncludePoiView(ResourceBundle rb) {
+    public PoiView(ResourceBundle rb) {
         this.rb = rb;
         this.setMaxHeight(MAX_HEIGHT);
         this.getStyleClass().add("transparentPanel");

@@ -2,8 +2,6 @@
 package br.com.actia.controller;
 
 import br.com.actia.action.AbstractAction;
-import br.com.actia.model.ListPoi;
-import br.com.actia.model.Poi;
 import br.com.actia.ui.MainScreenlView;
 import br.com.actia.util.JPAUtil;
 import java.util.Locale;
@@ -20,6 +18,8 @@ public class MainScreenController extends PersistenceController {
     private BannerController bannerController;
     private VideoController videoController;
     private ResourceBundle rb;
+    private ListPoiController lpoiCtrl;
+    private ListVideoController lvideoCtrl;
         
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
@@ -47,10 +47,17 @@ public class MainScreenController extends PersistenceController {
             }
         });
         
-        registerAction(this.view.getBtnList(), new AbstractAction() {
+        registerAction(this.view.getBtnListPoi(), new AbstractAction() {
             @Override
             protected void action() {
-                showListController();
+                showListPoiController();
+            }
+        });
+        
+        registerAction(this.view.getBtnListVideo(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showListVideoController();
             }
         });
         
@@ -94,10 +101,14 @@ public class MainScreenController extends PersistenceController {
         videoController = new VideoController(this, this.view.getPaneCenter(), this.rb);
     }
     
-    private void showListController() {
+    private void showListPoiController() {
         cleanUpOldControllers();
-        Poi poi = new Poi();
-        EntityListController<ListPoi> elcCtrl = new EntityListController<ListPoi>(this, this.view.getPaneCenter(), this.rb, poi);
+        lpoiCtrl = new ListPoiController(this, this.view.getPaneCenter(), this.rb);
+    }
+    
+    private void showListVideoController() {
+        cleanUpOldControllers();
+        lvideoCtrl = new ListVideoController(this, this.view.getPaneCenter(), this.rb);
     }
     
     private void cleanUpOldControllers() {
@@ -116,6 +127,16 @@ public class MainScreenController extends PersistenceController {
         if(videoController != null) {
             videoController.cleanUp();
             videoController = null;
+        }
+        
+        if(lpoiCtrl != null) {
+            lpoiCtrl.cleanUp();
+            lpoiCtrl = null;
+        }
+        
+        if(lvideoCtrl != null) {
+            lvideoCtrl.cleanUp();
+            lvideoCtrl = null;
         }
     }
     

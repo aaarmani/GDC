@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class IncludeBusStopView extends VBox {
+public class BusStopView extends VBox {
     private final int MAX_HEIGHT = 200;
     private TextField tfId;
     private TextField tfName;
@@ -37,7 +37,7 @@ public class IncludeBusStopView extends VBox {
     private ComboBox<ListVideo> cbListVideos;
     private final ResourceBundle rb;
     
-    public IncludeBusStopView(ResourceBundle rb) {
+    public BusStopView(ResourceBundle rb) {
         this.rb = rb;
         this.setMaxHeight(MAX_HEIGHT);
         this.getStyleClass().add("transparentPanel");
@@ -291,7 +291,7 @@ public class IncludeBusStopView extends VBox {
         
         Double longitude = null;
         if(!tfLongitude.getText().trim().isEmpty()) {
-            latitude = Double.valueOf(tfLongitude.getText());
+            longitude = Double.valueOf(tfLongitude.getText());
         }
         
         float radius = 0;

@@ -42,8 +42,8 @@ public class GoogleMapController extends PersistenceController {
     protected boolean initialized = false;
     private Marker newMarker = null;
     
-    private IncludePoiController poiController;
-    private IncludeBusStopController busStopController;
+    private PoiController poiController;
+    private BusStopController busStopController;
     
     private Map<String, Marker> mapPoiMarkers = null;
     private final ResourceBundle rb;
@@ -60,8 +60,8 @@ public class GoogleMapController extends PersistenceController {
         this.webEngine = new JavaFxWebEngine(webView.getEngine());
         JavascriptRuntime.setDefaultWebEngine(webEngine);
 
-        this.poiController = new IncludePoiController(this, view, this.rb);
-        this.busStopController = new IncludeBusStopController(this, view, this.rb);
+        this.poiController = new PoiController(this, view, this.rb);
+        this.busStopController = new BusStopController(this, view, this.rb);
         
         this.mapPoiMarkers = new HashMap<String, Marker>();
         

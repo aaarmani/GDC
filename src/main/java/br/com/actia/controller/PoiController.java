@@ -13,7 +13,7 @@ import br.com.actia.javascript.object.LatLong;
 import br.com.actia.model.Poi;
 import br.com.actia.model.PoiType;
 import br.com.actia.ui.Dialog;
-import br.com.actia.ui.IncludePoiView;
+import br.com.actia.ui.PoiView;
 import br.com.actia.validation.PoiValidator;
 import br.com.actia.validation.Validator;
 import java.util.List;
@@ -29,20 +29,20 @@ import javafx.scene.layout.StackPane;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class IncludePoiController extends PersistenceController {
+public class PoiController extends PersistenceController {
     private Pane parentPane;
-    private IncludePoiView view;
+    private PoiView view;
     private Validator<Poi> validador = new PoiValidator();
     private Poi poi;
     private final ResourceBundle rb;
 
-    public IncludePoiController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public PoiController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
         
         this.parentPane = pane;
-        this.view = new IncludePoiView(this.rb);
+        this.view = new PoiView(this.rb);
         this.view.resetForm();
         this.poi = new Poi();
         
@@ -72,9 +72,8 @@ public class IncludePoiController extends PersistenceController {
                             return true;
                         }
                     })
-                    .addAction(
-                        TransactionalAction.build()
-                            .persistenceCtxOwner(IncludePoiController.this)
+                    .addAction(TransactionalAction.build()
+                            .persistenceCtxOwner(PoiController.this)
                             .addAction(new AbstractAction() {
                                 private Poi poi;
 

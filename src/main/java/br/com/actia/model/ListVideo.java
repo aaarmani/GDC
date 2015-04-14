@@ -39,6 +39,15 @@ public class ListVideo implements AbstractEntity {
     @ManyToMany @JoinColumn(name="video_id", referencedColumnName="id")
     private List<Video> listVideo;
 
+    public ListVideo() {}
+
+    public ListVideo(Integer id, String name, String description, List<Video> listVideo) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.listVideo = listVideo;
+    }
+
     @Override
     public Integer getId() {
         return id;

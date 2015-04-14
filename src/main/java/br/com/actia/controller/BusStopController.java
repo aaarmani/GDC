@@ -8,10 +8,16 @@ import br.com.actia.dao.BannerDAO;
 import br.com.actia.dao.BannerDAOJPA;
 import br.com.actia.dao.BusStopDAO;
 import br.com.actia.dao.BusStopDAOJPA;
+import br.com.actia.dao.ListPoiDAO;
+import br.com.actia.dao.ListPoiDAOJPA;
+import br.com.actia.dao.ListVideoDAO;
+import br.com.actia.dao.ListVideoDAOJPA;
 import br.com.actia.javascript.object.LatLong;
 import br.com.actia.model.Banner;
 import br.com.actia.model.BusStop;
-import br.com.actia.ui.IncludeBusStopView;
+import br.com.actia.model.ListPoi;
+import br.com.actia.model.ListVideo;
+import br.com.actia.ui.BusStopView;
 import br.com.actia.validation.BusStopValidator;
 import br.com.actia.validation.Validator;
 import java.util.ResourceBundle;
@@ -26,26 +32,25 @@ import javafx.scene.layout.StackPane;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class IncludeBusStopController extends PersistenceController {
+public class BusStopController extends PersistenceController {
     private final Pane parentPane;
-    private final IncludeBusStopView view;
+    private final BusStopView view;
     private final Validator<BusStop> validador = new BusStopValidator();
     private BusStop busStop = null;
-    private boolean isVisible = false;
     private ResourceBundle rb;
     
-    public IncludeBusStopController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public BusStopController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
         
         this.parentPane = pane;
-        this.view = new IncludeBusStopView(this.rb);
+        this.view = new BusStopView(this.rb);
         this.busStop = new BusStop();
-        //this.view.resetForm();
         
-        ObservableList<Banner> lstBanner = getBannerList();
-        this.view.getCbBanner().getItems().addAll(lstBanner);
+        loadBannerList();
+        loadListPoiList();
+        loadListVideoList();
         
         registerAction(this.view.getBtnCancelBusStop(), new AbstractAction() {
             @Override
@@ -70,9 +75,8 @@ public class IncludeBusStopController extends PersistenceController {
                             return true;
                         }
                     })
-                    .addAction(
-                        TransactionalAction.build()
-                            .persistenceCtxOwner(IncludeBusStopController.this)
+                    .addAction(TransactionalAction.build()
+                            .persistenceCtxOwner(BusStopController.this)
                             .addAction(new AbstractAction() {
                                 private BusStop busStop;
 
@@ -98,14 +102,22 @@ public class IncludeBusStopController extends PersistenceController {
         registerAction(this.view.getBtnNewListPoi(), new AbstractAction() {
             @Override
             protected void action() {
-                showNewBanner();
+                showNewListPoi();
+            }
+            @Override
+            protected void posAction() {
+                loadListPoiList();
             }
         });
         
         registerAction(this.view.getBtnNewListVideo(), new AbstractAction() {
             @Override
             protected void action() {
-                showNewVideo();
+                showNewListVideo();
+            }
+            @Override
+            protected void posAction() {
+                loadListVideoList();
             }
         });
         
@@ -131,24 +143,53 @@ public class IncludeBusStopController extends PersistenceController {
         }
     }
     
-    void showNewBanner() {
-        /*BannerController bannerCtrl = new BannerController(this, this.parentPane);
-        bannerCtrl.showView();*/
+    void showNewListPoi() {
+        ListPoiController listPoiController = new ListPoiController(this, parentPane, rb);
+        listPoiController.showView();
+        
+        loadListPoiList();
     }
     
-    void showNewVideo() {
-        VideoController videoController = new VideoController(this, parentPane, this.rb);
-        videoController.showView();
+    void showNewListVideo() {
+        ListVideoController listVideoController = new ListVideoController(this, parentPane, rb);
+        listVideoController.showView();
     }
 
     private ObservableList<Banner> getBannerList() {
         BannerDAO bannerDAO = new BannerDAOJPA(this.getPersistenceContext());
         return FXCollections.observableArrayList(bannerDAO.getAll());
     }
+
+    private ObservableList<ListPoi> getListPoiList() {
+        ListPoiDAO listPoiDAO = new ListPoiDAOJPA(getPersistenceContext());
+        return FXCollections.observableArrayList(listPoiDAO.getAll());
+    }
+    
+    private ObservableList<ListVideo> getListVideoList() {
+        ListVideoDAO listVideoDAO = new ListVideoDAOJPA(getPersistenceContext());
+        return FXCollections.observableArrayList(listVideoDAO.getAll());
+    }
     
     @Override
     protected void cleanUp() {
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
         view.resetForm();
+    }
+
+    private void loadBannerList() {
+        ObservableList<Banner> lstBanner = getBannerList();
+        this.view.getCbBanner().getItems().addAll(lstBanner);
+    }
+
+    private void loadListPoiList() {
+        ObservableList<ListPoi> lstPois = getListPoiList();
+        this.view.getCbListPois().getItems().clear();
+        this.view.getCbListPois().getItems().addAll(lstPois);
+    }
+
+    private void loadListVideoList() {
+        ObservableList<ListVideo> lstVideo = getListVideoList();
+        this.view.getCbListVideos().getItems().clear();
+        this.view.getCbListVideos().getItems().addAll(lstVideo);
     }
 }

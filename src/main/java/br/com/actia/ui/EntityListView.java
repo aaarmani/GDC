@@ -20,6 +20,7 @@ public class EntityListView<T> extends VBox {
     private ListSelectionView<T> lsvEntity;
     private Button btnCancel;
     private Button btnSave;
+    private Button btnNewEntity;
     private TextField tfId;
     private TextField tfName;
     private TextField tfDescription;
@@ -58,8 +59,12 @@ public class EntityListView<T> extends VBox {
         tfDescription.setMinWidth(180);
         tfDescription.setMaxWidth(180);
         
+        btnNewEntity = new Button("+");
+        btnNewEntity.setId("btnNewEntity");
+        btnNewEntity.getStyleClass().add("flatButton");
+        
         GridFormBuilder grid = new GridFormBuilder();
-        grid.addRowGenerics(lblName, tfName, lblDesc, tfDescription);
+        grid.addRowGenerics(lblName, tfName, lblDesc, tfDescription, btnNewEntity, null);
         
         return grid.build();
     }
@@ -90,6 +95,8 @@ public class EntityListView<T> extends VBox {
 
     public void resetForm() {
         tfId.setText("");
+        tfName.setText("");
+        tfDescription.setText("");
     }
 
     public ListSelectionView<T> getLsvEntity() {
@@ -138,5 +145,13 @@ public class EntityListView<T> extends VBox {
 
     public void setTfDescription(TextField tfDescription) {
         this.tfDescription = tfDescription;
+    }
+
+    public Button getBtnNewEntity() {
+        return btnNewEntity;
+    }
+
+    public void setBtnNewEntity(Button btnNewEntity) {
+        this.btnNewEntity = btnNewEntity;
     }
 }

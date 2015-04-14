@@ -31,7 +31,8 @@ public class MainScreenlView {
     private Button btnMapEntitys;
     private Button btnBanner;
     private Button btnVideo;
-    private Button btnList;
+    private Button btnListPoi;
+    private Button btnListVideo;
     
     private Button btnBR;
     private Button btnEN;
@@ -127,9 +128,10 @@ public class MainScreenlView {
         btnMapEntitys = newMenuItem(rb.getString("Map"));
         btnBanner = newMenuItem(rb.getString("Banner"));
         btnVideo = newMenuItem(rb.getString("Video"));
-        btnList = newMenuItem(rb.getString("List"));
+        btnListPoi = newMenuItem(rb.getString("ListPoi"));
+        btnListVideo = newMenuItem(rb.getString("ListVideo"));
         
-        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnList);
+        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnListPoi, btnListVideo);
         return vbMenu;
     }
     
@@ -277,15 +279,22 @@ public class MainScreenlView {
         this.btnVideo = btnVideo;
     }
 
-    public Button getBtnList() {
-        return btnList;
+    public Button getBtnListPoi() {
+        return btnListPoi;
     }
 
-    public void setBtnList(Button btnList) {
-        this.btnList = btnList;
+    public void setBtnListPoi(Button btnListPoi) {
+        this.btnListPoi = btnListPoi;
     }
 
-    public VBox getVboxAction() {
+    public Button getBtnListVideo() {
+        return btnListVideo;
+    }
+
+    public void setBtnListVideo(Button btnListVideo) {
+        this.btnListVideo = btnListVideo;
+    }
+     public VBox getVboxAction() {
         return vboxAction;
     }
 
