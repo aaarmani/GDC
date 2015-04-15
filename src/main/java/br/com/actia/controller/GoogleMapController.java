@@ -48,10 +48,14 @@ public class GoogleMapController extends PersistenceController {
     private Map<String, Marker> mapPoiMarkers = null;
     private final ResourceBundle rb;
     
+    // public MainScreenController mainScreenController;
+    
     GoogleMapController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
+        
+        // this.mainScreenController = (MainScreenController)parent;
         
         String htmlFile = "/html/maps.html";
 
@@ -105,6 +109,14 @@ public class GoogleMapController extends PersistenceController {
             @Override
             protected void action() {
                 showPoiController(null);
+            }
+        });
+        
+        registerAction(this.view.getBtnClose(), new AbstractAction() {
+
+            @Override
+            protected void action() {
+                closeMapScreen();
             }
         });
         
@@ -322,5 +334,14 @@ public class GoogleMapController extends PersistenceController {
     private void showPoiController(String poiName) {
         busStopController.closeView();
         poiController.showView(poiName);
+    }
+    
+    private void closeMapScreen() {
+        closeView();
+        //this.mainScreenController.cleanUpGoogleMapController();
+    }
+    
+    private void closeView() {
+        this.view.setVisible(false);
     }
 }

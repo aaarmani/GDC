@@ -26,6 +26,7 @@ public class GoogleMapView  extends StackPane {
     private Button btnZoomOut;
     private Button btnNewBusStop;
     private Button btnNewPOI;
+    private Button btnClose;
     private AnchorPane ap;
     private VBox vbControl;
     private final ResourceBundle rb;
@@ -51,19 +52,21 @@ public class GoogleMapView  extends StackPane {
         btnNewPOI = getNewButton("pin.png", rb.getString("NewPoi"));
         btnZoomIn = getNewButton("zoom-in.png", rb.getString("ZoomMore"));
         btnZoomOut = getNewButton("zoom-out.png", rb.getString("ZoomLess"));
+        btnClose = getNewButton("close.png", rb.getString("Close"));
         
         btnNewBusStop.setId("btnNewBusStop");
         btnNewPOI.setId("btnNewPOI");
         btnZoomIn.setId("btnZoomIn");
         btnZoomOut.setId("btnZoomOut");
+        btnClose.setId("btnClose");
         
         VBox vbox = new VBox();
         vbox.setSpacing(4);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setMaxHeight(4 * MENU_SIZE);
+        vbox.setMaxHeight(5 * MENU_SIZE);
         vbox.setMaxWidth(MENU_SIZE);
         vbox.getStyleClass().add("MenuMain");
-        vbox.getChildren().addAll(btnNewBusStop, btnNewPOI, btnZoomIn, btnZoomOut);
+        vbox.getChildren().addAll(btnNewBusStop, btnNewPOI, btnZoomIn, btnZoomOut, btnClose);
         
         return vbox;
     }
@@ -132,6 +135,14 @@ public class GoogleMapView  extends StackPane {
         this.btnNewPOI = btnNewPOI;
     }
 
+    public Button getBtnClose() {
+        return btnClose;
+    }
+    
+    public void setBtnClose(Button btnClose) {
+        this.btnClose = btnClose;
+    }
+    
     public VBox getVbControl() {
         return vbControl;
     }
