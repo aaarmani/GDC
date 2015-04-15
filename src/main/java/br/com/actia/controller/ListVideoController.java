@@ -8,6 +8,7 @@ import br.com.actia.dao.ListVideoDAO;
 import br.com.actia.dao.ListVideoDAOJPA;
 import br.com.actia.dao.VideoDAO;
 import br.com.actia.dao.VideoDAOJPA;
+import br.com.actia.javascript.event.CrudListVideoEvent;
 import br.com.actia.model.ListVideo;
 import br.com.actia.model.Video;
 import br.com.actia.ui.EntityListView;
@@ -81,6 +82,7 @@ public class ListVideoController extends PersistenceController {
                          @Override
                         protected void posAction() {
                             cleanUp();
+                            fireEvent(new CrudListVideoEvent(listVideo));
                         }
                     }))
         );

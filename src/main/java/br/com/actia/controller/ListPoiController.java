@@ -8,6 +8,7 @@ import br.com.actia.dao.ListPoiDAO;
 import br.com.actia.dao.ListPoiDAOJPA;
 import br.com.actia.dao.PoiDAO;
 import br.com.actia.dao.PoiDAOJPA;
+import br.com.actia.javascript.event.CrudListPoiEvent;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.Poi;
 import br.com.actia.ui.EntityListView;
@@ -29,7 +30,7 @@ public class ListPoiController extends PersistenceController {
     private final Pane parentPane;
     private final EntityListView<Poi> view;
     private Validator<ListPoi> validador = new ListPoiValidator();
-    private PoiController poiController = null;
+    private GoogleMapController googleMapController = null;
 
     public ListPoiController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
@@ -82,6 +83,7 @@ public class ListPoiController extends PersistenceController {
                          @Override
                         protected void posAction() {
                             cleanUp();
+                            fireEvent(new CrudListPoiEvent(listPoi));
                         }
                     }))
         );
@@ -89,7 +91,7 @@ public class ListPoiController extends PersistenceController {
         registerAction(view.getBtnNewEntity(), new AbstractAction() {
             @Override
             protected void action() {
-                showNewPoiController();
+                showGoogleMapController();
             }
         });
         
@@ -144,10 +146,10 @@ public class ListPoiController extends PersistenceController {
         return new ListPoi(id, name, description, listPoi);
     }
     
-    private void showNewPoiController() {
-        if(poiController == null)
-            poiController = new PoiController(this, parentPane, rb);
+    private void showGoogleMapController() {
+        if(googleMapController == null)
+            googleMapController = new GoogleMapController(this, parentPane, rb);
 
-        poiController.showView();
+        //googleMapController.showView();
     }
 }

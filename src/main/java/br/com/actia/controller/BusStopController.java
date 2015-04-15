@@ -12,6 +12,11 @@ import br.com.actia.dao.ListPoiDAO;
 import br.com.actia.dao.ListPoiDAOJPA;
 import br.com.actia.dao.ListVideoDAO;
 import br.com.actia.dao.ListVideoDAOJPA;
+import br.com.actia.event.AbstractEvent;
+import br.com.actia.event.AbstractEventListener;
+import br.com.actia.javascript.event.CrudBannerEvent;
+import br.com.actia.javascript.event.CrudListPoiEvent;
+import br.com.actia.javascript.event.CrudListVideoEvent;
 import br.com.actia.javascript.object.LatLong;
 import br.com.actia.model.Banner;
 import br.com.actia.model.BusStop;
@@ -118,6 +123,27 @@ public class BusStopController extends PersistenceController {
             @Override
             protected void posAction() {
                 loadListVideoList();
+            }
+        });
+        
+        registerEventListener(CrudListVideoEvent.class, new AbstractEventListener<CrudListVideoEvent>() {
+            @Override
+            public void handleEvent(CrudListVideoEvent event) {
+                loadListVideoList();
+            }
+        });
+        
+        registerEventListener(CrudListPoiEvent.class, new AbstractEventListener<CrudListPoiEvent>() {
+            @Override
+            public void handleEvent(CrudListPoiEvent event) {
+                loadListPoiList();
+            }
+        });
+        
+        registerEventListener(CrudBannerEvent.class,  new AbstractEventListener<CrudBannerEvent>() {
+            @Override
+            public void handleEvent(CrudBannerEvent event) {
+                loadBannerList();
             }
         });
         
