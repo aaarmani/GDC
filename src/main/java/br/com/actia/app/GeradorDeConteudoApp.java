@@ -12,6 +12,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
+ * Pré carregamento do listSelectionView
+ */
+import org.controlsfx.control.ListSelectionView;
+
+/**
  * Início da Aplicação de geração de conteúdo da Actia do Brasil
  * 
  * @author Armani <anderson.armani@actia.com.br>
