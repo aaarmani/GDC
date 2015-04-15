@@ -14,17 +14,23 @@ import javafx.stage.Stage;
  */
 public class MainScreenController extends PersistenceController {
     private MainScreenlView view;
-    private GoogleMapController googleMapCtrl;
+    private GoogleMapController googleMapController;
     private BannerController bannerController;
     private VideoController videoController;
     private ResourceBundle rb;
-    private ListPoiController lpoiCtrl;
-    private ListVideoController lvideoCtrl;
+    private ListPoiController listPoiController;
+    private ListVideoController listVideoController;
         
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
         this.rb = rb;
         this.view = new MainScreenlView(mainStage, rb);
+        
+        googleMapController = new GoogleMapController(this, this.view.getPaneCenter(), this.rb);
+        bannerController = new BannerController(this, this.view.getPaneCenter(), this.rb);
+        videoController = new VideoController(this, this.view.getPaneCenter(), this.rb);
+        listPoiController = new ListPoiController(this, this.view.getPaneCenter(), this.rb);
+        listVideoController = new ListVideoController(this, this.view.getPaneCenter(), this.rb);
         
         registerAction(this.view.getBtnMapEntitys(), new AbstractAction() {
             @Override
@@ -88,55 +94,55 @@ public class MainScreenController extends PersistenceController {
 
     private void showGoogleMapController() {
         cleanUpOldControllers();
-        googleMapCtrl = new GoogleMapController(this, this.view.getPaneCenter(), this.rb);
+        googleMapController.showView();
     }
     
     private void showBannerController() {
         cleanUpOldControllers();
-        bannerController = new BannerController(this, this.view.getPaneCenter(), this.rb);
+        bannerController.showView();
     }
     
     private void showVideoController() {
         cleanUpOldControllers();
-        videoController = new VideoController(this, this.view.getPaneCenter(), this.rb);
+        videoController.showView();
     }
     
     private void showListPoiController() {
         cleanUpOldControllers();
-        lpoiCtrl = new ListPoiController(this, this.view.getPaneCenter(), this.rb);
+        listPoiController.showView();
     }
     
     private void showListVideoController() {
         cleanUpOldControllers();
-        lvideoCtrl = new ListVideoController(this, this.view.getPaneCenter(), this.rb);
+        listVideoController.showView();
     }
     
     private void cleanUpOldControllers() {
         this.view.getPaneCenter().getChildren().removeAll();
         
-        if(googleMapCtrl != null) {
-            googleMapCtrl.cleanUp();
-            googleMapCtrl = null;
+        if(googleMapController != null) {
+            googleMapController.closeView();
+            googleMapController.cleanUp();
         }
         
         if(bannerController != null) {
+            bannerController.closeView();
             bannerController.cleanUp();
-            bannerController = null;
         }
             
         if(videoController != null) {
+            videoController.closeView();
             videoController.cleanUp();
-            videoController = null;
         }
         
-        if(lpoiCtrl != null) {
-            lpoiCtrl.cleanUp();
-            lpoiCtrl = null;
+        if(listPoiController != null) {
+            listPoiController.closeView();
+            listPoiController.cleanUp();
         }
         
-        if(lvideoCtrl != null) {
-            lvideoCtrl.cleanUp();
-            lvideoCtrl = null;
+        if(listVideoController != null) {
+            listVideoController.closeView();
+            listVideoController.cleanUp();
         }
     }
     

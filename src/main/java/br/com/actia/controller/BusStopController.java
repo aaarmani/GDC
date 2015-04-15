@@ -44,6 +44,9 @@ public class BusStopController extends PersistenceController {
     private BusStop busStop = null;
     private ResourceBundle rb;
     
+    private ListPoiController listPoiController = null;
+    private ListVideoController listVideoController = null;
+    
     public BusStopController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
@@ -147,18 +150,16 @@ public class BusStopController extends PersistenceController {
             }
         });
         
-        parentPane.getChildren().add(view);
         StackPane.setAlignment(view, Pos.BOTTOM_CENTER);
         this.view.resetForm();
-        closeView();
     }
     
     public void showView() {
-        this.view.setVisible(true);
+        this.parentPane.getChildren().add(view);
     }
     
     public void closeView() {
-        this.view.setVisible(false);
+        this.parentPane.getChildren().remove(view);
     }
 
     void setPosition(LatLong position) {
@@ -170,14 +171,17 @@ public class BusStopController extends PersistenceController {
     }
     
     void showNewListPoi() {
-        ListPoiController listPoiController = new ListPoiController(this, parentPane, rb);
-        listPoiController.showView();
+        if(listPoiController == null)
+            listPoiController = new ListPoiController(this, parentPane, rb);
         
-        loadListPoiList();
+        listPoiController.showView();
+        listPoiController.enableNewPoiButton(false);
     }
     
     void showNewListVideo() {
-        ListVideoController listVideoController = new ListVideoController(this, parentPane, rb);
+        if(listPoiController == null)
+            listVideoController = new ListVideoController(this, parentPane, rb);
+        
         listVideoController.showView();
     }
 

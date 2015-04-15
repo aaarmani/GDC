@@ -95,25 +95,21 @@ public class ListPoiController extends PersistenceController {
             }
         });
         
-        parentPane.getChildren().add(view);
         StackPane.setAlignment(view, Pos.CENTER);
         this.view.resetForm();
-        showView();
     }
 
     public void showView() {
-        this.view.setVisible(true);
+        parentPane.getChildren().add(view);
     }
         
     public void closeView() {
-        this.view.setVisible(false);
-        this.cleanUp();
+        parentPane.getChildren().remove(view);
     }
     
     @Override
     protected void cleanUp() {
         view.resetForm();
-        loadEntityToList();
         super.cleanUp();
     }
 
@@ -150,6 +146,10 @@ public class ListPoiController extends PersistenceController {
         if(googleMapController == null)
             googleMapController = new GoogleMapController(this, parentPane, rb);
 
-        //googleMapController.showView();
+        googleMapController.showView();
+    }
+    
+    public void enableNewPoiButton(Boolean enable) {
+        view.getBtnNewEntity().setVisible(enable);
     }
 }

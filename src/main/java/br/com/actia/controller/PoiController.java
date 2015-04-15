@@ -12,7 +12,6 @@ import br.com.actia.event.IncludePoiEvent;
 import br.com.actia.javascript.object.LatLong;
 import br.com.actia.model.Poi;
 import br.com.actia.model.PoiType;
-import br.com.actia.ui.Dialog;
 import br.com.actia.ui.PoiView;
 import br.com.actia.validation.PoiValidator;
 import br.com.actia.validation.Validator;
@@ -96,11 +95,9 @@ public class PoiController extends PersistenceController {
                                 }
                             })));
         
-        parentPane.getChildren().add(view);
         StackPane.setAlignment(view, Pos.BOTTOM_CENTER);
         this.view.resetForm();
-        closeView();
-    }
+     }
     
     public void showView(String poiName) {
         
@@ -117,15 +114,15 @@ public class PoiController extends PersistenceController {
             }
         }
 
-        view.setVisible(true);
+        this.parentPane.getChildren().add(view);
     }
     
     public void showView() {
-        view.setVisible(true);
+        parentPane.getChildren().add(view);
     }
     
     public void closeView() {
-        view.setVisible(false);
+        parentPane.getChildren().remove(view);
     }
 
     void setPosition(LatLong position) {

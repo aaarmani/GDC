@@ -117,10 +117,8 @@ public class VideoController extends PersistenceController {
             }
         });
         
-        parentPane.getChildren().add(view);
         StackPane.setAlignment(view, Pos.CENTER);
         this.view.resetForm();
-        showView();
     }
     
     private void chooseVideo() {
@@ -173,12 +171,11 @@ public class VideoController extends PersistenceController {
     }
     
     public void showView() {
-        this.view.setVisible(true);
+        parentPane.getChildren().add(view);
     }
     
-    private void closeView() {
-        this.view.setVisible(false);
-        this.cleanUp();
+    void closeView() {
+        parentPane.getChildren().remove(view);
     }
     
     @Override

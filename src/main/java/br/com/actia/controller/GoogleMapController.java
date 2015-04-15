@@ -41,7 +41,7 @@ public class GoogleMapController extends PersistenceController {
     protected GoogleMap googleMap;
     protected boolean initialized = false;
     private Marker newMarker = null;
-    
+    private final Pane parentPane;
     private PoiController poiController;
     private BusStopController busStopController;
     
@@ -59,6 +59,7 @@ public class GoogleMapController extends PersistenceController {
         
         String htmlFile = "/html/maps.html";
 
+        this.parentPane = pane;
         this.view = new GoogleMapView(this.rb);
         this.webView = view.getWebview();
         this.webEngine = new JavaFxWebEngine(webView.getEngine());
@@ -130,8 +131,6 @@ public class GoogleMapController extends PersistenceController {
             }
         });
         
-        //pane.setCenter(this.view);
-        pane.getChildren().add(this.view);
         webEngine.load(getClass().getResource(htmlFile).toExternalForm());
     }
 
@@ -244,6 +243,14 @@ public class GoogleMapController extends PersistenceController {
         }
     }
 
+    void showView() {
+        this.parentPane.getChildren().add(view);
+    }
+
+    public void closeView() {
+        parentPane.getChildren().remove(view);
+    }
+    
     public class JSListener {
         public void log(String text){
             System.out.println(text);
@@ -338,10 +345,6 @@ public class GoogleMapController extends PersistenceController {
     
     private void closeMapScreen() {
         closeView();
-        //this.mainScreenController.cleanUpGoogleMapController();
     }
     
-    private void closeView() {
-        this.view.setVisible(false);
-    }
 }
