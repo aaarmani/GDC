@@ -118,30 +118,24 @@ public class MainScreenController extends PersistenceController {
     }
     
     private void cleanUpOldControllers() {
-        this.view.getPaneCenter().getChildren().removeAll();
-        
+
         if(googleMapController != null) {
-            googleMapController.closeView();
             googleMapController.cleanUp();
         }
         
         if(bannerController != null) {
-            bannerController.closeView();
             bannerController.cleanUp();
         }
             
         if(videoController != null) {
-            videoController.closeView();
             videoController.cleanUp();
         }
         
         if(listPoiController != null) {
-            listPoiController.closeView();
             listPoiController.cleanUp();
         }
         
         if(listVideoController != null) {
-            listVideoController.closeView();
             listVideoController.cleanUp();
         }
     }

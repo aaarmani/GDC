@@ -94,6 +94,7 @@ public class EntityListController<T> extends PersistenceController {
     @Override
     protected void cleanUp() {
         view.resetForm();
+        closeView();
         super.cleanUp();
     }
 

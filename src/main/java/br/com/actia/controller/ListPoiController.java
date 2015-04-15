@@ -110,6 +110,7 @@ public class ListPoiController extends PersistenceController {
     @Override
     protected void cleanUp() {
         view.resetForm();
+        closeView();
         super.cleanUp();
     }
 

@@ -135,8 +135,9 @@ public class PoiController extends PersistenceController {
     
     @Override
     protected void cleanUp() {
-        super.cleanUp();
         view.resetForm();
+        closeView();
+        super.cleanUp();
     }
     
     /**

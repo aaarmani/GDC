@@ -259,10 +259,8 @@ public class GoogleMapController extends PersistenceController {
     
     @Override
     protected void cleanUp() {
-        poiController.cleanUp();
-        busStopController.cleanUp();
-        
-        super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
+        closeView();
+        super.cleanUp();
     }
     
     //##########################################

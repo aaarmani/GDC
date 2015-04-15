@@ -213,6 +213,7 @@ public class BannerController extends PersistenceController {
         if(mediaPlayer != null)
             mediaPlayer.dispose();
 
+        closeView();
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
     }
     

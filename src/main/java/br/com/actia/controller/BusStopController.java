@@ -202,8 +202,9 @@ public class BusStopController extends PersistenceController {
     
     @Override
     protected void cleanUp() {
-        super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
         view.resetForm();
+        closeView();
+        super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void loadBannerList() {

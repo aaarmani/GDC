@@ -109,6 +109,7 @@ public class ListVideoController extends PersistenceController {
     @Override
     protected void cleanUp() {
         view.resetForm();
+        closeView();
         super.cleanUp();
     }
 
