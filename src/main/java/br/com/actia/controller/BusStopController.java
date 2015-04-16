@@ -14,9 +14,10 @@ import br.com.actia.dao.ListVideoDAO;
 import br.com.actia.dao.ListVideoDAOJPA;
 import br.com.actia.event.AbstractEvent;
 import br.com.actia.event.AbstractEventListener;
-import br.com.actia.javascript.event.CrudBannerEvent;
-import br.com.actia.javascript.event.CrudListPoiEvent;
-import br.com.actia.javascript.event.CrudListVideoEvent;
+import br.com.actia.event.CrudBannerEvent;
+import br.com.actia.event.CrudBusStopEvent;
+import br.com.actia.event.CrudListPoiEvent;
+import br.com.actia.event.CrudListVideoEvent;
 import br.com.actia.javascript.object.LatLong;
 import br.com.actia.model.Banner;
 import br.com.actia.model.BusStop;
@@ -103,7 +104,7 @@ public class BusStopController extends PersistenceController {
                                             closeView();
                                         }
                                     });
-                                    //fireEvent(new IncludeBusStopEvent(busStop));
+                                    fireEvent(new CrudBusStopEvent(busStop));
                                 }
                             })));
         

@@ -1,4 +1,4 @@
-package br.com.actia.javascript.event;
+package br.com.actia.event;
 
 import br.com.actia.event.AbstractEvent;
 import br.com.actia.model.Banner;

@@ -8,7 +8,7 @@ import br.com.actia.dao.ListPoiDAO;
 import br.com.actia.dao.ListPoiDAOJPA;
 import br.com.actia.dao.PoiDAO;
 import br.com.actia.dao.PoiDAOJPA;
-import br.com.actia.javascript.event.CrudListPoiEvent;
+import br.com.actia.event.CrudListPoiEvent;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.Poi;
 import br.com.actia.ui.EntityListView;

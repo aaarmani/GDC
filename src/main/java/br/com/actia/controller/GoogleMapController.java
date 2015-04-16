@@ -3,6 +3,7 @@ package br.com.actia.controller;
 import br.com.actia.action.AbstractAction;
 import br.com.actia.dao.PoiDAOJPA;
 import br.com.actia.event.AbstractEventListener;
+import br.com.actia.event.CrudBusStopEvent;
 import br.com.actia.event.IncludePoiEvent;
 import br.com.actia.javascript.JavaFxWebEngine;
 import br.com.actia.javascript.JavascriptRuntime;
@@ -15,6 +16,7 @@ import br.com.actia.javascript.object.MapOptions;
 import br.com.actia.javascript.object.MapTypeIdEnum;
 import br.com.actia.javascript.object.Marker;
 import br.com.actia.javascript.object.MarkerOptions;
+import br.com.actia.model.BusStop;
 import br.com.actia.model.Poi;
 import br.com.actia.ui.GoogleMapView;
 import java.util.HashMap;
@@ -122,11 +124,23 @@ public class GoogleMapController extends PersistenceController {
         });
         
         registerEventListener(IncludePoiEvent.class, new AbstractEventListener<IncludePoiEvent>() {
+         
             @Override
             public void handleEvent(IncludePoiEvent event) {
                 Poi poi = event.getTarget();
                 if (poi != null) {
                     addMapMarkers(poi);
+                }
+            }
+        });
+        
+        registerEventListener(CrudBusStopEvent.class, new AbstractEventListener<CrudBusStopEvent>() {
+
+            @Override
+            public void handleEvent(CrudBusStopEvent event) {
+                BusStop busStop = event.getTarget();
+                if(busStop != null) {
+                    //addMapMarkers(busStop);
                 }
             }
         });
@@ -308,10 +322,8 @@ public class GoogleMapController extends PersistenceController {
         mapPoiMarkers.put(poi.getName(), marker);
         
         this.googleMap.addUIEventHandler(marker, UIEventType.click, (JSObject obj) -> {
-            //System.out.println("CLICK ON MARKER!!! ====> " + );
-            
             LatLong latLong = new LatLong((JSObject) obj.getMember("latLng"));
-           
+            
             String title = (String) obj.getMember("title");
             showPoiController(title);
         });
