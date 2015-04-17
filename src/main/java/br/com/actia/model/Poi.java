@@ -65,7 +65,7 @@ public class Poi implements AbstractEntity {
     public void setType(PoiType type) {
         this.type = type;
     }
-
+    
     public String getName() {
         return name;
     }

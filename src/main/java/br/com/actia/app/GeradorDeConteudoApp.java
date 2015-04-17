@@ -30,7 +30,6 @@ public class GeradorDeConteudoApp extends Application {
         try {
             Locale.setDefault(Locale.ENGLISH);
             rb = ResourceBundle.getBundle("languages.messages");
-            System.out.println(" BUNDLE ret ==  " + rb.getString("MainFrameTitle"));
         }catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());

@@ -10,14 +10,19 @@ import br.com.actia.dao.VideoTypeDAO;
 import br.com.actia.dao.VideoTypeDAOJPA;
 import br.com.actia.model.Video;
 import br.com.actia.model.VideoType;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.VideoView;
 import br.com.actia.validation.Validator;
 import br.com.actia.validation.VideoValidator;
 import java.io.File;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
@@ -71,7 +76,7 @@ public class VideoController extends PersistenceController {
                         Video video = view.loadVideoFromPanel();
                         String msg = validador.validate(video);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
+                             //Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);
                              return false;
                         }
@@ -92,11 +97,48 @@ public class VideoController extends PersistenceController {
                             }
                             @Override
                             protected void posAction() {
-                                cleanUp();
+                                view.resetForm();
+                                refreshTable();
+                                //fireEvent(new CrudVideoEvent(video));
                                 //MOVER ARQUIVO PARA PASTA DO SISTEMA
+                            }
+                            @Override
+                            protected void actionFailure(){
+                                
                             }
                         })
                 )
+        );
+        
+        registerAction(this.view.getBtnDeleteVideo(),
+            TransactionalAction.build()
+                .persistenceCtxOwner(VideoController.this)
+                .addAction(new AbstractAction() {
+                    private Video video;
+
+                    @Override
+                    protected void action() {
+                        Integer id = view.getVideoId();
+                        if (id != null) {
+                            VideoDAO videoDao = new VideoDAOJPA(getPersistenceContext());
+                            video = videoDao.findById(id);
+                            if (video != null) { 
+                                videoDao.remove(video);
+                            }
+                        }
+                    }
+                    @Override
+                    protected void posAction() {
+                        view.resetForm();
+                        refreshTable();
+                        //fireEvent(new CrudVideoEvent(video));
+                        //Excluir ARQUIVO DA PASTA DO SISTEMA
+                    }
+                    @Override
+                    protected void actionFailure(){
+
+                    }
+                })
         );
         
         registerAction(this.view.getBtnChooseVideo(), new AbstractAction() {
@@ -117,8 +159,21 @@ public class VideoController extends PersistenceController {
             }
         });
         
+        view.getTable().setMouseEvent(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent t) {
+                if (t.getClickCount() == 2) {
+                    Video video = (Video)view.getTable().getEntitySelected();
+                    if (video != null) {
+                        view.loadVideoToEdit(video);
+                    }
+                }
+            }
+        });
+        
         StackPane.setAlignment(view, Pos.CENTER);
         this.view.resetForm();
+        refreshTable();
     }
     
     private void chooseVideo() {
@@ -186,11 +241,32 @@ public class VideoController extends PersistenceController {
             mediaPlayer.dispose();
         
         closeView();
-        super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
+        super.cleanUp(); 
     }
 
     private ObservableList<VideoType> getVideoTypeList() {
         VideoTypeDAO videoTypeDAO = new VideoTypeDAOJPA(this.getPersistenceContext());
         return FXCollections.observableArrayList(videoTypeDAO.getAll());
+    }
+    
+    private void refreshTable() {
+        refreshTable(null);
+    }
+    
+    private void refreshTable(List<Video> list) {
+        //view.addTransition();
+        if (list != null) {
+            view.refreshTable(list);
+            return;
+        }
+        
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                VideoDAO dao = new VideoDAOJPA(getPersistenceContext());
+                view.refreshTable(dao.getAll());
+            }
+        });
     }
 }

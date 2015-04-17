@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table (name="video")
-public class Video implements AbstractEntity {
+public class Video implements AbstractEntity, Serializable {
     /**
      * Chave primária da entidade <code>Video</code>. O valor gerado pelo banco de dados.
      */
@@ -60,7 +60,7 @@ public class Video implements AbstractEntity {
     public void setType(VideoType type) {
         this.type = type;
     }
-
+    
     public String getName() {
         return name;
     }
@@ -76,7 +76,7 @@ public class Video implements AbstractEntity {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-
+    
     @Override
     public String toString() {
         return name;

@@ -2,6 +2,7 @@ package br.com.actia.ui;
 
 import br.com.actia.model.Video;
 import br.com.actia.model.VideoType;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,7 +21,7 @@ import javafx.scene.media.MediaView;
  */
 public class VideoView  extends VBox {
     private final int MAX_HEIGHT = 600;
-    private final int VIEWER_SIZE = 300;
+    private final int VIEWER_SIZE = 200;
     
     private TextField tfId;
     private TextField tfName;
@@ -29,9 +30,12 @@ public class VideoView  extends VBox {
     private Button btnCancelVideo;
     private Button btnSaveVideo;
     private Button btnPlayVideo;
+    private Button btnDeleteVideo;
     private ComboBox<VideoType> cbVideoType;
     private MediaView mediaView;
     private ResourceBundle rb;
+    private EntityTable<Video> table;
+    
         
     public VideoView(ResourceBundle rb) {
         this.rb = rb;
@@ -45,8 +49,8 @@ public class VideoView  extends VBox {
         GridPane chooser = buildChooser();
         HBox buttons = buildButtons();
         VBox viewer = buildViewer();
-        
-        this.getChildren().addAll(head, chooser, buttons, viewer);
+        table = new EntityTable();
+        this.getChildren().addAll(head, chooser, buttons, viewer, table);
     }
     
     private VBox buildHead() {
@@ -89,8 +93,13 @@ public class VideoView  extends VBox {
         btnSaveVideo.setDefaultButton(true);
         btnSaveVideo.getStyleClass().add("flatButton");
         
+        btnDeleteVideo = new Button(rb.getString("Delete"));
+        btnDeleteVideo.setId("btnDeleteVideo");
+        btnDeleteVideo.getStyleClass().add("flatButton");
+        btnDeleteVideo.setVisible(false);
+        
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(btnCancelVideo, btnSaveVideo);
+        hbox.getChildren().addAll(btnDeleteVideo, btnCancelVideo, btnSaveVideo);
         hbox.getStyleClass().add("buttonBar");
         hbox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -149,11 +158,31 @@ public class VideoView  extends VBox {
 
         return new Video(id, videoType, name, videoPath);
     }
+    
+    public void loadVideoToEdit(Video video) {
+        if(video.getId() != null) {
+            tfId.setText(video.getId().toString());
+            btnDeleteVideo.setVisible(true);
+        }
+        tfName.setText(video.getName());
+        tfVideoPath.setText(video.getFilePath());
+        cbVideoType.getSelectionModel().select(video.getType());
+    }
 
     public void resetForm() {
         tfId.setText("");
         tfName.setText("");
         tfVideoPath.setText("");
+        cbVideoType.getSelectionModel().clearSelection();
+        btnDeleteVideo.setVisible(false);
+    }
+    
+    public Integer getVideoId() {
+        try {
+            return Integer.parseInt(tfId.getText());
+        } catch (Exception nex) {
+            return null;
+        }
     }
     
     public TextField getTfId() {
@@ -212,6 +241,14 @@ public class VideoView  extends VBox {
         this.btnPlayVideo = btnPlayVideo;
     }
 
+    public Button getBtnDeleteVideo() {
+        return btnDeleteVideo;
+    }
+
+    public void setBtnDeleteVideo(Button btnDeleteVideo) {
+        this.btnDeleteVideo = btnDeleteVideo;
+    }
+
     public ComboBox<VideoType> getCbVideoType() {
         return cbVideoType;
     }
@@ -226,5 +263,17 @@ public class VideoView  extends VBox {
 
     public void setMediaView(MediaView mediaView) {
         this.mediaView = mediaView;
+    }
+    
+    public EntityTable getTable() {
+        return table;
+    }
+
+    public void setTable(EntityTable table) {
+        this.table = table;
+    }
+    
+    public void refreshTable(List<Video> listEntity) {
+        table.reload(listEntity);   
     }
 }

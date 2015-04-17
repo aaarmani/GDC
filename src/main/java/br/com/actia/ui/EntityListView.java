@@ -1,5 +1,8 @@
 package br.com.actia.ui;
 
+import br.com.actia.model.ListPoi;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -24,7 +27,8 @@ public class EntityListView<T> extends VBox {
     private TextField tfId;
     private TextField tfName;
     private TextField tfDescription;
-
+    private EntityTable table;
+    
     public EntityListView(ResourceBundle rb) {
         this.rb = rb;
         this.getStyleClass().add("whitePanel");
@@ -36,7 +40,8 @@ public class EntityListView<T> extends VBox {
         GridPane gpInputs = buildInputs();
         lsvEntity = buildList();
         HBox hbButtons = buildButtons();
-        this.getChildren().addAll(vbHead, gpInputs, lsvEntity, hbButtons);
+        table = new EntityTable();
+        this.getChildren().addAll(vbHead, gpInputs, lsvEntity, hbButtons, table);
     }
     
     private VBox buildHead() {
@@ -153,5 +158,17 @@ public class EntityListView<T> extends VBox {
 
     public void setBtnNewEntity(Button btnNewEntity) {
         this.btnNewEntity = btnNewEntity;
+    }
+
+    public EntityTable getTable() {
+        return table;
+    }
+
+    public void setTable(EntityTable table) {
+        this.table = table;
+    }
+    
+    public void refreshTable(List<ListPoi> listPois) {
+        table.reload(new ArrayList<>(listPois));        
     }
 }

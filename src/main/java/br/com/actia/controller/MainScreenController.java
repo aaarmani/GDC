@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  * @author Armani <anderson.armani@actia.com.br>
  */
 public class MainScreenController extends PersistenceController {
-    private MainScreenlView view;
+    private final MainScreenlView view;
     private GoogleMapController googleMapController;
     private BannerController bannerController;
     private VideoController videoController;
@@ -25,12 +25,6 @@ public class MainScreenController extends PersistenceController {
         loadPersistenceContext();
         this.rb = rb;
         this.view = new MainScreenlView(mainStage, rb);
-        
-        googleMapController = new GoogleMapController(this, this.view.getPaneCenter(), this.rb);
-        bannerController = new BannerController(this, this.view.getPaneCenter(), this.rb);
-        videoController = new VideoController(this, this.view.getPaneCenter(), this.rb);
-        listPoiController = new ListPoiController(this, this.view.getPaneCenter(), this.rb);
-        listVideoController = new ListVideoController(this, this.view.getPaneCenter(), this.rb);
         
         registerAction(this.view.getBtnMapEntitys(), new AbstractAction() {
             @Override
@@ -70,7 +64,6 @@ public class MainScreenController extends PersistenceController {
         registerAction(this.view.getBtnBR(), new AbstractAction() {
             @Override
             protected void action() {
-                System.out.println("SET LOCALE PT");
                 setLanguage(new Locale("pt","BR"));
             }
         });
@@ -78,7 +71,6 @@ public class MainScreenController extends PersistenceController {
         registerAction(this.view.getBtnEN(), new AbstractAction() {
             @Override
             protected void action() {
-                System.out.println("SET LOCALE UN");
                 setLanguage(new Locale("en",""));
             }
         });
@@ -86,7 +78,6 @@ public class MainScreenController extends PersistenceController {
         registerAction(this.view.getBtnES(), new AbstractAction() {
             @Override
             protected void action() {
-                System.out.println("SET LOCALE ES");
                 setLanguage(new Locale("es",""));
             }
         });
@@ -94,26 +85,36 @@ public class MainScreenController extends PersistenceController {
 
     private void showGoogleMapController() {
         cleanUpOldControllers();
+        if(googleMapController == null)
+            googleMapController = new GoogleMapController(this, this.view.getPaneCenter(), this.rb);
         googleMapController.showView();
     }
     
     private void showBannerController() {
         cleanUpOldControllers();
+        if(bannerController == null)
+            bannerController = new BannerController(this, this.view.getPaneCenter(), this.rb);
         bannerController.showView();
     }
     
     private void showVideoController() {
         cleanUpOldControllers();
+        if(videoController == null)
+            videoController = new VideoController(this, this.view.getPaneCenter(), this.rb);
         videoController.showView();
     }
     
     private void showListPoiController() {
         cleanUpOldControllers();
+        if(listPoiController == null)
+            listPoiController = new ListPoiController(this, this.view.getPaneCenter(), this.rb);
         listPoiController.showView();
     }
     
     private void showListVideoController() {
         cleanUpOldControllers();
+        if(listVideoController == null)
+            listVideoController = new ListVideoController(this, this.view.getPaneCenter(), this.rb);
         listVideoController.showView();
     }
     

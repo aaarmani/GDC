@@ -71,7 +71,7 @@ public class Banner implements AbstractEntity {
     public void setAudio(String Audio) {
         this.audio = Audio;
     }
-
+    
     @Override
     public String toString() {
         return name;

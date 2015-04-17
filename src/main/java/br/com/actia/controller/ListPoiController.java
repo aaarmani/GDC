@@ -17,9 +17,14 @@ import br.com.actia.validation.Validator;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import org.controlsfx.control.ListSelectionView;
 
 /**
  *
@@ -82,11 +87,23 @@ public class ListPoiController extends PersistenceController {
                         
                          @Override
                         protected void posAction() {
-                            cleanUp();
                             fireEvent(new CrudListPoiEvent(listPoi));
+                            refreshTable();
                         }
                     }))
         );
+        
+        view.getTable().setMouseEvent(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent t) {
+                if (t.getClickCount() == 2) {
+                    ListPoi listPoi = (ListPoi)view.getTable().getEntitySelected();
+                    if (listPoi != null) {
+                        loadListPoiToEdit(listPoi);
+                    }
+                }
+            }
+        });
         
         registerAction(view.getBtnNewEntity(), new AbstractAction() {
             @Override
@@ -97,6 +114,7 @@ public class ListPoiController extends PersistenceController {
         
         StackPane.setAlignment(view, Pos.CENTER);
         this.view.resetForm();
+        refreshTable();
     }
 
     public void showView() {
@@ -152,5 +170,33 @@ public class ListPoiController extends PersistenceController {
     
     public void enableNewPoiButton(Boolean enable) {
         view.getBtnNewEntity().setVisible(enable);
+    }
+    
+    private void refreshTable() {
+        refreshTable(null);
+    }
+    
+    private void refreshTable(List<ListPoi> list) {
+        //view.addTransition();
+        if (list != null) {
+            view.refreshTable(list);
+            return;
+        }
+        
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                ListPoiDAO dao = new ListPoiDAOJPA(getPersistenceContext());
+                view.refreshTable(dao.getAll());
+            }
+        });
+    }
+    
+    private void loadListPoiToEdit(ListPoi listPoi) {
+        this.view.getTfId().setText(listPoi.getId().toString());
+        this.view.getTfName().setText(listPoi.getName());
+        this.view.getTfDescription().setText(listPoi.getDescription());
+        this.view.getLsvEntity().setTargetItems((ObservableList<Poi>) listPoi.getListPoi());
     }
 }

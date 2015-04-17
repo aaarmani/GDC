@@ -35,9 +35,15 @@
     -fx-padding: 3 6 3 6;
 }
 
-.buttonBarMain, .buttonBar, .viewPane {
+.buttonBarMain, .viewPane {
     -fx-alignment: center;
-    -fx-padding: 10 0 10 0;
+    -fx-padding: 10 10 10 0;
+    -fx-spacing: 5;
+}
+
+.buttonBar {
+    -fx-alignment: center-right;
+    -fx-padding: 10 10 10 0;
     -fx-spacing: 5;
 }
 
