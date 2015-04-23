@@ -22,6 +22,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 
 import java.util.List;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -207,7 +208,9 @@ public class BannerController extends PersistenceController {
     private void chooseAudio() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecione um áudio");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ÁUDIO", "*.3gp", "*.mp4", "*.m4a", "*.aac", "*.ts", "*.flac", "*.mp3", "*.mid", "*.xmf", "*.mxmf", "*.rtttl", "*.rtx", "*.ota", "*.imy", "*.ogg", "*.mkv", "*.wav"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ÁUDIO", "*.3gp", "*.mp4",
+                "*.m4a", "*.aac", "*.ts", "*.flac", "*.mp3", "*.mid", "*.xmf", "*.mxmf", "*.rtttl", "*.rtx",
+                "*.ota", "*.imy", "*.ogg", "*.mkv", "*.wav"));
         audioFile = fileChooser.showOpenDialog(null);
     }
     
