@@ -179,7 +179,7 @@ public class VideoController extends PersistenceController {
     private void chooseVideo() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecione um vídeo");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("*.3gp", "*.mp4", "*.ts"));        
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("VÍDEO", "*.3gp", "*.mp4", "*.webm", "*.mkv"));
         videoFile = fileChooser.showOpenDialog(null);
     }
     

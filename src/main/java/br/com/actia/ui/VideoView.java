@@ -74,7 +74,7 @@ public class VideoView  extends VBox {
         btnChooseVideo = new Button(rb.getString("Search"));
         btnChooseVideo.setId("btnChooseVideo");
         btnChooseVideo.getStyleClass().add("flatButton");
-       
+        
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblName, tfName, lblType, cbVideoType);
         grid.addRowGenerics(lblImage, tfVideoPath, btnChooseVideo, null);
