@@ -21,6 +21,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 
+import java.util.List;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+
 /**
  *
  * @author Armani <anderson.armani@actia.com.br>
@@ -83,17 +87,49 @@ public class BannerController extends PersistenceController {
                                 @Override
                                 protected void action() {
                                     banner = view.loadBannerFromPanel();
-                                    BannerDAO dao = new BannerDAOJPA(getPersistenceContext());
-                                    banner = dao.save(banner);
+                                    BannerDAO bannerDao = new BannerDAOJPA(getPersistenceContext());
+                                    banner = bannerDao.save(banner);
                                 }
 
                                 @Override
                                 protected void posAction() {
-                                    cleanUp();
+                                    view.resetForm();
+                                    refreshTable();
+                                    //cleanUp();
                                     //MOVER ARQUIVO PARA PASTA DO SISTEMA
-                                    fireEvent(new CrudBannerEvent(banner));
+                                    //fireEvent(new CrudBannerEvent(banner));
                                 }
                             }))
+        );
+        
+        registerAction(this.view.getBtnDeleteBanner(),
+            TransactionalAction.build()
+                .persistenceCtxOwner(BannerController.this)
+                .addAction(new AbstractAction() {
+                    private Banner banner;
+
+                    @Override
+                    protected void action() {
+                        Integer id = view.getBannerId();
+                        if (id != null) {
+                            BannerDAO bannerDao = new BannerDAOJPA(getPersistenceContext());
+                            banner = bannerDao.findById(id);
+                            if (banner != null) { 
+                                bannerDao.remove(banner);
+                            }
+                        }
+                    }
+                    @Override
+                    protected void posAction() {
+                        view.resetForm();
+                        refreshTable();
+                        //fireEvent(new CrudVideoEvent(banner));
+                    }
+                    @Override
+                    protected void actionFailure(){
+
+                    }
+                })
         );
         
         registerAction(this.view.getBtnChooseImage(), new AbstractAction() {
@@ -127,8 +163,21 @@ public class BannerController extends PersistenceController {
             }
         });
         
+        view.getTable().setMouseEvent(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent t) {
+                if (t.getClickCount() == 2) {
+                    Banner banner = (Banner)view.getTable().getEntitySelected();
+                    if (banner != null) {
+                        view.loadBannerToEdit(banner);
+                    }
+                }
+            }
+        });
+        
         StackPane.setAlignment(view, Pos.CENTER);
         this.view.resetForm();
+        this.refreshTable();
     }
     
     public void showView() {
@@ -142,7 +191,7 @@ public class BannerController extends PersistenceController {
     private void chooseImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecione uma imagem");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG", "*.jpg", ".png"));        
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("IMAGEM", "*.jpg", "*.jpeg", "*.bmp", "*.bmp", "*.gif", "*.png", "*.webp"));        
         imageFile = fileChooser.showOpenDialog(null);
     }
     
@@ -157,8 +206,8 @@ public class BannerController extends PersistenceController {
     
     private void chooseAudio() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Selecione uma imagem");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MP3", "*.mp3", ".wmv"));        
+        fileChooser.setTitle("Selecione um áudio");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ÁUDIO", "*.3gp", "*.mp4", "*.m4a", "*.aac", "*.ts", "*.flac", "*.mp3", "*.mid", "*.xmf", "*.mxmf", "*.rtttl", "*.rtx", "*.ota", "*.imy", "*.ogg", "*.mkv", "*.wav"));
         audioFile = fileChooser.showOpenDialog(null);
     }
     
@@ -215,6 +264,27 @@ public class BannerController extends PersistenceController {
 
         closeView();
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private void refreshTable() {
+        refreshTable(null);
+    }
+    
+    private void refreshTable(List<Banner> list) {
+        //view.addTransition();
+        if (list != null) {
+            view.refreshTable(list);
+            return;
+        }
+        
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                BannerDAO dao = new BannerDAOJPA(getPersistenceContext());
+                view.refreshTable(dao.getAll());
+            }
+        });
     }
     
 }

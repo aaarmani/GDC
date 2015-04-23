@@ -11,14 +11,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import java.util.List;
 
 /**
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
 public class BannerView extends VBox {
-    //private final int MAX_HEIGHT = 600;
-    private final int VIEWER_SIZE = 300;
+    private final int MAX_HEIGHT = 600;
+    // private final int VIEWER_SIZE = 300;
+    private final int VIEWER_SIZE = 100;
     
     private TextField tfId;
     private TextField tfName;
@@ -28,13 +30,15 @@ public class BannerView extends VBox {
     private Button btnChooseAudio;
     private Button btnCancelBanner;
     private Button btnSaveBanner;
+    private Button btnDeleteBanner;
     private ImageView ivImageView;
     private Button btnPlay;
-    
     private ResourceBundle rb;
+    private EntityTable<Banner> table;
     
     public BannerView(ResourceBundle rb) {
         this.rb = rb;
+        this.setMaxHeight(MAX_HEIGHT);
         this.getStyleClass().add("whitePanel");
         initializeComponents();
     }
@@ -44,8 +48,9 @@ public class BannerView extends VBox {
         GridPane chooser = buildChooser();
         HBox buttons = buildButtons();
         VBox viewer = buildViewer();
+        table = new EntityTable();
         
-        this.getChildren().addAll(head, chooser, buttons, viewer);
+        this.getChildren().addAll(head, chooser, buttons, viewer, table);
     }
 
     private VBox buildHead() {
@@ -92,8 +97,13 @@ public class BannerView extends VBox {
         btnSaveBanner.setDefaultButton(true);
         btnSaveBanner.getStyleClass().add("flatButton");
         
+        btnDeleteBanner = new Button(rb.getString("Delete"));
+        btnDeleteBanner.setId("btnDeleteBanner");
+        btnDeleteBanner.getStyleClass().add("flatButton");
+        btnDeleteBanner.setVisible(false);
+        
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(btnCancelBanner, btnSaveBanner);
+        hbox.getChildren().addAll(btnDeleteBanner, btnCancelBanner, btnSaveBanner);
         hbox.getStyleClass().add("buttonBar");
         hbox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -121,6 +131,14 @@ public class BannerView extends VBox {
         return vbox;
     }
 
+    public Integer getBannerId() {
+        try {
+            return Integer.parseInt(tfId.getText());
+        } catch (Exception nex) {
+            return null;
+        }
+    }
+    
     public TextField getTfId() {
         return tfId;
     }
@@ -201,6 +219,14 @@ public class BannerView extends VBox {
         this.btnPlay = btnPlay;
     }
 
+    public Button getBtnDeleteBanner() {
+        return btnDeleteBanner;
+    }
+
+    public void setBtnDeleteBanner(Button btnDeleteBanner) {
+        this.btnDeleteBanner = btnDeleteBanner;
+    }
+    
     public Banner loadBannerFromPanel() {
         Integer id = null;
         if(!tfId.getText().trim().isEmpty()) {
@@ -230,6 +256,7 @@ public class BannerView extends VBox {
         tfImgPath.setText("");
         tfAudioPath.setText("");
         ivImageView.setImage(null);
+        btnDeleteBanner.setVisible(false);
     }
 
     public void setBtToPlay() {
@@ -239,4 +266,23 @@ public class BannerView extends VBox {
     public void setBtToStop() {
         btnPlay.setText(rb.getString("Stop"));
     }
+    
+    public void refreshTable(List<Banner> listEntity) {
+        table.reload(listEntity);   
+    }
+    
+    public EntityTable getTable() {
+        return table;
+    }
+    
+    public void loadBannerToEdit(Banner banner) {
+        if(banner.getId() != null) {
+            tfId.setText(banner.getId().toString());
+            btnDeleteBanner.setVisible(true);
+        }
+        tfName.setText(banner.getName());
+        tfImgPath.setText(banner.getImage());
+        tfAudioPath.setText(banner.getAudio());
+    }
+    
 }
