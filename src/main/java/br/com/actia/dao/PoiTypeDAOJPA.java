@@ -33,7 +33,7 @@ public class PoiTypeDAOJPA extends AbstractDAO<PoiType, Integer> implements PoiT
         if (name == null || name.isEmpty()) {
             return null;
         }
-        Query query = getPersistenceContext().createQuery("SELECT p FROM poi_type p WHERE p.name like :name");
+        Query query = getPersistenceContext().createQuery("SELECT p FROM PoiType p WHERE p.name like :name");
         query.setParameter("name", name.concat("%"));
         return (List<PoiType>) query.getResultList();
     }

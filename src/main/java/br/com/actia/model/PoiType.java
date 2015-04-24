@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +15,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table (name="poi_type")
-public class PoiType implements AbstractEntity {
+public class PoiType implements AbstractEntity, Serializable {
     /**
      * Chave primária da entidade <code>PoiType</code>. O valor gerado pelo banco de dados.
      */

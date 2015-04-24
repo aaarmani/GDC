@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table (name = "rss")
-public class RSS implements AbstractEntity {
+public class RSS implements AbstractEntity, Serializable {
     /**
      * Chave primária da entidade <code>Rss</code>. O valor gerado pelo banco de dados.
      */

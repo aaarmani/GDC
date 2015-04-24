@@ -5,6 +5,7 @@
  */
 package br.com.actia.model;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +24,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table (name = "list_poi")
-public class ListPoi implements AbstractEntity {
+public class ListPoi implements AbstractEntity, Serializable {
     /**
      * Chave primária da entidade <code>list_video</code>. O valor gerado pelo banco de dados.
      */

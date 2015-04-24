@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table (name = "bus_stop")
-public class BusStop implements AbstractEntity {
+public class BusStop implements AbstractEntity, Serializable {
     /**
      * Chave primária da entidade <code>BusStop</code>. O valor gerado pelo banco de dados.
      */

@@ -20,7 +20,7 @@ public class ListVideoDAOJPA extends AbstractDAO<ListVideo, Integer> implements 
         if (name == null || name.isEmpty()) {
             return null;
         }
-        Query query = getPersistenceContext().createQuery("SELECT l FROM list_video l WHERE l.name like :name");
+        Query query = getPersistenceContext().createQuery("SELECT l FROM ListVideo l WHERE l.name like :name");
         query.setParameter("name", name.concat("%"));
         return (List<ListVideo>) query.getResultList();
     }

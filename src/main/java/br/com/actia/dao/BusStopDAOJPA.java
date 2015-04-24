@@ -25,7 +25,7 @@ public class BusStopDAOJPA extends AbstractDAO<BusStop, Integer> implements BusS
         if (name == null || name.isEmpty()) {
             return null;
         }
-        Query query = getPersistenceContext().createQuery("SELECT b FROM bus_stop b WHERE b.name like :name");
+        Query query = getPersistenceContext().createQuery("SELECT b FROM BusStop b WHERE b.name like :name");
         query.setParameter("name", name.concat("%"));
         return (List<BusStop>) query.getResultList();
     }

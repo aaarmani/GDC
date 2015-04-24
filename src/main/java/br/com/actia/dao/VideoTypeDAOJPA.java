@@ -25,7 +25,7 @@ public class VideoTypeDAOJPA extends AbstractDAO<VideoType, Integer> implements 
         if (name == null || name.isEmpty()) {
             return null;
         }
-        Query query = getPersistenceContext().createQuery("SELECT v FROM video_type v WHERE v.name like :name");
+        Query query = getPersistenceContext().createQuery("SELECT v FROM VideoType v WHERE v.name like :name");
         query.setParameter("name", name.concat("%"));
         return (List<VideoType>) query.getResultList();
     }

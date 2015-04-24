@@ -20,7 +20,7 @@ public class ListPoiDAOJPA extends AbstractDAO<ListPoi, Integer> implements List
         if (name == null || name.isEmpty()) {
             return null;
         }
-        Query query = getPersistenceContext().createQuery("SELECT l FROM list_poi l WHERE l.name like :name");
+        Query query = getPersistenceContext().createQuery("SELECT l FROM ListPoi l WHERE l.name like :name");
         query.setParameter("name", name.concat("%"));
         return (List<ListPoi>) query.getResultList();
     }

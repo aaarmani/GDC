@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "poi")
-public class Poi implements AbstractEntity {
+public class Poi implements AbstractEntity, Serializable {
     public static final Integer POI_DEFAULT = 0;
     
     /**
@@ -31,7 +32,7 @@ public class Poi implements AbstractEntity {
     private PoiType type;
     @NotNull
     @Size(max=16)
-    @Column(unique=true, nullable=false)  
+    @Column(unique=true, nullable=false)
     private String name;
     @NotNull
     private double latitude;

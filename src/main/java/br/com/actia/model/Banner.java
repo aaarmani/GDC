@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table (name = "banner")
-public class Banner implements AbstractEntity {
+public class Banner implements AbstractEntity, Serializable {
     /**
      * Chave primária da entidade <code>Banner</code>. O valor gerado pelo banco de dados.
      */
@@ -24,7 +25,7 @@ public class Banner implements AbstractEntity {
     private Integer id;
     @NotNull
     @Size(max=16)
-    @Column(unique=true, nullable=false)  
+    @Column(unique=true, nullable=false)
     private String name;
     @NotNull
     private String image;
