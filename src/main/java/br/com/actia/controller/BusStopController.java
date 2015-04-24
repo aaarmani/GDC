@@ -26,6 +26,7 @@ import br.com.actia.model.ListVideo;
 import br.com.actia.ui.BusStopView;
 import br.com.actia.validation.BusStopValidator;
 import br.com.actia.validation.Validator;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -155,8 +156,22 @@ public class BusStopController extends PersistenceController {
         this.view.resetForm();
     }
     
-    public void showView() {
-        this.parentPane.getChildren().add(view);
+    public void showView(String busStopName) {
+        if(busStopName != null) {
+            BusStopDAO busStopDAOJPA = new BusStopDAOJPA(getPersistenceContext());
+
+            List<BusStop> lstBusStop = busStopDAOJPA.getBusStopByName(busStopName);
+
+            for(BusStop busStop : lstBusStop) {
+                if(busStop.getName().equals(busStopName)) {
+                    refreshForm(busStop);
+                    break;
+                }
+            }
+        }
+        
+        if(!parentPane.getChildren().contains(view))
+            parentPane.getChildren().add(view);
     }
     
     public void closeView() {
@@ -223,5 +238,17 @@ public class BusStopController extends PersistenceController {
         ObservableList<ListVideo> lstVideo = getListVideoList();
         this.view.getCbListVideos().getItems().clear();
         this.view.getCbListVideos().getItems().addAll(lstVideo);
+    }
+
+    private void refreshForm(BusStop busStop) {
+        this.view.getTfId().setText(busStop.getId().toString());
+        this.view.getTfName().setText(busStop.getName());
+        this.view.getTfDescription().setText(busStop.getDescription());
+        this.view.getTfLatitude().setText(String.valueOf(busStop.getLatitude()));
+        this.view.getTfLongitude().setText(String.valueOf(busStop.getLongitude()));
+        this.view.getTfRadius().setText(Float.toString(busStop.getRadius()));
+        this.view.getCbBanner().getSelectionModel().select(busStop.getBanner());
+        this.view.getCbListPois().getSelectionModel().select(busStop.getPois());
+        this.view.getCbListVideos().getSelectionModel().select(busStop.getVideos());
     }
 }

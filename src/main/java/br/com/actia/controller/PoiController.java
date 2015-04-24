@@ -114,11 +114,13 @@ public class PoiController extends PersistenceController {
             }
         }
 
-        this.parentPane.getChildren().add(view);
+        if(!parentPane.getChildren().contains(view))
+            parentPane.getChildren().add(view);
     }
     
     public void showView() {
-        parentPane.getChildren().add(view);
+        if(!parentPane.getChildren().contains(view))
+            parentPane.getChildren().add(view);
     }
     
     public void closeView() {
@@ -154,6 +156,7 @@ public class PoiController extends PersistenceController {
         this.view.getTfName().setText(poi.getName());
         this.view.getTfLatitude().setText(String.valueOf(poi.getLatitude()));
         this.view.getTfLongitude().setText(String.valueOf(poi.getLongitude()));
+        this.view.getCbPoiType().getSelectionModel().select(poi.getType());
         this.poi = poi;
     }
 }

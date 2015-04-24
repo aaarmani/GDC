@@ -12,18 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/model/ListBanner.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/ui/MainScreenlView.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/model/BusStop.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/controller/MainScreenController.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/ui/EntityListView.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/model/Poi.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/controller/ListPoiController.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/ui/ListPoiTable.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/model/Banner.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/model/ListVideo.java</file>
-            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/ui/EntityTableView.java</file>
+            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/ui/BusStopView.java</file>
+            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/javascript/event/EventHandlers.java</file>
+            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/javascript/object/Marker.java</file>
+            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/controller/BusStopController.java</file>
             <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/controller/GoogleMapController.java</file>
+            <file>file:/C:/Users/Actia/git/GeradorDeConteudo/src/main/java/br/com/actia/controller/PoiController.java</file>
         </group>
     </open-files>
 </project-private>

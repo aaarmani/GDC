@@ -26,6 +26,6 @@ package br.com.actia.javascript.event;
  */
 public enum UIEventType {
 	
-	click, dblclick, mousemove, mouseup, mousedown, mouseover, mouseout, rightclick;
+	click, dblclick, mousemove, mouseup, mousedown, mouseover, mouseout, rightclick, dragstart, dragend;
     
 }

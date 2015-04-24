@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table (name = "list_banner")
-public class ListBanner implements AbstractEntity {
+public class ListBanner implements AbstractEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

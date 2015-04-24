@@ -28,7 +28,7 @@ public class PoiDAOJPA  extends AbstractDAO<Poi, Integer> implements PoiDAO {
         if (name == null || name.isEmpty()) {
             return null;
         }
-        Query query = getPersistenceContext().createQuery("SELECT p FROM poi p WHERE p.name like :name");
+        Query query = getPersistenceContext().createQuery("SELECT p FROM Poi p WHERE p.name like :name");
         query.setParameter("name", name.concat("%"));
         return (List<Poi>) query.getResultList();
     }

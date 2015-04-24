@@ -27,7 +27,7 @@ public class BannerDAOJPA extends AbstractDAO<Banner, Integer> implements Banner
          if (name == null || name.isEmpty()) {
             return null;
         }
-        Query query = getPersistenceContext().createQuery("SELECT b FROM banner b WHERE b.name like :name");
+        Query query = getPersistenceContext().createQuery("SELECT b FROM Banner b WHERE b.name like :name");
         query.setParameter("name", name.concat("%"));
         return (List<Banner>) query.getResultList();
     }

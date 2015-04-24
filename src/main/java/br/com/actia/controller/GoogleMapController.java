@@ -1,6 +1,9 @@
 package br.com.actia.controller;
 
 import br.com.actia.action.AbstractAction;
+import br.com.actia.dao.BusStopDAO;
+import br.com.actia.dao.BusStopDAOJPA;
+import br.com.actia.dao.PoiDAO;
 import br.com.actia.dao.PoiDAOJPA;
 import br.com.actia.event.AbstractEventListener;
 import br.com.actia.event.CrudBusStopEvent;
@@ -8,6 +11,7 @@ import br.com.actia.event.IncludePoiEvent;
 import br.com.actia.javascript.JavaFxWebEngine;
 import br.com.actia.javascript.JavascriptRuntime;
 import br.com.actia.javascript.event.MapStateEventType;
+import br.com.actia.javascript.event.StateEventHandler;
 import br.com.actia.javascript.event.UIEventType;
 import br.com.actia.javascript.object.Animation;
 import br.com.actia.javascript.object.GoogleMap;
@@ -23,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -49,7 +54,7 @@ public class GoogleMapController extends PersistenceController {
     
     private Map<String, Marker> mapPoiMarkers = null;
     private final ResourceBundle rb;
-    
+    private Marker editMarker;
     // public MainScreenController mainScreenController;
     
     GoogleMapController(AbstractController parent, Pane pane, ResourceBundle rb) {
@@ -70,13 +75,14 @@ public class GoogleMapController extends PersistenceController {
         this.poiController = new PoiController(this, view, this.rb);
         this.busStopController = new BusStopController(this, view, this.rb);
         
-        this.mapPoiMarkers = new HashMap<String, Marker>();
+        this.mapPoiMarkers = new HashMap<>();
         
         webView.widthProperty().addListener(e -> mapResized());
         webView.heightProperty().addListener(e -> mapResized());
         
         webEngine.getLoadWorker().stateProperty().addListener(
                 new ChangeListener<Worker.State>() {
+                    @Override
                     public void changed(ObservableValue ov, Worker.State oldState, Worker.State newState) {
                         if (newState == Worker.State.SUCCEEDED) {
                             setInitialized(true);
@@ -103,7 +109,7 @@ public class GoogleMapController extends PersistenceController {
 
             @Override
             protected void action() {
-                showBusStopController();
+                showBusStopController(null);
             }
         });
         
@@ -129,7 +135,7 @@ public class GoogleMapController extends PersistenceController {
             public void handleEvent(IncludePoiEvent event) {
                 Poi poi = event.getTarget();
                 if (poi != null) {
-                    addMapMarkers(poi);
+                    addMapMarkers(poi.getName(), new LatLong(poi.getLatitude(), poi.getLongitude()), Marker.TYPE_POI);
                 }
             }
         });
@@ -140,7 +146,7 @@ public class GoogleMapController extends PersistenceController {
             public void handleEvent(CrudBusStopEvent event) {
                 BusStop busStop = event.getTarget();
                 if(busStop != null) {
-                    //addMapMarkers(busStop);
+                    addMapMarkers(busStop.getName(), new LatLong(busStop.getLatitude(), busStop.getLongitude()), Marker.TYPE_BUS_STOP);
                 }
             }
         });
@@ -177,7 +183,8 @@ public class GoogleMapController extends PersistenceController {
         });
         
         //List All Markers
-        loadMarkers(null);
+        loadPOIMarkers(null); //transformar em Thread
+        loadBusStopMarkers(null); //transformar em Thread
     }
     
    private void mapResized() {
@@ -288,8 +295,6 @@ public class GoogleMapController extends PersistenceController {
         removeNewMarker();
 
         String title = rb.getString("NewBusStop");
-        Poi poi = new Poi(null, null, title, latLong.getLatitude(), latLong.getLongitude());
-        
         MarkerOptions markerOptions = new MarkerOptions();
         LatLong markerLatLong = latLong;
         markerOptions.position(markerLatLong)
@@ -298,7 +303,7 @@ public class GoogleMapController extends PersistenceController {
             .draggable(true)
             .visible(true);
 
-        newMarker = new Marker(markerOptions);//, poi);
+        newMarker = new Marker(markerOptions, Marker.TYPE_NEW_MARKER);
         googleMap.addMarker(newMarker);
         
         //set controllers position
@@ -306,46 +311,116 @@ public class GoogleMapController extends PersistenceController {
         busStopController.setPosition(newMarker.getPosition());
     }
     
-    private void addMapMarkers(Poi poi) {
+    private void addMapMarkers(String name, LatLong latLong, Integer type) {
         removeNewMarker();
+        
+        String strIcon = "";
+        switch(type) {
+            case Marker.TYPE_BUS_STOP:
+                strIcon = "https://cdn4.iconfinder.com/data/icons/ios7-active-tab/512/map_marker-24.png";
+                //icon: "http://maps.google.com/mapfiles/marker" + letter + ".png"
+                break;
+        }
         
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions
-            .position(new LatLong(poi.getLatitude(), poi.getLongitude()))
-            .title(poi.getName())
+            .position(latLong)
+            .title(name)
             .animation(Animation.DROP)
-            //.icon("https://cdn4.iconfinder.com/data/icons/ios7-active-tab/512/map_marker-512.png")
+            .draggable(true)
+            .icon(strIcon)
             .visible(true);
        
-        Marker marker = new Marker(markerOptions);//, poi);
+        Marker marker = new Marker(markerOptions, type);
         googleMap.addMarker(marker);
-        mapPoiMarkers.put(poi.getName(), marker);
         
-        this.googleMap.addUIEventHandler(marker, UIEventType.click, (JSObject obj) -> {
-            LatLong latLong = new LatLong((JSObject) obj.getMember("latLng"));
+        mapPoiMarkers.put(latLong.toString(), marker);
+        
+        
+        //ADD Marker Dragstart - Seta qual o marker está sendo 
+        this.googleMap.addUIEventHandler(marker, UIEventType.dragstart, (JSObject obj) -> {
+            LatLong latLongMarker = new LatLong((JSObject) obj.getMember("latLng"));
+            editMarker = mapPoiMarkers.get(latLongMarker.toString());
+        });
+        
+        //ADD Marker Dragend
+        this.googleMap.addUIEventHandler(marker, UIEventType.dragend, (JSObject obj) -> {
+            LatLong latLongMarker = new LatLong((JSObject) obj.getMember("latLng"));
+            if(editMarker != null) {
+                String title = editMarker.getTitle();
             
-            String title = (String) obj.getMember("title");
-            showPoiController(title);
+                poiController.setPosition(latLongMarker);
+                busStopController.setPosition(latLongMarker);
+                
+                if(editMarker.getType() == Marker.TYPE_BUS_STOP) {
+                    showBusStopController(title);
+                }
+                else {
+                    showPoiController(title);    
+                }
+            }
+        });
+        
+        //ADD Marker Click
+        this.googleMap.addUIEventHandler(marker, UIEventType.click, (JSObject obj) -> {
+            LatLong latLongMarker = new LatLong((JSObject) obj.getMember("latLng"));
+            String str = obj.toString();
+            Marker markerItem = mapPoiMarkers.get(latLongMarker.toString());
+            
+            if(markerItem != null) {
+                String title = markerItem.getTitle();
+            
+                if(markerItem.getType() == Marker.TYPE_BUS_STOP) {
+                    showBusStopController(title);
+                }
+                else {
+                    showPoiController(title);    
+                }
+            }
         });
     }
     
-    private void loadMarkers(LatLong latLong) {
-        PoiDAOJPA poiDAOJPA = new PoiDAOJPA(getPersistenceContext());
-        List<Poi> lstPois;
-        
-        if(latLong == null)
-            lstPois = poiDAOJPA.getAll();
-        else
-            lstPois = poiDAOJPA.getPoiByName(null);
-        
-        for(Poi poi : lstPois) {
-            addMapMarkers(poi);
-        }
+    private void loadPOIMarkers(LatLong latLong) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                PoiDAO poiDAOJPA = new PoiDAOJPA(getPersistenceContext());
+                List<Poi> lstPois;
+
+                if(latLong == null)
+                    lstPois = poiDAOJPA.getAll();
+                else
+                    lstPois = poiDAOJPA.getPoiByName(null); //alterar para getPoiByGps
+
+                for(Poi poi : lstPois) {
+                    addMapMarkers(poi.getName(), new LatLong(poi.getLatitude(), poi.getLongitude()), Marker.TYPE_POI);
+                }
+            }
+        });
     }
     
-    private void showBusStopController() {
+    private void loadBusStopMarkers(LatLong latLong) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                BusStopDAO busStopDAOJPA = new BusStopDAOJPA(getPersistenceContext());
+                List<BusStop> lstBusStop;
+
+                if(latLong == null)
+                    lstBusStop = busStopDAOJPA.getAll();
+                else
+                    lstBusStop = busStopDAOJPA.getBusStopByName(null);
+
+                for(BusStop busStop : lstBusStop) {
+                    addMapMarkers(busStop.getName(), new LatLong(busStop.getLatitude(), busStop.getLongitude()), Marker.TYPE_BUS_STOP);
+                }
+            }
+        });
+    }
+    
+    private void showBusStopController(String busStopName) {
         poiController.closeView();
-        busStopController.showView();
+        busStopController.showView(busStopName);
     }
     
     private void showPoiController(String poiName) {
@@ -356,5 +431,4 @@ public class GoogleMapController extends PersistenceController {
     private void closeMapScreen() {
         closeView();
     }
-    
 }
