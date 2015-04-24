@@ -20,6 +20,10 @@ import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.application.Platform;
+import javafx.scene.input.MouseEvent;
+import javafx.event.EventHandler;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -28,21 +32,27 @@ import javafx.scene.layout.StackPane;
 public class ListVideoController extends PersistenceController {
     private final ResourceBundle rb;
     private final Pane parentPane;
-    private final EntityListView<Video> view;
+    private final EntityListView<Video, ListVideo> view;
     private Validator<ListVideo> validador = new ListVideoValidator();
     private VideoController videoController = null;
+    
+    private VideoDAO videoDAO = null;
+    private Collection<Video> listVideoAll = null;
     
     public ListVideoController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
         this.parentPane = pane;
-        this.view = new EntityListView<Video>(this.rb);
+        this.view = new EntityListView<Video, ListVideo>(this.rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
         this.view.setMinHeight(parentPane.getHeight());
         this.view.setMinWidth(parentPane.getWidth());
         
+        this.videoDAO = new VideoDAOJPA(getPersistenceContext());
+        this.listVideoAll = (Collection<Video>)this.videoDAO.getAll();
+
         loadEntityToList();
         
         registerAction(this.view.getBtnCancel(), new AbstractAction() {
@@ -81,8 +91,10 @@ public class ListVideoController extends PersistenceController {
                         
                          @Override
                         protected void posAction() {
-                            cleanUp();
-                            fireEvent(new CrudListVideoEvent(listVideo));
+                            //cleanUp();
+                            resetForm();
+                            //fireEvent(new CrudListVideoEvent(listVideo));
+                            refreshTable();
                         }
                     }))
         );
@@ -94,8 +106,21 @@ public class ListVideoController extends PersistenceController {
             }
         });
         
+        view.getTable().setMouseEvent(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent t) {
+                if (t.getClickCount() == 2) {
+                    ListVideo listVideo = (ListVideo)view.getTable().getEntitySelected();
+                    if (listVideo != null) {
+                        loadListVideoToEdit(listVideo);
+                    }
+                }
+            }
+        });
+        
         StackPane.setAlignment(view, Pos.CENTER);
-        this.view.resetForm();
+        this.view.resetForm(this.listVideoAll);
+        this.refreshTable();
     }
 
     public void showView() {
@@ -108,7 +133,7 @@ public class ListVideoController extends PersistenceController {
     
     @Override
     protected void cleanUp() {
-        view.resetForm();
+        view.resetForm(this.listVideoAll);
         closeView();
         super.cleanUp();
     }
@@ -147,5 +172,46 @@ public class ListVideoController extends PersistenceController {
             videoController = new VideoController(this, parentPane, rb);
         
         videoController.showView();
+    }
+    
+    private void refreshTable() {
+        refreshTable(null);
+    }
+    
+    private void refreshTable(List<ListVideo> list) {
+        //view.addTransition();
+        if (list != null) {
+            view.refreshTable(list);
+            return;
+        }
+        
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                ListVideoDAO dao = new ListVideoDAOJPA(getPersistenceContext());
+                view.refreshTable(dao.getAll());
+            }
+        });
+    }
+    
+    private void loadListVideoToEdit(ListVideo listVideo) {
+        ListVideoDAO listVideoDAO = new ListVideoDAOJPA(getPersistenceContext());
+        ListVideo listVideo2 = listVideoDAO.findById(listVideo.getId());
+        
+        this.view.getTfId().setText(listVideo.getId().toString());
+        this.view.getTfName().setText(listVideo.getName());
+        this.view.getTfDescription().setText(listVideo.getDescription());
+        
+        this.view.getLsvEntity().getSourceItems().clear();
+        this.view.getLsvEntity().getSourceItems().addAll((Collection<Video>)this.listVideoAll);
+        this.view.getLsvEntity().getSourceItems().removeAll((Collection<Video>)listVideo2.getListVideo());
+        
+        this.view.getLsvEntity().getTargetItems().clear();
+        this.view.getLsvEntity().getTargetItems().addAll((Collection<Video>)listVideo2.getListVideo());
+    }
+    
+    private void resetForm(){
+        this.view.resetForm(this.listVideoAll);
     }
 }

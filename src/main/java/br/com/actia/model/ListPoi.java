@@ -7,6 +7,7 @@ package br.com.actia.model;
 
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,8 @@ public class ListPoi implements AbstractEntity {
     @Size(max=48)
     private String description;
     @NotNull
-    @ManyToMany @JoinColumn(name="poi_id", referencedColumnName="id")
+    @ManyToMany (fetch = FetchType.EAGER)
+    @JoinColumn(name="poi_id", referencedColumnName="id")
     private List<Poi> listPoi;
 
     public ListPoi(){}

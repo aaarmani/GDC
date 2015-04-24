@@ -1,7 +1,9 @@
 package br.com.actia.ui;
 
 import br.com.actia.model.ListPoi;
+import br.com.actia.model.Poi;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
@@ -18,7 +20,7 @@ import org.controlsfx.control.ListSelectionView;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class EntityListView<T> extends VBox {
+public class EntityListView<T, K> extends VBox {
     private final ResourceBundle rb;
     private ListSelectionView<T> lsvEntity;
     private Button btnCancel;
@@ -98,10 +100,15 @@ public class EntityListView<T> extends VBox {
         return hbox;
     }
 
-    public void resetForm() {
+    public void resetForm(Collection<T> listItemsAll) {
         tfId.setText("");
         tfName.setText("");
         tfDescription.setText("");
+        
+        this.lsvEntity.getSourceItems().clear();
+        this.lsvEntity.getSourceItems().addAll((Collection<T>)listItemsAll);
+        
+        this.lsvEntity.getTargetItems().clear();
     }
 
     public ListSelectionView<T> getLsvEntity() {
@@ -168,7 +175,7 @@ public class EntityListView<T> extends VBox {
         this.table = table;
     }
     
-    public void refreshTable(List<ListPoi> listPois) {
-        table.reload(new ArrayList<>(listPois));        
+    public void refreshTable(List<K> list) {
+        table.reload(new ArrayList<>(list));        
     }
 }

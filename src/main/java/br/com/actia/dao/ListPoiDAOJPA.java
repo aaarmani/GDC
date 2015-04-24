@@ -25,4 +25,16 @@ public class ListPoiDAOJPA extends AbstractDAO<ListPoi, Integer> implements List
         return (List<ListPoi>) query.getResultList();
     }
     
+    /*
+    @Override
+    public List<ListPoi> getListPoiById(int id) {
+        if (id == 0) {
+            return null;
+        }
+        
+        Query query = getPersistenceContext().createQuery("SELECT l FROM list_poi l WHERE l.id = :id");
+        query.setParameter("id", id);
+        return (List<ListPoi>) query.getResultList();
+    }
+    */
 }
