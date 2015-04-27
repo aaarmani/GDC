@@ -38,7 +38,7 @@ public class ListPoi implements AbstractEntity, Serializable {
     @Size(max=48)
     private String description;
     @NotNull
-    @ManyToMany (fetch = FetchType.EAGER)
+    @ManyToMany //(fetch = FetchType.EAGER) //, mappedBy = "list_poi_poi")*/
     @JoinColumn(name="poi_id", referencedColumnName="id")
     private List<Poi> listPoi;
 
@@ -76,6 +76,7 @@ public class ListPoi implements AbstractEntity, Serializable {
         this.description = description;
     }
 
+    /* @ManyToMany(fetch = FetchType.EAGER, mappedBy = "poi") */
     public List<Poi> getListPoi() {
         return listPoi;
     }

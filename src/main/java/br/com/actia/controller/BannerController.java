@@ -6,7 +6,6 @@ import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
 import br.com.actia.dao.BannerDAO;
 import br.com.actia.dao.BannerDAOJPA;
-import br.com.actia.event.CrudBannerEvent;
 import br.com.actia.model.Banner;
 import br.com.actia.ui.BannerView;
 import br.com.actia.validation.BannerValidator;
@@ -115,7 +114,7 @@ public class BannerController extends PersistenceController {
                         if (id != null) {
                             BannerDAO bannerDao = new BannerDAOJPA(getPersistenceContext());
                             banner = bannerDao.findById(id);
-                            if (banner != null) { 
+                            if (banner != null) {
                                 bannerDao.remove(banner);
                             }
                         }

@@ -30,6 +30,7 @@ public class EntityListView<T, K> extends VBox {
     private TextField tfName;
     private TextField tfDescription;
     private EntityTable table;
+    private Button btnDelete;
     
     public EntityListView(ResourceBundle rb) {
         this.rb = rb;
@@ -92,8 +93,13 @@ public class EntityListView<T, K> extends VBox {
         btnSave.setDefaultButton(true);
         btnSave.getStyleClass().add("flatButton");
         
+        btnDelete = new Button(rb.getString("Delete"));
+        btnDelete.setId("btnDelete");
+        btnDelete.getStyleClass().add("flatButton");
+        btnDelete.setVisible(false);
+        
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(btnCancel, btnSave);
+        hbox.getChildren().addAll(btnDelete, btnCancel, btnSave);
         hbox.getStyleClass().add("buttonBar");
         hbox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -109,6 +115,8 @@ public class EntityListView<T, K> extends VBox {
         this.lsvEntity.getSourceItems().addAll((Collection<T>)listItemsAll);
         
         this.lsvEntity.getTargetItems().clear();
+        
+        btnDelete.setVisible(false);
     }
 
     public ListSelectionView<T> getLsvEntity() {
@@ -135,6 +143,14 @@ public class EntityListView<T, K> extends VBox {
         this.btnSave = btnSave;
     }
 
+    public Button getBtnDelete() {
+        return btnDelete;
+    }
+    
+    public void setBtnDelete(Button btnDelete) {
+        this.btnDelete = btnDelete;
+    }
+    
     public TextField getTfId() {
         return tfId;
     }
