@@ -243,8 +243,8 @@ public class ListPoiController extends PersistenceController {
             this.view.getTfName().setText(listPoi.getName());
             this.view.getTfDescription().setText(listPoi.getDescription());
 
-// System.out.println("list de todos os pois: " + this.listPoiAll.toString());
-// System.out.println("list de pois da lista selecionada: " + listPoi.getListPoi().toString());
+//System.out.println("list de todos os pois: " + this.listPoiAll.toString());
+//System.out.println("list de pois da lista selecionada: " + listPoi.getListPoi().toString());
 
             this.view.getLsvEntity().getSourceItems().clear();
             this.view.getLsvEntity().getSourceItems().addAll((Collection<Poi>)this.listPoiAll);
@@ -252,7 +252,7 @@ public class ListPoiController extends PersistenceController {
 
             this.view.getLsvEntity().getTargetItems().clear();
             this.view.getLsvEntity().getTargetItems().addAll((Collection<Poi>)listPoi.getListPoi());
-            
+
             this.view.getBtnDelete().setVisible(true);
         }
     }

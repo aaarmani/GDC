@@ -225,19 +225,16 @@ public class ListVideoController extends PersistenceController {
     }
     
     private void loadListVideoToEdit(ListVideo listVideo) {
-        ListVideoDAO listVideoDAO = new ListVideoDAOJPA(getPersistenceContext());
-        ListVideo listVideo2 = listVideoDAO.findById(listVideo.getId());
-        
         this.view.getTfId().setText(listVideo.getId().toString());
         this.view.getTfName().setText(listVideo.getName());
         this.view.getTfDescription().setText(listVideo.getDescription());
         
         this.view.getLsvEntity().getSourceItems().clear();
         this.view.getLsvEntity().getSourceItems().addAll((Collection<Video>)this.listVideoAll);
-        this.view.getLsvEntity().getSourceItems().removeAll((Collection<Video>)listVideo2.getListVideo());
+        this.view.getLsvEntity().getSourceItems().removeAll((Collection<Video>)listVideo.getListVideo());
         
         this.view.getLsvEntity().getTargetItems().clear();
-        this.view.getLsvEntity().getTargetItems().addAll((Collection<Video>)listVideo2.getListVideo());
+        this.view.getLsvEntity().getTargetItems().addAll((Collection<Video>)listVideo.getListVideo());
         
         this.view.getBtnDelete().setVisible(true);
     }

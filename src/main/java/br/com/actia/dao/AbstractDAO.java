@@ -55,6 +55,8 @@ public abstract class AbstractDAO<Entity extends AbstractEntity, PK extends Numb
             return em.merge(e);
         } else {
             em.persist(e);
+            em.flush();
+            em.refresh(e);
             return e;
         }
     }
