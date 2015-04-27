@@ -118,6 +118,35 @@ public class ListVideoController extends PersistenceController {
             }
         });
         
+        registerAction(this.view.getBtnDelete(),
+                TransactionalAction.build()
+                    .persistenceCtxOwner(ListVideoController.this)
+                    .addAction(new AbstractAction() {
+                        private ListVideo listVideo;
+                        
+                        @Override
+                        protected void action() {
+                            Integer id = Integer.parseInt(view.getTfId().getText());
+                            if (id != null) {
+                                ListVideoDAO listVideoDao = new ListVideoDAOJPA(getPersistenceContext());
+                                listVideo = listVideoDao.findById(id);
+                                if(listVideo != null) {
+                                    listVideoDao.remove(listVideo);
+                                }
+                            }
+                        }
+                        @Override
+                        protected void posAction() {
+                            resetForm();
+                            refreshTable();
+                        }
+                        @Override
+                        protected void actionFailure(){
+                            // TO DO
+                        }
+                    })
+        );
+        
         StackPane.setAlignment(view, Pos.CENTER);
         this.view.resetForm(this.listVideoAll);
         this.refreshTable();
@@ -209,6 +238,8 @@ public class ListVideoController extends PersistenceController {
         
         this.view.getLsvEntity().getTargetItems().clear();
         this.view.getLsvEntity().getTargetItems().addAll((Collection<Video>)listVideo2.getListVideo());
+        
+        this.view.getBtnDelete().setVisible(true);
     }
     
     private void resetForm(){
