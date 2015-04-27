@@ -6,12 +6,13 @@ import br.com.actia.dao.BusStopDAOJPA;
 import br.com.actia.dao.PoiDAO;
 import br.com.actia.dao.PoiDAOJPA;
 import br.com.actia.event.AbstractEventListener;
-import br.com.actia.event.CrudBusStopEvent;
-import br.com.actia.event.IncludePoiEvent;
+import br.com.actia.event.BusStopDeleteEvent;
+import br.com.actia.event.BusStopNewEvent;
+import br.com.actia.event.PoiDeleteEvent;
+import br.com.actia.event.PoiNewEvent;
 import br.com.actia.javascript.JavaFxWebEngine;
 import br.com.actia.javascript.JavascriptRuntime;
 import br.com.actia.javascript.event.MapStateEventType;
-import br.com.actia.javascript.event.StateEventHandler;
 import br.com.actia.javascript.event.UIEventType;
 import br.com.actia.javascript.object.Animation;
 import br.com.actia.javascript.object.GoogleMap;
@@ -47,14 +48,14 @@ public class GoogleMapController extends PersistenceController {
     protected JavaFxWebEngine webEngine;
     protected GoogleMap googleMap;
     protected boolean initialized = false;
-    private Marker newMarker = null;
     private final Pane parentPane;
     private PoiController poiController;
     private BusStopController busStopController;
     
     private Map<String, Marker> mapPoiMarkers = null;
     private final ResourceBundle rb;
-    private Marker editMarker;
+    private Marker newMarker = null;
+    private Marker editMarker = null;
     // public MainScreenController mainScreenController;
     
     GoogleMapController(AbstractController parent, Pane pane, ResourceBundle rb) {
@@ -106,7 +107,6 @@ public class GoogleMapController extends PersistenceController {
         });
        
         registerAction(this.view.getBtnNewBusStop(), new AbstractAction() {
-
             @Override
             protected void action() {
                 showBusStopController(null);
@@ -114,7 +114,6 @@ public class GoogleMapController extends PersistenceController {
         });
         
         registerAction(this.view.getBtnNewPOI(), new AbstractAction() {
-
             @Override
             protected void action() {
                 showPoiController(null);
@@ -122,17 +121,15 @@ public class GoogleMapController extends PersistenceController {
         });
         
         registerAction(this.view.getBtnClose(), new AbstractAction() {
-
             @Override
             protected void action() {
                 closeMapScreen();
             }
         });
         
-        registerEventListener(IncludePoiEvent.class, new AbstractEventListener<IncludePoiEvent>() {
-         
+        registerEventListener(PoiNewEvent.class, new AbstractEventListener<PoiNewEvent>() {
             @Override
-            public void handleEvent(IncludePoiEvent event) {
+            public void handleEvent(PoiNewEvent event) {
                 Poi poi = event.getTarget();
                 if (poi != null) {
                     addMapMarkers(poi.getName(), new LatLong(poi.getLatitude(), poi.getLongitude()), Marker.TYPE_POI);
@@ -140,13 +137,38 @@ public class GoogleMapController extends PersistenceController {
             }
         });
         
-        registerEventListener(CrudBusStopEvent.class, new AbstractEventListener<CrudBusStopEvent>() {
-
+        registerEventListener(PoiDeleteEvent.class, new AbstractEventListener<PoiDeleteEvent>() {
             @Override
-            public void handleEvent(CrudBusStopEvent event) {
+            public void handleEvent(PoiDeleteEvent event) {
+                Poi poi = event.getTarget();
+                if(poi != null) {
+                    LatLong latLong = new LatLong(poi.getLatitude(), poi.getLongitude());
+                    Marker deleteMarker = mapPoiMarkers.get(latLong.toString());
+                    mapPoiMarkers.remove(deleteMarker);
+                    removeMarker(deleteMarker);
+                }
+            }
+        });
+        
+        registerEventListener(BusStopNewEvent.class, new AbstractEventListener<BusStopNewEvent>() {
+            @Override
+            public void handleEvent(BusStopNewEvent event) {
                 BusStop busStop = event.getTarget();
                 if(busStop != null) {
                     addMapMarkers(busStop.getName(), new LatLong(busStop.getLatitude(), busStop.getLongitude()), Marker.TYPE_BUS_STOP);
+                }
+            }
+        });
+        
+        registerEventListener(BusStopDeleteEvent.class, new AbstractEventListener<BusStopDeleteEvent>() {
+            @Override
+            public void handleEvent(BusStopDeleteEvent event) {
+                BusStop busStop = event.getTarget();
+                if(busStop != null) {
+                    LatLong latLong = new LatLong(busStop.getLatitude(), busStop.getLongitude());
+                    Marker deleteMarker = mapPoiMarkers.get(latLong.toString());
+                    mapPoiMarkers.remove(deleteMarker);
+                    removeMarker(deleteMarker);
                 }
             }
         });
@@ -285,9 +307,16 @@ public class GoogleMapController extends PersistenceController {
     }
     
     //##########################################
+    private void removeMarker(Marker marker) {
+        if(marker != null) {
+            googleMap.removeMarker(marker);
+        }
+    }
+    
     private void removeNewMarker() {
         if(newMarker != null) {
             googleMap.removeMarker(newMarker);
+            newMarker = null;
         }
     }
 
@@ -309,6 +338,13 @@ public class GoogleMapController extends PersistenceController {
         //set controllers position
         poiController.setPosition(newMarker.getPosition());
         busStopController.setPosition(newMarker.getPosition());
+        
+        this.googleMap.addUIEventHandler(newMarker, UIEventType.dragend, (JSObject obj) -> {
+            LatLong latLongMarker = new LatLong((JSObject) obj.getMember("latLng"));
+
+            poiController.setPosition(latLongMarker);
+            busStopController.setPosition(latLongMarker);
+        });
     }
     
     private void addMapMarkers(String name, LatLong latLong, Integer type) {
@@ -317,8 +353,14 @@ public class GoogleMapController extends PersistenceController {
         String strIcon = "";
         switch(type) {
             case Marker.TYPE_BUS_STOP:
-                strIcon = "https://cdn4.iconfinder.com/data/icons/ios7-active-tab/512/map_marker-24.png";
+                strIcon = "https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/32/Map-Marker-Marker-Outside-Chartreuse.png";
+                //strIcon = "https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/24/Map-Marker-Marker-Outside-Azure.png";
+                //strIcon = "https://cdn4.iconfinder.com/data/icons/ios7-active-tab/512/map_marker-24.png";
                 //icon: "http://maps.google.com/mapfiles/marker" + letter + ".png"
+                break;
+            case Marker.TYPE_POI:
+                strIcon = "https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/32/Map-Marker-Flag--Right-Chartreuse.png";
+                //strIcon = "https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/24/Map-Marker-Flag--Right-Azure.png";
                 break;
         }
         
@@ -326,8 +368,8 @@ public class GoogleMapController extends PersistenceController {
         markerOptions
             .position(latLong)
             .title(name)
-            .animation(Animation.DROP)
-            .draggable(true)
+            .animation(Animation.BOUNCE)
+            //.draggable(true)
             .icon(strIcon)
             .visible(true);
        
@@ -338,13 +380,14 @@ public class GoogleMapController extends PersistenceController {
         
         
         //ADD Marker Dragstart - Seta qual o marker está sendo 
-        this.googleMap.addUIEventHandler(marker, UIEventType.dragstart, (JSObject obj) -> {
+        /*this.googleMap.addUIEventHandler(marker, UIEventType.dragstart, (JSObject obj) -> {
+            removeNewMarker();
             LatLong latLongMarker = new LatLong((JSObject) obj.getMember("latLng"));
             editMarker = mapPoiMarkers.get(latLongMarker.toString());
-        });
+        });*/
         
         //ADD Marker Dragend
-        this.googleMap.addUIEventHandler(marker, UIEventType.dragend, (JSObject obj) -> {
+        /*this.googleMap.addUIEventHandler(marker, UIEventType.dragend, (JSObject obj) -> {
             LatLong latLongMarker = new LatLong((JSObject) obj.getMember("latLng"));
             if(editMarker != null) {
                 String title = editMarker.getTitle();
@@ -359,22 +402,22 @@ public class GoogleMapController extends PersistenceController {
                     showPoiController(title);    
                 }
             }
-        });
+        });*/
         
         //ADD Marker Click
         this.googleMap.addUIEventHandler(marker, UIEventType.click, (JSObject obj) -> {
+            removeNewMarker();
             LatLong latLongMarker = new LatLong((JSObject) obj.getMember("latLng"));
-            String str = obj.toString();
             Marker markerItem = mapPoiMarkers.get(latLongMarker.toString());
             
             if(markerItem != null) {
                 String title = markerItem.getTitle();
-            
+                
                 if(markerItem.getType() == Marker.TYPE_BUS_STOP) {
                     showBusStopController(title);
                 }
                 else {
-                    showPoiController(title);    
+                    showPoiController(title);
                 }
             }
         });

@@ -19,8 +19,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "poi")
 public class Poi implements AbstractEntity, Serializable {
-    public static final Integer POI_DEFAULT = 0;
-    
     /**
      * Chave primária da entidade <code>Poi</code>. O valor gerado pelo banco de dados.
      */

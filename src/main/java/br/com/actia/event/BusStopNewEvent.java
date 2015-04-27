@@ -7,9 +7,9 @@ import br.com.actia.model.BusStop;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class CrudBusStopEvent extends AbstractEvent<BusStop> {
+public class BusStopNewEvent extends AbstractEvent<BusStop> {
     
-    public CrudBusStopEvent(BusStop b) {
+    public BusStopNewEvent(BusStop b) {
         super(b);
     }
     

@@ -7,9 +7,9 @@ import br.com.actia.model.Poi;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class IncludePoiEvent extends AbstractEvent<Poi> {
+public class PoiNewEvent extends AbstractEvent<Poi> {
 
-    public IncludePoiEvent(Poi poi) {
+    public PoiNewEvent(Poi poi) {
         super(poi);
     }
     

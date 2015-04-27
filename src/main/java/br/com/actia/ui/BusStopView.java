@@ -30,6 +30,7 @@ public class BusStopView extends VBox {
     private TextField tfRadius;
     private Button btnSaveBusStop;
     private Button btnCancelBusStop;
+    private Button btnDeleteBusStop;
     private Button btnNewListPoi;
     private Button btnNewListVideo;
     private ComboBox<Banner> cbBanner;
@@ -125,6 +126,10 @@ public class BusStopView extends VBox {
     }
 
     private HBox buildButtons() {
+        btnDeleteBusStop = new Button(rb.getString("Delete"));
+        btnDeleteBusStop.setId("deleteBusStop");
+        btnDeleteBusStop.getStyleClass().add("flatButton");
+        
         btnCancelBusStop = new Button(rb.getString("Cancel"));
         btnCancelBusStop.setId("cancelBusStop");
         btnCancelBusStop.setCancelButton(true);
@@ -136,7 +141,7 @@ public class BusStopView extends VBox {
         btnSaveBusStop.getStyleClass().add("flatButton");
         
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(btnCancelBusStop, btnSaveBusStop);
+        hbox.getChildren().addAll(btnDeleteBusStop, btnCancelBusStop, btnSaveBusStop);
         hbox.getStyleClass().add("buttonBar");
         hbox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -226,6 +231,14 @@ public class BusStopView extends VBox {
 
     public void setBtnCancelBusStop(Button btnCancelBusStop) {
         this.btnCancelBusStop = btnCancelBusStop;
+    }
+
+    public Button getBtnDeleteBusStop() {
+        return btnDeleteBusStop;
+    }
+
+    public void setBtnDeleteBusStop(Button btnDeleteBusStop) {
+        this.btnDeleteBusStop = btnDeleteBusStop;
     }
 
     public ComboBox<Banner> getCbBanner() {

@@ -8,7 +8,8 @@ import br.com.actia.dao.PoiDAO;
 import br.com.actia.dao.PoiDAOJPA;
 import br.com.actia.dao.PoiTypeDAO;
 import br.com.actia.dao.PoiTypeDAOJPA;
-import br.com.actia.event.IncludePoiEvent;
+import br.com.actia.event.PoiDeleteEvent;
+import br.com.actia.event.PoiNewEvent;
 import br.com.actia.javascript.object.LatLong;
 import br.com.actia.model.Poi;
 import br.com.actia.model.PoiType;
@@ -91,9 +92,41 @@ public class PoiController extends PersistenceController {
                                             closeView();
                                         }
                                     });
-                                    fireEvent(new IncludePoiEvent(poi));
+                                    fireEvent(new PoiNewEvent(poi));
                                 }
                             })));
+        
+        registerAction(this.view.getBtnDeletePOI(),
+            TransactionalAction.build()
+                    .persistenceCtxOwner(PoiController.this)
+                    .addAction(new AbstractAction() {
+                        private Poi poi;
+                        
+                        @Override
+                        protected void action() {
+                            Integer id = Integer.valueOf(view.getTfId().getText());
+                            if (id != null) {
+                                PoiDAO poiDAO = new PoiDAOJPA(getPersistenceContext());
+                                poi = poiDAO.findById(id);
+                                if (poi != null) { 
+                                    poiDAO.remove(poi);    
+                                }
+                            }
+                        }
+                        
+                        @Override
+                        public void posAction() {
+                            refreshForm(null);
+                            closeView();
+                            fireEvent(new PoiDeleteEvent(poi));
+                        }
+                        
+                        @Override
+                        public void actionFailure() {
+                            //Dialog.showInfo("Validacão", msg, parentPane.);
+                            System.out.println("ERRO AO DELETAR POI");
+                        }
+                    }));
         
         StackPane.setAlignment(view, Pos.BOTTOM_CENTER);
         this.view.resetForm();
@@ -112,6 +145,9 @@ public class PoiController extends PersistenceController {
                     break;
                 }
             }
+        }
+        else {
+            refreshForm(null);
         }
 
         if(!parentPane.getChildren().contains(view))
@@ -152,11 +188,24 @@ public class PoiController extends PersistenceController {
     }
 
     private void refreshForm(Poi poi) {
-        this.view.getTfId().setText(poi.getId().toString());
-        this.view.getTfName().setText(poi.getName());
-        this.view.getTfLatitude().setText(String.valueOf(poi.getLatitude()));
-        this.view.getTfLongitude().setText(String.valueOf(poi.getLongitude()));
-        this.view.getCbPoiType().getSelectionModel().select(poi.getType());
-        this.poi = poi;
+        
+        if(poi != null) {
+            this.view.getTfId().setText(poi.getId().toString());
+            this.view.getTfName().setText(poi.getName());
+            this.view.getTfLatitude().setText(String.valueOf(poi.getLatitude()));
+            this.view.getTfLongitude().setText(String.valueOf(poi.getLongitude()));
+            this.view.getCbPoiType().getSelectionModel().select(poi.getType());
+            this.poi = poi;
+            this.view.getBtnDeletePOI().setVisible(true);
+        }
+        else {
+            this.view.getTfId().clear();
+            this.view.getTfName().clear();
+            this.view.getTfLatitude().clear();
+            this.view.getTfLongitude().clear();
+            this.view.getCbPoiType().getSelectionModel().clearSelection();
+            this.poi = new Poi();
+            this.view.getBtnDeletePOI().setVisible(false);
+        }
     }
 }

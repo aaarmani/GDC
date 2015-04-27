@@ -25,6 +25,7 @@ public class PoiView extends VBox {
     private TextField tfLatitude;
     private TextField tfLongitude;
     private Button btnCancelPOI;
+    private Button btnDeletePOI;
     private Button btnSavePOI;
     private ComboBox<PoiType> cbPoiType;
     private final ResourceBundle rb;
@@ -85,6 +86,10 @@ public class PoiView extends VBox {
     }
 
     private HBox buildButtons() {
+        btnDeletePOI = new Button(rb.getString("Delete"));
+        btnDeletePOI.setId("deletePOI");
+        btnDeletePOI.getStyleClass().add("flatButton");
+                
         btnCancelPOI = new Button(rb.getString("Cancel"));
         btnCancelPOI.setId("cancelPOI");
         btnCancelPOI.setCancelButton(true);
@@ -96,7 +101,7 @@ public class PoiView extends VBox {
         btnSavePOI.getStyleClass().add("flatButton");
         
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(btnCancelPOI, btnSavePOI);
+        hbox.getChildren().addAll(btnDeletePOI, btnCancelPOI, btnSavePOI);
         hbox.getStyleClass().add("buttonBar");
         hbox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -191,6 +196,14 @@ public class PoiView extends VBox {
         this.btnCancelPOI = btnCancelPOI;
     }
 
+    public Button getBtnDeletePOI() {
+        return btnDeletePOI;
+    }
+
+    public void setBtnDeletePOI(Button btnDeletePOI) {
+        this.btnDeletePOI = btnDeletePOI;
+    }
+    
     public Button getBtnSavePOI() {
         return btnSavePOI;
     }

@@ -14,8 +14,9 @@ import br.com.actia.dao.ListVideoDAO;
 import br.com.actia.dao.ListVideoDAOJPA;
 import br.com.actia.event.AbstractEvent;
 import br.com.actia.event.AbstractEventListener;
+import br.com.actia.event.BusStopDeleteEvent;
 import br.com.actia.event.CrudBannerEvent;
-import br.com.actia.event.CrudBusStopEvent;
+import br.com.actia.event.BusStopNewEvent;
 import br.com.actia.event.CrudListPoiEvent;
 import br.com.actia.event.CrudListVideoEvent;
 import br.com.actia.javascript.object.LatLong;
@@ -66,6 +67,7 @@ public class BusStopController extends PersistenceController {
             @Override
             protected void action() {
                 closeView();
+                refreshForm(null);
             }
         });
         
@@ -103,11 +105,38 @@ public class BusStopController extends PersistenceController {
                                         @Override
                                         public void run() {
                                             closeView();
+                                            refreshForm(null);
                                         }
                                     });
-                                    fireEvent(new CrudBusStopEvent(busStop));
+                                    fireEvent(new BusStopNewEvent(busStop));
                                 }
                             })));
+        
+        registerAction(this.view.getBtnDeleteBusStop(),
+            TransactionalAction.build()
+                    .persistenceCtxOwner(BusStopController.this)
+                    .addAction(new AbstractAction() {
+                        private BusStop busStop;
+                        
+                        @Override
+                        protected void action() {
+                            Integer id = Integer.valueOf(view.getTfId().getText());
+                            if (id != null) {
+                                BusStopDAO busStopDAO = new BusStopDAOJPA(getPersistenceContext());
+                                busStop = busStopDAO.findById(id);
+                                if (busStop != null) { 
+                                    busStopDAO.remove(busStop);
+                                }
+                            }
+                        }
+                        
+                        @Override
+                        public void posAction() {
+                            refreshForm(null);
+                            closeView();
+                            fireEvent(new BusStopDeleteEvent(busStop));
+                        }
+                    }));
         
         registerAction(this.view.getBtnNewListPoi(), new AbstractAction() {
             @Override
@@ -168,6 +197,9 @@ public class BusStopController extends PersistenceController {
                     break;
                 }
             }
+        }
+        else {
+            refreshForm(null);
         }
         
         if(!parentPane.getChildren().contains(view))
@@ -241,14 +273,32 @@ public class BusStopController extends PersistenceController {
     }
 
     private void refreshForm(BusStop busStop) {
-        this.view.getTfId().setText(busStop.getId().toString());
-        this.view.getTfName().setText(busStop.getName());
-        this.view.getTfDescription().setText(busStop.getDescription());
-        this.view.getTfLatitude().setText(String.valueOf(busStop.getLatitude()));
-        this.view.getTfLongitude().setText(String.valueOf(busStop.getLongitude()));
-        this.view.getTfRadius().setText(Float.toString(busStop.getRadius()));
-        this.view.getCbBanner().getSelectionModel().select(busStop.getBanner());
-        this.view.getCbListPois().getSelectionModel().select(busStop.getPois());
-        this.view.getCbListVideos().getSelectionModel().select(busStop.getVideos());
+        if(busStop != null)
+        {
+            this.view.getTfId().setText(busStop.getId().toString());
+            this.view.getTfName().setText(busStop.getName());
+            this.view.getTfDescription().setText(busStop.getDescription());
+            this.view.getTfLatitude().setText(String.valueOf(busStop.getLatitude()));
+            this.view.getTfLongitude().setText(String.valueOf(busStop.getLongitude()));
+            this.view.getTfRadius().setText(Float.toString(busStop.getRadius()));
+            this.view.getCbBanner().getSelectionModel().select(busStop.getBanner());
+            this.view.getCbListPois().getSelectionModel().select(busStop.getPois());
+            this.view.getCbListVideos().getSelectionModel().select(busStop.getVideos());
+            
+            this.view.getBtnDeleteBusStop().setVisible(true);
+        }
+        else {
+            this.view.getTfId().clear();
+            this.view.getTfName().clear();
+            this.view.getTfDescription().clear();
+            this.view.getTfLatitude().clear();
+            this.view.getTfLongitude().clear();
+            this.view.getTfRadius().clear();
+            this.view.getCbBanner().getSelectionModel().clearSelection();
+            this.view.getCbListPois().getSelectionModel().clearSelection();
+            this.view.getCbListVideos().getSelectionModel().clearSelection();
+            
+            this.view.getBtnDeleteBusStop().setVisible(false);
+        }
     }
 }
