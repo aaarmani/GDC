@@ -2,6 +2,7 @@ package br.com.actia.ui;
 
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.Poi;
+import br.com.actia.validation.MaskTextField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,8 +28,8 @@ public class EntityListView<T, K> extends VBox {
     private Button btnSave;
     private Button btnNewEntity;
     private TextField tfId;
-    private TextField tfName;
-    private TextField tfDescription;
+    private MaskTextField tfName;
+    private MaskTextField tfDescription;
     private EntityTable table;
     private Button btnDelete;
     
@@ -56,16 +57,20 @@ public class EntityListView<T, K> extends VBox {
 
     private GridPane buildInputs() {
         tfId = new TextField();
-
+        
         Label lblName = new Label(rb.getString("Name"));
-        tfName = new TextField();
+        tfName = new MaskTextField();
         tfName.setMinWidth(180);
         tfName.setMaxWidth(180);
-
+        // TAMANHO: 16
+        tfName.setMask("****************");
+        
         Label lblDesc = new Label(rb.getString("Description"));
-        tfDescription = new TextField();
+        tfDescription = new MaskTextField();
         tfDescription.setMinWidth(180);
         tfDescription.setMaxWidth(180);
+        // TAMANHO MÁXIMO: 48
+        tfDescription.setMask("************************************************");
         
         btnNewEntity = new Button("+");
         btnNewEntity.setId("btnNewEntity");
@@ -159,19 +164,19 @@ public class EntityListView<T, K> extends VBox {
         this.tfId = tfId;
     }
 
-    public TextField getTfName() {
+    public MaskTextField getTfName() {
         return tfName;
     }
 
-    public void setTfName(TextField tfName) {
+    public void setTfName(MaskTextField tfName) {
         this.tfName = tfName;
     }
 
-    public TextField getTfDescription() {
+    public MaskTextField getTfDescription() {
         return tfDescription;
     }
 
-    public void setTfDescription(TextField tfDescription) {
+    public void setTfDescription(MaskTextField tfDescription) {
         this.tfDescription = tfDescription;
     }
 
