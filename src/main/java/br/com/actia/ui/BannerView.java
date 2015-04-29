@@ -1,6 +1,7 @@
 package br.com.actia.ui;
 
 import br.com.actia.model.Banner;
+import br.com.actia.validation.MaskTextField;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -23,7 +24,8 @@ public class BannerView extends VBox {
     private final int VIEWER_SIZE = 100;
     
     private TextField tfId;
-    private TextField tfName;
+    // private TextField tfName;
+    private MaskTextField tfName;
     private TextField tfImgPath;
     private TextField tfAudioPath;
     private Button btnChooseImage;
@@ -64,7 +66,9 @@ public class BannerView extends VBox {
         tfId = new TextField();
         
         Label lblName = new Label(rb.getString("Name"));
-        tfName = new TextField();
+        // tfName = new TextField();
+        tfName = new MaskTextField();
+        tfName.setMask("****************");
         
         Label lblImage = new Label(rb.getString("BNChooseImage"));
         tfImgPath = new TextField();
@@ -147,11 +151,11 @@ public class BannerView extends VBox {
         this.tfId = tfId;
     }
 
-    public TextField getTfName() {
+    public MaskTextField getTfName() {
         return tfName;
     }
 
-    public void setTfName(TextField tfName) {
+    public void setTfName(MaskTextField tfName) {
         this.tfName = tfName;
     }
     
@@ -244,7 +248,7 @@ public class BannerView extends VBox {
         }
         
         String audioPath = null;
-        if(!tfAudioPath.getText().trim().isEmpty()) {
+        if(tfAudioPath.getText() != null && !tfAudioPath.getText().trim().isEmpty()) {
             audioPath = tfAudioPath.getText();
         }
         return new Banner(id, name, imagePath, audioPath);

@@ -2,6 +2,7 @@ package br.com.actia.ui;
 
 import br.com.actia.model.Video;
 import br.com.actia.model.VideoType;
+import br.com.actia.validation.MaskTextField;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
@@ -24,7 +25,7 @@ public class VideoView  extends VBox {
     private final int VIEWER_SIZE = 200;
     
     private TextField tfId;
-    private TextField tfName;
+    private MaskTextField tfName;
     private TextField tfVideoPath;
     private Button btnChooseVideo;
     private Button btnCancelVideo;
@@ -64,7 +65,8 @@ public class VideoView  extends VBox {
         tfId = new TextField();
         
         Label lblName = new Label(rb.getString("Name"));
-        tfName = new TextField();
+        tfName = new MaskTextField();
+        tfName.setMask("****************");
         
         Label lblType = new Label(rb.getString("Type"));
         cbVideoType = new ComboBox<>();
@@ -193,11 +195,11 @@ public class VideoView  extends VBox {
         this.tfId = tfId;
     }
 
-    public TextField getTfName() {
+    public MaskTextField getTfName() {
         return tfName;
     }
 
-    public void setTfName(TextField tfName) {
+    public void setTfName(MaskTextField tfName) {
         this.tfName = tfName;
     }
 
