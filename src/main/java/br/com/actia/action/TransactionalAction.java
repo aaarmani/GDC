@@ -67,6 +67,7 @@ public class TransactionalAction extends AbstractAction {
             if (tx.isActive()) {
                 tx.rollback();
             }
+            em.clear();
             throw new RuntimeException(ex);
         }
     }
