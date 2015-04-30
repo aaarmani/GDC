@@ -20,7 +20,8 @@ public class MaskTextField extends TextField {
     public static final int FIELD_NAME = 0;
     public static final int FIELD_DESC = 1;
     public static final int FIELD_LATLONG = 2;
-
+    public static final int FIELD_RAD = 3;
+    
     private String mask;
     private ArrayList<String> patterns;
 
@@ -183,7 +184,11 @@ public class MaskTextField extends TextField {
                 this.mask += ".{0,48}";
                 break;
             case FIELD_LATLONG:
-                this.mask += "-?([0-9]+|[0-9]{0,2}\\.[0-9])+";
+                this.mask += "[-+]?([0-9]*)(.)?([0-9]+)?";
+                // this.mask += "-?([0-9]+|[0-9]{0,2}\\.[0-9])+";
+                break;
+            case FIELD_RAD:
+                this.mask += "([0-9]*)(.)?([0-9]+)?";
                 break;
             default:
                 this.mask += ".";

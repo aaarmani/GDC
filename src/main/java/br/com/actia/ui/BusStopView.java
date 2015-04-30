@@ -4,6 +4,7 @@ import br.com.actia.model.Banner;
 import br.com.actia.model.BusStop;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.ListVideo;
+import br.com.actia.validation.MaskTextField;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -23,11 +24,11 @@ import javafx.scene.layout.VBox;
 public class BusStopView extends VBox {
     private final int MAX_HEIGHT = 200;
     private TextField tfId;
-    private TextField tfName;
-    private TextField tfDescription;
-    private TextField tfLatitude;
-    private TextField tfLongitude;
-    private TextField tfRadius;
+    private MaskTextField tfName;
+    private MaskTextField tfDescription;
+    private MaskTextField tfLatitude;
+    private MaskTextField tfLongitude;
+    private MaskTextField tfRadius;
     private Button btnSaveBusStop;
     private Button btnCancelBusStop;
     private Button btnDeleteBusStop;
@@ -68,29 +69,34 @@ public class BusStopView extends VBox {
         tfId = new TextField();
         
         Label lblName = new Label(rb.getString("Name"));
-        tfName = new TextField();
+        tfName = new MaskTextField();
         tfName.setMinWidth(180);
         tfName.setMaxWidth(180);
+        tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblDesc = new Label(rb.getString("Description"));
-        tfDescription = new TextField();
+        tfDescription = new MaskTextField();
         tfDescription.setMinWidth(180);
         tfDescription.setMaxWidth(180);
+        tfDescription.setMaskCompleteWord(MaskTextField.FIELD_DESC);
         
         Label lblLat = new Label(rb.getString("Latitude"));
-        tfLatitude = new TextField();
+        tfLatitude = new MaskTextField();
         tfLatitude.setMinWidth(180);
         tfLatitude.setMaxWidth(180);
+        tfLatitude.setMaskCompleteWord(MaskTextField.FIELD_LATLONG);
         
         Label lblLong = new Label(rb.getString("Longitude"));
-        tfLongitude = new TextField();
+        tfLongitude = new MaskTextField();
         tfLongitude.setMinWidth(180);
         tfLongitude.setMaxWidth(180);
+        tfLongitude.setMaskCompleteWord(MaskTextField.FIELD_LATLONG);
         
         Label lblRadius = new Label(rb.getString("Radius"));
-        tfRadius = new TextField();
+        tfRadius = new MaskTextField();
         tfRadius.setMinWidth(180);
         tfRadius.setMaxWidth(180);
+        tfRadius.setMaskCompleteWord(MaskTextField.FIELD_RAD);
         
         Label lblBanner = new Label(rb.getString("Banner"));
         cbBanner = new ComboBox<Banner>();
@@ -177,43 +183,43 @@ public class BusStopView extends VBox {
         this.tfId = tfId;
     }
 
-    public TextField getTfName() {
+    public MaskTextField getTfName() {
         return tfName;
     }
 
-    public void setTfName(TextField tfName) {
+    public void setTfName(MaskTextField tfName) {
         this.tfName = tfName;
     }
 
-    public TextField getTfDescription() {
+    public MaskTextField getTfDescription() {
         return tfDescription;
     }
 
-    public void setTfDescription(TextField tfDescription) {
+    public void setTfDescription(MaskTextField tfDescription) {
         this.tfDescription = tfDescription;
     }
 
-    public TextField getTfLatitude() {
+    public MaskTextField getTfLatitude() {
         return tfLatitude;
     }
 
-    public void setTfLatitude(TextField tfLatitude) {
+    public void setTfLatitude(MaskTextField tfLatitude) {
         this.tfLatitude = tfLatitude;
     }
 
-    public TextField getTfLongitude() {
+    public MaskTextField getTfLongitude() {
         return tfLongitude;
     }
 
-    public void setTfLongitude(TextField tfLongitude) {
+    public void setTfLongitude(MaskTextField tfLongitude) {
         this.tfLongitude = tfLongitude;
     }
 
-    public TextField getTfRadius() {
+    public MaskTextField getTfRadius() {
         return tfRadius;
     }
 
-    public void setTfRadius(TextField tfRadius) {
+    public void setTfRadius(MaskTextField tfRadius) {
         this.tfRadius = tfRadius;
     }
 

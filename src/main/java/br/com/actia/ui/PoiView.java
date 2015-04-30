@@ -2,6 +2,7 @@ package br.com.actia.ui;
 
 import br.com.actia.model.Poi;
 import br.com.actia.model.PoiType;
+import br.com.actia.validation.MaskTextField;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -21,9 +22,9 @@ public class PoiView extends VBox {
     private final int MAX_HEIGHT = 200;
     
     private TextField tfId;
-    private TextField tfName;
-    private TextField tfLatitude;
-    private TextField tfLongitude;
+    private MaskTextField tfName;
+    private MaskTextField tfLatitude;
+    private MaskTextField tfLongitude;
     private Button btnCancelPOI;
     private Button btnDeletePOI;
     private Button btnSavePOI;
@@ -60,23 +61,26 @@ public class PoiView extends VBox {
         tfId = new TextField();
         
         Label lblName = new Label(rb.getString("Name"));
-        tfName = new TextField();
+        tfName = new MaskTextField();
         tfName.setMinWidth(180);
         tfName.setMaxWidth(180);
+        tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblType = new Label(rb.getString("Type"));
         cbPoiType = new ComboBox();
         cbPoiType.setPromptText("escolha um tipo");
         
         Label lblLat = new Label(rb.getString("Latitude"));
-        tfLatitude = new TextField();
+        tfLatitude = new MaskTextField();
         tfLatitude.setMinWidth(180);
         tfLatitude.setMaxWidth(180);
+        tfLatitude.setMaskCompleteWord(MaskTextField.FIELD_LATLONG);
         
         Label lblLong = new Label(rb.getString("Longitude"));
-        tfLongitude = new TextField();
+        tfLongitude = new MaskTextField();
         tfLongitude.setMinWidth(180);
         tfLongitude.setMaxWidth(180);
+        tfLongitude.setMaskCompleteWord(MaskTextField.FIELD_LATLONG);
         
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblName, tfName, lblType, cbPoiType);
@@ -164,27 +168,27 @@ public class PoiView extends VBox {
         this.tfId = tfId;
     }
 
-    public TextField getTfName() {
+    public MaskTextField getTfName() {
         return tfName;
     }
 
-    public void setTfName(TextField tfName) {
+    public void setTfName(MaskTextField tfName) {
         this.tfName = tfName;
     }
 
-    public TextField getTfLatitude() {
+    public MaskTextField getTfLatitude() {
         return tfLatitude;
     }
 
-    public void setTfLatitude(TextField tfLatitude) {
+    public void setTfLatitude(MaskTextField tfLatitude) {
         this.tfLatitude = tfLatitude;
     }
 
-    public TextField getTfLongitude() {
+    public MaskTextField getTfLongitude() {
         return tfLongitude;
     }
 
-    public void setTfLongitude(TextField tfLongitude) {
+    public void setTfLongitude(MaskTextField tfLongitude) {
         this.tfLongitude = tfLongitude;
     }
 
