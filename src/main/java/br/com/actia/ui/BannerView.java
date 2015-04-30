@@ -68,7 +68,8 @@ public class BannerView extends VBox {
         Label lblName = new Label(rb.getString("Name"));
         // tfName = new TextField();
         tfName = new MaskTextField();
-        tfName.setMask("****************");
+        //tfName.setMask("****************");
+        tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblImage = new Label(rb.getString("BNChooseImage"));
         tfImgPath = new TextField();

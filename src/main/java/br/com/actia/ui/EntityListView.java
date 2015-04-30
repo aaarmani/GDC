@@ -62,15 +62,17 @@ public class EntityListView<T, K> extends VBox {
         tfName = new MaskTextField();
         tfName.setMinWidth(180);
         tfName.setMaxWidth(180);
+        
         // TAMANHO: 16
-        tfName.setMask("****************");
+        tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblDesc = new Label(rb.getString("Description"));
         tfDescription = new MaskTextField();
         tfDescription.setMinWidth(180);
         tfDescription.setMaxWidth(180);
+        
         // TAMANHO MÁXIMO: 48
-        tfDescription.setMask("************************************************");
+        tfDescription.setMaskCompleteWord(MaskTextField.FIELD_DESC);
         
         btnNewEntity = new Button("+");
         btnNewEntity.setId("btnNewEntity");

@@ -17,6 +17,9 @@ import javafx.scene.control.TextField;
  * 
  */
 public class MaskTextField extends TextField {
+    public static final int FIELD_NAME = 0;
+    public static final int FIELD_DESC = 1;
+    public static final int FIELD_LATLONG = 2;
 
     private String mask;
     private ArrayList<String> patterns;
@@ -164,5 +167,29 @@ public class MaskTextField extends TextField {
         this.mask = tempMask + "$";
 
     }
-
+    
+    /**
+     * 
+     * @param maskType 
+     */
+    public void setMaskCompleteWord(int maskType) {
+        this.mask = "^";
+        
+        switch (maskType) {
+            case FIELD_NAME:
+                this.mask += ".{0,16}";
+                break;
+            case FIELD_DESC:
+                this.mask += ".{0,48}";
+                break;
+            case FIELD_LATLONG:
+                this.mask += "-?([0-9]+|[0-9]{0,2}\\.[0-9])+";
+                break;
+            default:
+                this.mask += ".";
+                break;
+        }
+        
+        this.mask += "$";
+    }
 }

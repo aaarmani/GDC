@@ -66,7 +66,7 @@ public class VideoView  extends VBox {
         
         Label lblName = new Label(rb.getString("Name"));
         tfName = new MaskTextField();
-        tfName.setMask("****************");
+        tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblType = new Label(rb.getString("Type"));
         cbVideoType = new ComboBox<>();
