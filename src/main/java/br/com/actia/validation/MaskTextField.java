@@ -184,11 +184,11 @@ public class MaskTextField extends TextField {
                 this.mask += ".{0,48}";
                 break;
             case FIELD_LATLONG:
-                this.mask += "[-+]?([0-9]*)(.)?([0-9]+)?";
+                this.mask += "[-+]?([0-9]*)(\\.)?([0-9]+)?";
                 // this.mask += "-?([0-9]+|[0-9]{0,2}\\.[0-9])+";
                 break;
             case FIELD_RAD:
-                this.mask += "([0-9]*)(.)?([0-9]+)?";
+                this.mask += "([0-9]*)(\\.)?([0-9]+)?";
                 break;
             default:
                 this.mask += ".";
