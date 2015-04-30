@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class VideoType implements AbstractEntity{
     @Size(max=16)
     private String name;
     @NotNull
+    @Expose
     private Integer type;
     
     @Override

@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +29,9 @@ public class Banner implements AbstractEntity, Serializable {
     @Column(unique=true, nullable=false)
     private String name;
     @NotNull
+    @Expose
     private String image;
+    @Expose
     private String audio;
 
     public Banner() {}

@@ -5,6 +5,7 @@
  */
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -32,12 +33,15 @@ public class ListVideo implements AbstractEntity, Serializable {
     private Integer id;
     @NotNull
     @Size(max=16)
+    @Expose
     private String name;
     @NotNull
     @Size(max=48)
+    @Expose
     private String description;
     @NotNull
     @ManyToMany @JoinColumn(name="video_id", referencedColumnName="id")
+    @Expose
     private List<Video> listVideo;
 
     public ListVideo() {}
