@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,11 +29,14 @@ public class Video implements AbstractEntity, Serializable {
     @NotNull
     @Size(max=16)
     @Column(unique=true, nullable=false)  
+    @Expose
     private String name;
     @ManyToOne
     @JoinColumn(name="video_type_id", referencedColumnName="id")
+    @Expose
     private VideoType type;
     @NotNull
+    @Expose
     private String filePath;
 
     public Video() {}

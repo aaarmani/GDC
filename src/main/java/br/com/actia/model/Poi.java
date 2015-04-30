@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,14 +28,18 @@ public class Poi implements AbstractEntity, Serializable {
     private Integer id;
     @ManyToOne
     @JoinColumn(name="poi_type_id", referencedColumnName="id")
+    @Expose
     private PoiType type;
     @NotNull
     @Size(max=16)
     @Column(unique=true, nullable=false)
+    @Expose
     private String name;
     @NotNull
+    @Expose
     private double latitude;
     @NotNull
+    @Expose
     private double longitude;
     
     public Poi() {

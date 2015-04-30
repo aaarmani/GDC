@@ -5,6 +5,7 @@
  */
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -40,6 +41,7 @@ public class ListPoi implements AbstractEntity, Serializable {
     @NotNull
     @ManyToMany //(fetch = FetchType.EAGER) //, mappedBy = "list_poi_poi")*/
     @JoinColumn(name="poi_id", referencedColumnName="id")
+    @Expose
     private List<Poi> listPoi;
 
     public ListPoi(){}

@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,20 +29,28 @@ public class BusStop implements AbstractEntity, Serializable {
     @NotNull
     @Size(max=16)
     @Column(unique=true, nullable=false)
+    @Expose
     private String name;
     @Size(max=48)
+    @Expose
     private String description;
     @NotNull
+    @Expose
     private double latitude;
     @NotNull
+    @Expose
     private double longitude;
     @NotNull
+    @Expose
     private float radius;
     @ManyToOne @JoinColumn(name="banner_id", referencedColumnName="id")
+    @Expose
     private Banner banner;
     @ManyToOne @JoinColumn(name="lst_poi_id", referencedColumnName="id")
+    @Expose
     private ListPoi pois;
     @ManyToOne @JoinColumn(name="lst_video_id", referencedColumnName="id")
+    @Expose
     private ListVideo videos;
 
     public BusStop(){
