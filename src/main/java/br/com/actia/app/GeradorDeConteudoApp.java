@@ -28,7 +28,7 @@ public class GeradorDeConteudoApp extends Application {
     @Override
     public void start(Stage stage){
         try {
-            Locale.setDefault(Locale.ENGLISH);
+            //Locale.setDefault(Locale.ENGLISH);
             rb = ResourceBundle.getBundle("languages.messages");
         }catch (Exception e) {
             e.printStackTrace();

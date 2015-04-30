@@ -49,8 +49,8 @@ public class GoogleMapController extends PersistenceController {
     protected GoogleMap googleMap;
     protected boolean initialized = false;
     private final Pane parentPane;
-    private PoiController poiController;
-    private BusStopController busStopController;
+    private final PoiController poiController;
+    private final BusStopController busStopController;
     
     private Map<String, Marker> mapPoiMarkers = null;
     private final ResourceBundle rb;

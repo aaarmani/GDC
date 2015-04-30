@@ -18,13 +18,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import org.controlsfx.control.ListSelectionView;
 
 /**
  *
@@ -45,7 +43,7 @@ public class ListPoiController extends PersistenceController {
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
         this.parentPane = pane;
-        this.view = new EntityListView<Poi, ListPoi>(this.rb);
+        this.view = new EntityListView<>(this.rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
         this.view.setMinHeight(parentPane.getHeight());
@@ -53,8 +51,6 @@ public class ListPoiController extends PersistenceController {
         
         this.poiDAO = new PoiDAOJPA(getPersistenceContext());
         this.listPoiAll = (Collection<Poi>)this.poiDAO.getAll();
-        
-        loadEntityToList();
         
         registerAction(this.view.getBtnCancel(), new AbstractAction() {
             @Override
@@ -134,9 +130,7 @@ public class ListPoiController extends PersistenceController {
             @Override
             public void handle(MouseEvent t) {
                 if (t.getClickCount() == 2) {
-// System.out.println("getTable: " + view.getTable().toString() );
                     ListPoi listPoi = (ListPoi)view.getTable().getEntitySelected();
-// System.out.println("listPoi getListPoi: " + listPoi.toString());
                     if (listPoi != null) {
                         loadListPoiToEdit(listPoi);
                     }
@@ -171,11 +165,6 @@ public class ListPoiController extends PersistenceController {
         super.cleanUp();
     }
 
-    private void loadEntityToList() {
-        PoiDAO poiDAO = new PoiDAOJPA(getPersistenceContext());
-        this.view.getLsvEntity().getSourceItems().addAll((Collection<Poi>)poiDAO.getAll());
-    }
-    
     private ListPoi loadListPoiFromView() {
         Integer id = null;
         if(!view.getTfId().getText().trim().isEmpty()) {
@@ -233,18 +222,10 @@ public class ListPoiController extends PersistenceController {
     }
     
     private void loadListPoiToEdit(ListPoi listPoi) {
-        //ListPoi listPoi2 = null;
-
-        // ListPoiDAO listPoiDAO = new ListPoiDAOJPA(getPersistenceContext());
-        // ListPoi listPoi2 = listPoiDAO.findById(listPoi.getId());
-
         if(listPoi.getId() != null) {
             this.view.getTfId().setText(listPoi.getId().toString());
             this.view.getTfName().setText(listPoi.getName());
             this.view.getTfDescription().setText(listPoi.getDescription());
-
-//System.out.println("list de todos os pois: " + this.listPoiAll.toString());
-//System.out.println("list de pois da lista selecionada: " + listPoi.getListPoi().toString());
 
             this.view.getLsvEntity().getSourceItems().clear();
             this.view.getLsvEntity().getSourceItems().addAll((Collection<Poi>)this.listPoiAll);
