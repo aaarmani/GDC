@@ -43,11 +43,11 @@ public class MainScreenlView {
     public MainScreenlView(Stage stage, ResourceBundle rb) {
         this.rb = rb;
         inicializaComponentes();
-
+        
         BorderPane borderPane = new BorderPane();
         borderPane.getStyleClass().add("MainScreen");
         mainScene = new Scene(borderPane);
-        mainScene.getStylesheets().add("style.css");
+        mainScene.getStylesheets().add("css/style.css");
 
         bpMenu = getBorderPaneMenu();
         vboxAction = createVboxAction();

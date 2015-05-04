@@ -1,5 +1,10 @@
 @CHARSET "UTF-8";
-
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('../fonts/fontawesome-webfont.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 .buttonDanger {
     -fx-background-color: #bd362f; 
     -fx-text-fill: white;
@@ -85,7 +90,7 @@
     -fx-border-width: 0;
     -fx-background-radius: 0;
     -fx-background-color: #94959b;
-    /*-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;*/
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
     -fx-text-fill: #504f4f;//d8d8d8;
     -fx-background-insets: 0 0 0 0, 0, 1, 2;
