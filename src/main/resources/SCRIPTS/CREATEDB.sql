@@ -1,3 +1,32 @@
+CREATE TABLE poi_type
+(
+  id integer NOT NULL,
+  name character varying(16) NOT NULL,
+  type integer NOT NULL,
+  CONSTRAINT poi_type_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE poi_type
+  OWNER TO teste;
+
+
+CREATE TABLE video_type
+(
+  id integer NOT NULL,
+  name character varying(16) NOT NULL,
+  type integer NOT NULL,
+  CONSTRAINT video_type_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE video_type
+  OWNER TO teste;
+
+
+
 INSERT INTO poi_type VALUES(1,'DEFAULT', 1);
 INSERT INTO poi_type VALUES(2,'SCHOOL', 2);
 INSERT INTO poi_type VALUES(3,'HOSPITAL', 3);
