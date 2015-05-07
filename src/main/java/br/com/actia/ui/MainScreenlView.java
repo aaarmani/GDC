@@ -1,5 +1,3 @@
-//teste para commit
-
 package br.com.actia.ui;
 
 import java.util.ResourceBundle;
