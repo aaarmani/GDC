@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-JavaFX-Version: 2.2
+JavaFX-Version: 2.8
 Implementation-Vendor-Id: br.com.actia
 Implementation-Build: 52549a9247163dd3f609734b6446141b8531f789
 Built-By: Actia do Brasil
@@ -15,5 +15,5 @@ JavaFX-Class-Path: lib/antlr-2.7.7.jar lib/dom4j-1.6.1.jar lib/hiberna
  1.jar lib/log4j-1.2.16.jar lib/slf4j-api-1.6.4.jar lib/validation-api
  -1.0.0.GA.jar
 Created-By: JavaFX Packager
-Main-Class: com/javafx/main/Main
+Main-Class: src/com/actia/app/com/GeradorDeConteudoApp
 

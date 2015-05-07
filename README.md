@@ -1,9 +1,8 @@
-javafx-jpa-crud
+ADB Content Generator
 ===============
+É um projeto desenvolvido pela Actia do Brasil nas tecnologias JavaFX, JPA (Java Persistence API) e Hibernate. O JavaFX é a plataforma rich client do Java, projetada para fornercer uma experiência de usabilidade sofisticada e eficiente.
 
-O projeto é uma demonstração de aplicativo desktop desenvolvido com as tecnologias JavaFX, JPA (Java Persistence API) e Hibernate. O JavaFX é a plataforma rich client do Java, projetada para fornercer uma experiência de usabilidade sofisticada e eficiente.
-
-A aplicação utiliza o HSQLDB (HyperSQL DataBase), um banco de dados relacional escrito em Java, adequado para projetos com propósitos de estudos. O objetivo dessa aplicação é servir como conteúdo no estudo de desenvolvimento de soluções desktop/web, utilizando tecnologias para desenvolvimento RIA.
+A aplicação utiliza o POSTGRESQL, um banco de dados relacional. O objetivo dessa aplicação é prover a geração de conteúdo para produtos ACTIA.
 
 Detalhes da implementação
 -------
@@ -16,10 +15,10 @@ Tecnologias utilizadas na implementação:
 
 Pré-requisitos
 -------
-* JDK - versão 1.7 do Java, ou mais recente;
+* JDK - versão 1.8 do Java, ou mais recente;
 * NetBeans - recomendamos o NetBeans IDE mais recente;
 
 Saiba mais
 -------
 Visite a página do projeto:
-http://www.yaw.com.br/open/projetos/javafx-jpa-crud/
+http://www.actia.com.br
