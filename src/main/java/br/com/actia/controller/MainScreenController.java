@@ -150,4 +150,5 @@ public class MainScreenController extends PersistenceController {
         JPAUtil.closeEntityManagerFactory();
         super.cleanUp();
     }
+    
 }

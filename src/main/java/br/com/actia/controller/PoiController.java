@@ -8,6 +8,7 @@ import br.com.actia.dao.PoiDAO;
 import br.com.actia.dao.PoiDAOJPA;
 import br.com.actia.dao.PoiTypeDAO;
 import br.com.actia.dao.PoiTypeDAOJPA;
+import br.com.actia.event.CrudPoiEvent;
 import br.com.actia.event.PoiDeleteEvent;
 import br.com.actia.event.PoiNewEvent;
 import br.com.actia.javascript.object.LatLong;
@@ -53,6 +54,13 @@ public class PoiController extends PersistenceController {
             @Override
             protected void action() {
                 closeView();
+                
+                if (parent instanceof GoogleMapController && parent.getParentController() instanceof ListPoiController) {
+                    GoogleMapController googleMapCtrl = (GoogleMapController) parent;
+                    googleMapCtrl.closeView();
+
+                    closeView();
+                }
             }
         });
         
@@ -79,9 +87,18 @@ public class PoiController extends PersistenceController {
 
                                 @Override
                                 protected void action() {
-                                    poi = view.loadPoiFromPanel();
-                                    PoiDAO dao = new PoiDAOJPA(getPersistenceContext());
-                                    poi = dao.save(poi);
+                                    if (parent instanceof GoogleMapController){
+                                        GoogleMapController googleMapCtrl = (GoogleMapController)parent;
+                                        if(googleMapCtrl.verifyMap()){
+                                            poi = view.loadPoiFromPanel();
+                                            PoiDAO dao = new PoiDAOJPA(getPersistenceContext());
+                                            poi = dao.save(poi);
+                                        }
+                                    } else {
+                                        poi = view.loadPoiFromPanel();
+                                        PoiDAO dao = new PoiDAOJPA(getPersistenceContext());
+                                        poi = dao.save(poi);
+                                    }
                                 }
 
                                 @Override
@@ -93,6 +110,14 @@ public class PoiController extends PersistenceController {
                                         }
                                     });
                                     fireEvent(new PoiNewEvent(poi));
+                                    fireEvent(new CrudPoiEvent(poi));
+                                    
+                                    if (parent instanceof GoogleMapController && parent.getParentController() instanceof ListPoiController) {
+                                        GoogleMapController googleMapCtrl = (GoogleMapController) parent;
+                                        googleMapCtrl.closeView();
+                                        
+                                        closeView();
+                                    }
                                 }
                             })));
         

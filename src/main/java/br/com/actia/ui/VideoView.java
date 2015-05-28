@@ -177,6 +177,9 @@ public class VideoView  extends VBox {
         tfVideoPath.setText("");
         cbVideoType.getSelectionModel().clearSelection();
         btnDeleteVideo.setVisible(false);
+        
+        this.mediaView.setMediaPlayer(null);
+        btnPlayVideo.setVisible(false);
     }
     
     public Integer getVideoId() {

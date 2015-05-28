@@ -164,6 +164,7 @@ public class BusStopController extends PersistenceController {
             @Override
             public void handleEvent(CrudListVideoEvent event) {
                 loadListVideoList();
+                System.out.println("EVENTO: CrudListVideoEvent");
             }
         });
         
@@ -171,6 +172,7 @@ public class BusStopController extends PersistenceController {
             @Override
             public void handleEvent(CrudListPoiEvent event) {
                 loadListPoiList();
+                System.out.println("EVENTO: CrudListPOIEvent");
             }
         });
         
@@ -178,6 +180,7 @@ public class BusStopController extends PersistenceController {
             @Override
             public void handleEvent(CrudBannerEvent event) {
                 loadBannerList();
+                System.out.println("EVENTO: CrudListBannerEvent");
             }
         });
         

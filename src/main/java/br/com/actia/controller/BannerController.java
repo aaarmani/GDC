@@ -6,6 +6,7 @@ import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
 import br.com.actia.dao.BannerDAO;
 import br.com.actia.dao.BannerDAOJPA;
+import br.com.actia.event.CrudBannerEvent;
 import br.com.actia.model.Banner;
 import br.com.actia.ui.BannerView;
 import br.com.actia.validation.BannerValidator;
@@ -97,7 +98,7 @@ public class BannerController extends PersistenceController {
                                     refreshTable();
                                     //cleanUp();
                                     //MOVER ARQUIVO PARA PASTA DO SISTEMA
-                                    //fireEvent(new CrudBannerEvent(banner));
+                                    fireEvent(new CrudBannerEvent(banner));
                                 }
                             }))
         );
@@ -123,7 +124,7 @@ public class BannerController extends PersistenceController {
                     protected void posAction() {
                         view.resetForm();
                         refreshTable();
-                        //fireEvent(new CrudVideoEvent(banner));
+                        fireEvent(new CrudBannerEvent(banner));
                     }
                     @Override
                     protected void actionFailure(){

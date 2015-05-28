@@ -163,12 +163,11 @@ public class BusStopView extends VBox {
     }
     
     public void setBusStop(BusStop busStop) {
-        resetForm();
         if(busStop != null) {
-            if(busStop.getId() != null)
+            if(busStop.getId() != null){
                 tfId.setText(busStop.getId().toString());
-            tfName.setText(busStop.getName());
-            tfDescription.setText(busStop.getDescription());
+            }
+            
             tfLatitude.setText(Double.toString(busStop.getLatitude()));
             tfLongitude.setText(Double.toString(busStop.getLongitude()));
             tfRadius.setText(Float.toString(busStop.getRadius()));

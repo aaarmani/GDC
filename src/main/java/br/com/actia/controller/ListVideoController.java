@@ -8,6 +8,9 @@ import br.com.actia.dao.ListVideoDAO;
 import br.com.actia.dao.ListVideoDAOJPA;
 import br.com.actia.dao.VideoDAO;
 import br.com.actia.dao.VideoDAOJPA;
+import br.com.actia.event.AbstractEventListener;
+import br.com.actia.event.CrudListVideoEvent;
+import br.com.actia.event.CrudVideoEvent;
 import br.com.actia.model.ListVideo;
 import br.com.actia.model.Video;
 import br.com.actia.ui.EntityListView;
@@ -50,7 +53,7 @@ public class ListVideoController extends PersistenceController {
         
         this.videoDAO = new VideoDAOJPA(getPersistenceContext());
         this.listVideoAll = (Collection<Video>)this.videoDAO.getAll();
-
+        
         loadEntityToList();
         
         registerAction(this.view.getBtnCancel(), new AbstractAction() {
@@ -91,8 +94,12 @@ public class ListVideoController extends PersistenceController {
                         protected void posAction() {
                             //cleanUp();
                             resetForm();
-                            //fireEvent(new CrudListVideoEvent(listVideo));
                             refreshTable();
+                            fireEvent(new CrudListVideoEvent(listVideo));
+                            
+                            if(parent instanceof BusStopController){
+                                closeView();
+                            }
                         }
                     }))
         );
@@ -137,6 +144,7 @@ public class ListVideoController extends PersistenceController {
                         protected void posAction() {
                             resetForm();
                             refreshTable();
+                            fireEvent(new CrudListVideoEvent(listVideo));
                         }
                         @Override
                         protected void actionFailure(){
@@ -145,11 +153,20 @@ public class ListVideoController extends PersistenceController {
                     })
         );
         
+        registerEventListener(CrudVideoEvent.class, new AbstractEventListener<CrudVideoEvent>() {
+            @Override
+            public void handleEvent(CrudVideoEvent event) {
+                refreshListVideosForSelection();
+                resetForm();
+                refreshTable();
+            }
+        });
+        
         StackPane.setAlignment(view, Pos.CENTER);
         this.view.resetForm(this.listVideoAll);
         this.refreshTable();
     }
-
+    
     public void showView() {
         parentPane.getChildren().add(view);
     }
@@ -201,7 +218,7 @@ public class ListVideoController extends PersistenceController {
         videoController.showView();
     }
     
-    private void refreshTable() {
+    public void refreshTable() {
         refreshTable(null);
     }
     
@@ -237,7 +254,12 @@ public class ListVideoController extends PersistenceController {
         this.view.getBtnDelete().setVisible(true);
     }
     
-    private void resetForm(){
+    public void resetForm(){
         this.view.resetForm(this.listVideoAll);
+    }
+    
+    public void refreshListVideosForSelection(){
+        this.videoDAO = new VideoDAOJPA(getPersistenceContext());
+        this.listVideoAll = (Collection<Video>)this.videoDAO.getAll();
     }
 }
