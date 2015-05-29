@@ -31,6 +31,7 @@ public class MainScreenlView {
     private Button btnMapEntitys;
     private Button btnBanner;
     private Button btnVideo;
+    private Button btnRSS;
     private Button btnListPoi;
     private Button btnListBanner;
     private Button btnListVideo;
@@ -129,11 +130,12 @@ public class MainScreenlView {
         btnMapEntitys = newMenuItem(rb.getString("Map"));
         btnBanner = newMenuItem(rb.getString("Banner"));
         btnVideo = newMenuItem(rb.getString("Video"));
+        btnRSS = newMenuItem(rb.getString("RSS"));
         btnListPoi = newMenuItem(rb.getString("ListPoi"));
         btnListBanner = newMenuItem(rb.getString("ListBanner"));
         btnListVideo = newMenuItem(rb.getString("ListVideo"));
         
-        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnListPoi, btnListBanner, btnListVideo);
+        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo);
         return vbMenu;
     }
     
@@ -155,7 +157,7 @@ public class MainScreenlView {
         btnES = new Button(null, imgES);
         btnES.getStyleClass().add("LangButton");
         btnES.setId("btnLanES");
-        
+
         imgEN = new ImageView("us.png");
         imgEN.getStyleClass().add("flag");
         imgEN.setFitHeight(20);
@@ -283,15 +285,23 @@ public class MainScreenlView {
     public void setBtnVideo(Button btnVideo) {
         this.btnVideo = btnVideo;
     }
-
+    
+    public Button getBtnRSS() {
+        return btnRSS;
+    }
+    
+    public void setBtnRSS(Button btnRSS) {
+        this.btnRSS = btnRSS;
+    }
+    
     public Button getBtnListPoi() {
         return btnListPoi;
     }
-
+    
     public void setBtnListPoi(Button btnListPoi) {
         this.btnListPoi = btnListPoi;
     }
-
+    
     public Button getBtnListBanner() {
         return btnListBanner;
     }
