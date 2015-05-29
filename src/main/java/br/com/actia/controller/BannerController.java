@@ -99,6 +99,10 @@ public class BannerController extends PersistenceController {
                                     //cleanUp();
                                     //MOVER ARQUIVO PARA PASTA DO SISTEMA
                                     fireEvent(new CrudBannerEvent(banner));
+                                    
+                                    if(parent instanceof ListBannerController){
+                                        closeView();
+                                    }
                                 }
                             }))
         );
