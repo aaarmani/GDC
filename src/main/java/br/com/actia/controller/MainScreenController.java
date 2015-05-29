@@ -19,8 +19,9 @@ public class MainScreenController extends PersistenceController {
     private VideoController videoController;
     private ResourceBundle rb;
     private ListPoiController listPoiController;
+    private ListBannerController listBannerController;
     private ListVideoController listVideoController;
-        
+    
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
         this.rb = rb;
@@ -52,6 +53,13 @@ public class MainScreenController extends PersistenceController {
             protected void action() {
                 showListPoiController();
             }
+        });
+        
+        registerAction(this.view.getBtnListBanner(), new AbstractAction() {
+           @Override
+           protected void action() {
+               showListBannerController();
+           }
         });
         
         registerAction(this.view.getBtnListVideo(), new AbstractAction() {
@@ -111,6 +119,13 @@ public class MainScreenController extends PersistenceController {
         listPoiController.showView();
     }
     
+    private void showListBannerController() {
+        cleanUpOldControllers();
+        if(listBannerController == null)
+            listBannerController = new ListBannerController(this, this.view.getPaneCenter(), this.rb);
+        listBannerController.showView();
+    }
+    
     private void showListVideoController() {
         cleanUpOldControllers();
         if(listVideoController == null)
@@ -134,6 +149,10 @@ public class MainScreenController extends PersistenceController {
         
         if(listPoiController != null) {
             listPoiController.cleanUp();
+        }
+     
+        if(listBannerController != null) {
+            listBannerController.cleanUp();
         }
         
         if(listVideoController != null) {

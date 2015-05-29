@@ -32,6 +32,7 @@ public class MainScreenlView {
     private Button btnBanner;
     private Button btnVideo;
     private Button btnListPoi;
+    private Button btnListBanner;
     private Button btnListVideo;
     
     private Button btnBR;
@@ -129,9 +130,10 @@ public class MainScreenlView {
         btnBanner = newMenuItem(rb.getString("Banner"));
         btnVideo = newMenuItem(rb.getString("Video"));
         btnListPoi = newMenuItem(rb.getString("ListPoi"));
+        btnListBanner = newMenuItem(rb.getString("ListBanner"));
         btnListVideo = newMenuItem(rb.getString("ListVideo"));
         
-        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnListPoi, btnListVideo);
+        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnListPoi, btnListBanner, btnListVideo);
         return vbMenu;
     }
     
@@ -290,6 +292,14 @@ public class MainScreenlView {
         this.btnListPoi = btnListPoi;
     }
 
+    public Button getBtnListBanner() {
+        return btnListBanner;
+    }
+    
+    public void setBtnListBanner(Button btnListBanner) {
+        this.btnListBanner = btnListBanner;
+    }
+    
     public Button getBtnListVideo() {
         return btnListVideo;
     }

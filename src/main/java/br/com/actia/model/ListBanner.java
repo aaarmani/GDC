@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -12,30 +13,45 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author Armani <anderson.armani@actia.com.br>
- */
 @Entity
 @Table (name = "list_banner")
 public class ListBanner implements AbstractEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
     @NotNull
     @Size(max=16)
+    @Expose
     private String name;
-    @ManyToMany @JoinColumn(name="lst_banner_id", referencedColumnName="id")
-    private List<Banner> lstBanner;
+    @NotNull
+    @Size(max=48)
+    @Expose
+    private String description;
+    @NotNull
+    @ManyToMany @JoinColumn(name="banner_id", referencedColumnName="id")
+    @Expose
+    private List<Banner> listBanner;
+
+    /*
     @ManyToMany @JoinColumn(name="lst_rss_id", referencedColumnName="id")
     private List<RSS> lstRss;
+    */
+    
+    public ListBanner() {}
 
+    public ListBanner(Integer id, String name, String description, List<Banner> listBanner) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.listBanner = listBanner;
+    }
+    
     @Override
     public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -47,14 +63,15 @@ public class ListBanner implements AbstractEntity, Serializable {
         this.name = name;
     }
 
-    public List<Banner> getLstBanner() {
-        return lstBanner;
+    public String getDescription() {
+        return description;
     }
 
-    public void setLstBanner(List<Banner> listBanner) {
-        this.lstBanner = listBanner;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
+    /*
     public List<RSS> getListRss() {
         return lstRss;
     }
@@ -62,7 +79,16 @@ public class ListBanner implements AbstractEntity, Serializable {
     public void setListRss(List<RSS> listRss) {
         this.lstRss = listRss;
     }
+    */
 
+    public List<Banner> getListBanner() {
+        return listBanner;
+    }
+
+    public void setListBanner(List<Banner> listBanner) {
+        this.listBanner = listBanner;
+    }
+    
     @Override
     public String toString() {
         return name;
