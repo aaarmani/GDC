@@ -35,6 +35,7 @@ public class MainScreenlView {
     private Button btnListPoi;
     private Button btnListBanner;
     private Button btnListVideo;
+    private Button btnListRSS;
     
     private Button btnBR;
     private Button btnEN;
@@ -134,8 +135,9 @@ public class MainScreenlView {
         btnListPoi = newMenuItem(rb.getString("ListPoi"));
         btnListBanner = newMenuItem(rb.getString("ListBanner"));
         btnListVideo = newMenuItem(rb.getString("ListVideo"));
+        btnListRSS = newMenuItem(rb.getString("ListRSS"));
         
-        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo);
+        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS);
         return vbMenu;
     }
     
@@ -253,35 +255,35 @@ public class MainScreenlView {
     public void setImgEN(ImageView imgEN) {
         this.imgEN = imgEN;
     }
-
+    
     public ImageView getImgUser() {
         return imgUser;
     }
-
+    
     public void setImgUser(ImageView imgUser) {
         this.imgUser = imgUser;
     }
-
+    
     public Button getBtnMapEntitys() {
         return btnMapEntitys;
     }
-
+    
     public void setBtnMapsEntitys(Button btnMapEntitys) {
         this.btnMapEntitys = btnMapEntitys;
     }
-
+    
     public Button getBtnBanner() {
         return btnBanner;
     }
-
+    
     public void setBtnBanner(Button btnBanner) {
         this.btnBanner = btnBanner;
     }
-
+    
     public Button getBtnVideo() {
         return btnVideo;
     }
-
+    
     public void setBtnVideo(Button btnVideo) {
         this.btnVideo = btnVideo;
     }
@@ -313,54 +315,63 @@ public class MainScreenlView {
     public Button getBtnListVideo() {
         return btnListVideo;
     }
-
+    
     public void setBtnListVideo(Button btnListVideo) {
         this.btnListVideo = btnListVideo;
     }
-     public VBox getVboxAction() {
+    
+    public Button getBtnListRSS() {
+        return btnListRSS;
+    }
+    
+    public void setBtnListRSS(Button btnListRSS) {
+        this.btnListRSS = btnListRSS;
+    }
+    
+    public VBox getVboxAction() {
         return vboxAction;
     }
-
+    
     public void setVboxAction(VBox vboxAction) {
         this.vboxAction = vboxAction;
     }
-
+    
     public Pane getPaneCenter() {
         return paneCenter;
     }
-
+    
     public void setPaneCenter(Pane paneCenter) {
         this.paneCenter = paneCenter;
     }
-
+    
     public Button getBtnBR() {
         return btnBR;
     }
-
+    
     public void setBtnBR(Button btnBR) {
         this.btnBR = btnBR;
     }
-
+    
     public Button getBtnEN() {
         return btnEN;
     }
-
+    
     public void setBtnEN(Button btnEN) {
         this.btnEN = btnEN;
     }
-
+    
     public Button getBtnES() {
         return btnES;
     }
-
+    
     public void setBtnES(Button btnES) {
         this.btnES = btnES;
     }
-
+    
     public ResourceBundle getRb() {
         return rb;
     }
-
+    
     public void setRb(ResourceBundle rb) {
         this.rb = rb;
     }

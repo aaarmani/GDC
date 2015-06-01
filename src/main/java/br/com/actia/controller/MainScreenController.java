@@ -22,6 +22,7 @@ public class MainScreenController extends PersistenceController {
     private ListPoiController listPoiController;
     private ListBannerController listBannerController;
     private ListVideoController listVideoController;
+    private ListRSSController listRSSController;
     
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
@@ -74,6 +75,13 @@ public class MainScreenController extends PersistenceController {
             @Override
             protected void action() {
                 showListVideoController();
+            }
+        });
+        
+        registerAction(this.view.getBtnListRSS(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showListRSSController();
             }
         });
         
@@ -148,6 +156,13 @@ public class MainScreenController extends PersistenceController {
         listVideoController.showView();
     }
     
+    private void showListRSSController() {
+        cleanUpOldControllers();
+        if(listRSSController == null)
+            listRSSController = new ListRSSController(this, this.view.getPaneCenter(), this.rb);
+        listRSSController.showView();
+    }
+    
     private void cleanUpOldControllers() {
 
         if(googleMapController != null) {
@@ -176,6 +191,10 @@ public class MainScreenController extends PersistenceController {
         
         if(listVideoController != null) {
             listVideoController.cleanUp();
+        }
+        
+        if(listRSSController != null) {
+            listRSSController.cleanUp();
         }
     }
     

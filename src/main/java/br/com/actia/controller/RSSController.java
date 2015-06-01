@@ -95,9 +95,9 @@ public class RSSController extends PersistenceController {
                                     //MOVER ARQUIVO PARA PASTA DO SISTEMA
                                     fireEvent(new CrudRSSEvent(RSS));
                                     
-                                    //if(parent instanceof ListRSSController){
-                                    //    closeView();
-                                    //}
+                                    if(parent instanceof ListRSSController){
+                                        closeView();
+                                    }
                                 }
                             }))
         );
