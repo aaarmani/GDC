@@ -8,6 +8,7 @@ import br.com.actia.dao.VideoDAO;
 import br.com.actia.dao.VideoDAOJPA;
 import br.com.actia.dao.VideoTypeDAO;
 import br.com.actia.dao.VideoTypeDAOJPA;
+import br.com.actia.event.CrudVideoEvent;
 import br.com.actia.model.Video;
 import br.com.actia.model.VideoType;
 import br.com.actia.ui.Dialog;
@@ -99,8 +100,12 @@ public class VideoController extends PersistenceController {
                             protected void posAction() {
                                 view.resetForm();
                                 refreshTable();
-                                //fireEvent(new CrudVideoEvent(video));
+                                fireEvent(new CrudVideoEvent(video));
                                 //MOVER ARQUIVO PARA PASTA DO SISTEMA
+                                
+                                if(parent instanceof ListVideoController){
+                                    closeView();
+                                }
                             }
                             @Override
                             protected void actionFailure(){
@@ -186,7 +191,7 @@ public class VideoController extends PersistenceController {
     private void showVideo() {
         if(videoFile != null) {
             view.getTfVideoPath().setText(videoFile.getName());
-            
+
             Media mediaVideo = new Media(videoFile.toURI().toString());
             mediaPlayer = new MediaPlayer(mediaVideo);
             view.getMediaView().setMediaPlayer(mediaPlayer);
@@ -226,6 +231,8 @@ public class VideoController extends PersistenceController {
     }
     
     public void showView() {
+        view.resetForm();
+        refreshTable();
         parentPane.getChildren().add(view);
     }
     
@@ -241,7 +248,7 @@ public class VideoController extends PersistenceController {
             mediaPlayer.dispose();
         
         closeView();
-        super.cleanUp(); 
+        super.cleanUp();
     }
 
     private ObservableList<VideoType> getVideoTypeList() {

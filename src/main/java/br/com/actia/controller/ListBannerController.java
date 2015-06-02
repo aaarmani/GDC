@@ -4,17 +4,17 @@ import br.com.actia.action.AbstractAction;
 import br.com.actia.action.BooleanExpression;
 import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
-import br.com.actia.dao.ListVideoDAO;
-import br.com.actia.dao.ListVideoDAOJPA;
-import br.com.actia.dao.VideoDAO;
-import br.com.actia.dao.VideoDAOJPA;
+import br.com.actia.dao.ListBannerDAO;
+import br.com.actia.dao.ListBannerDAOJPA;
+import br.com.actia.dao.BannerDAO;
+import br.com.actia.dao.BannerDAOJPA;
 import br.com.actia.event.AbstractEventListener;
-import br.com.actia.event.CrudListVideoEvent;
-import br.com.actia.event.CrudVideoEvent;
-import br.com.actia.model.ListVideo;
-import br.com.actia.model.Video;
+import br.com.actia.event.CrudListBannerEvent;
+import br.com.actia.event.CrudBannerEvent;
+import br.com.actia.model.ListBanner;
+import br.com.actia.model.Banner;
 import br.com.actia.ui.EntityListView;
-import br.com.actia.validation.ListVideoValidator;
+import br.com.actia.validation.ListBannerValidator;
 import br.com.actia.validation.Validator;
 import java.util.Collection;
 import java.util.List;
@@ -26,33 +26,29 @@ import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 
-/**
- *
- * @author Armani <anderson.armani@actia.com.br>
- */
-public class ListVideoController extends PersistenceController {
+public class ListBannerController extends PersistenceController {
     private final ResourceBundle rb;
     private final Pane parentPane;
-    private final EntityListView<Video, ListVideo> view;
-    private Validator<ListVideo> validador = new ListVideoValidator();
-    private VideoController videoController = null;
+    private final EntityListView<Banner, ListBanner> view;
+    private Validator<ListBanner> validador = new ListBannerValidator();
+    private BannerController bannerController = null;
     
-    private VideoDAO videoDAO = null;
-    private Collection<Video> listVideoAll = null;
+    private BannerDAO bannerDAO = null;
+    private Collection<Banner> listBannerAll = null;
     
-    public ListVideoController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public ListBannerController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
         this.parentPane = pane;
-        this.view = new EntityListView<Video, ListVideo>(this.rb);
+        this.view = new EntityListView<Banner, ListBanner>(this.rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
         this.view.setMinHeight(parentPane.getHeight());
         this.view.setMinWidth(parentPane.getWidth());
         
-        this.videoDAO = new VideoDAOJPA(getPersistenceContext());
-        this.listVideoAll = (Collection<Video>)this.videoDAO.getAll();
+        this.bannerDAO = new BannerDAOJPA(getPersistenceContext());
+        this.listBannerAll = (Collection<Banner>)this.bannerDAO.getAll();
         
         loadEntityToList();
         
@@ -68,9 +64,9 @@ public class ListVideoController extends PersistenceController {
                 .addConditional(new BooleanExpression() {
                     @Override
                     public boolean conditional() {
-                        ListVideo listVideo = loadListVideoFromView();
+                        ListBanner listBanner = loadListBannerFromView();
 
-                        String msg = validador.validate(listVideo);
+                        String msg = validador.validate(listBanner);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);
@@ -80,14 +76,14 @@ public class ListVideoController extends PersistenceController {
                     }
                 })
                 .addAction(TransactionalAction.build()
-                    .persistenceCtxOwner(ListVideoController.this)
+                    .persistenceCtxOwner(ListBannerController.this)
                     .addAction(new AbstractAction() {
-                        ListVideo listVideo = null;
+                        ListBanner listBanner = null;
                         @Override
                         protected void action() {
-                            listVideo = loadListVideoFromView();
-                            ListVideoDAO listVideoDAO = new ListVideoDAOJPA(getPersistenceContext());
-                            listVideo = listVideoDAO.save(listVideo);
+                            listBanner = loadListBannerFromView();
+                            ListBannerDAO listBannerDAO = new ListBannerDAOJPA(getPersistenceContext());
+                            listBanner = listBannerDAO.save(listBanner);
                         }
                         
                          @Override
@@ -95,11 +91,13 @@ public class ListVideoController extends PersistenceController {
                             //cleanUp();
                             resetForm();
                             refreshTable();
-                            fireEvent(new CrudListVideoEvent(listVideo));
+                            fireEvent(new CrudListBannerEvent(listBanner));
                             
+                            /*
                             if(parent instanceof BusStopController){
                                 closeView();
                             }
+                            */
                         }
                     }))
         );
@@ -107,7 +105,7 @@ public class ListVideoController extends PersistenceController {
         registerAction(view.getBtnNewEntity(), new AbstractAction() {
             @Override
             protected void action() {
-                showNewVideoController();
+                showNewBannerController();
             }
         });
         
@@ -115,9 +113,9 @@ public class ListVideoController extends PersistenceController {
             @Override
             public void handle(MouseEvent t) {
                 if (t.getClickCount() == 2) {
-                    ListVideo listVideo = (ListVideo)view.getTable().getEntitySelected();
-                    if (listVideo != null) {
-                        loadListVideoToEdit(listVideo);
+                    ListBanner listBanner = (ListBanner)view.getTable().getEntitySelected();
+                    if (listBanner != null) {
+                        loadListBannerToEdit(listBanner);
                     }
                 }
             }
@@ -125,18 +123,18 @@ public class ListVideoController extends PersistenceController {
         
         registerAction(this.view.getBtnDelete(),
                 TransactionalAction.build()
-                    .persistenceCtxOwner(ListVideoController.this)
+                    .persistenceCtxOwner(ListBannerController.this)
                     .addAction(new AbstractAction() {
-                        private ListVideo listVideo;
+                        private ListBanner listBanner;
                         
                         @Override
                         protected void action() {
                             Integer id = Integer.parseInt(view.getTfId().getText());
                             if (id != null) {
-                                ListVideoDAO listVideoDao = new ListVideoDAOJPA(getPersistenceContext());
-                                listVideo = listVideoDao.findById(id);
-                                if(listVideo != null) {
-                                    listVideoDao.remove(listVideo);
+                                ListBannerDAO listBannerDao = new ListBannerDAOJPA(getPersistenceContext());
+                                listBanner = listBannerDao.findById(id);
+                                if(listBanner != null) {
+                                    listBannerDao.remove(listBanner);
                                 }
                             }
                         }
@@ -144,7 +142,7 @@ public class ListVideoController extends PersistenceController {
                         protected void posAction() {
                             resetForm();
                             refreshTable();
-                            fireEvent(new CrudListVideoEvent(listVideo));
+                            fireEvent(new CrudListBannerEvent(listBanner));
                         }
                         @Override
                         protected void actionFailure(){
@@ -153,41 +151,41 @@ public class ListVideoController extends PersistenceController {
                     })
         );
         
-        registerEventListener(CrudVideoEvent.class, new AbstractEventListener<CrudVideoEvent>() {
+        registerEventListener(CrudBannerEvent.class, new AbstractEventListener<CrudBannerEvent>() {
             @Override
-            public void handleEvent(CrudVideoEvent event) {
-                refreshListVideosForSelection();
+            public void handleEvent(CrudBannerEvent event) {
+                refreshListBannersForSelection();
                 resetForm();
                 refreshTable();
             }
         });
         
         StackPane.setAlignment(view, Pos.CENTER);
-        this.view.resetForm(this.listVideoAll);
+        this.view.resetForm(this.listBannerAll);
         this.refreshTable();
     }
     
     public void showView() {
         parentPane.getChildren().add(view);
     }
-        
+    
     public void closeView() {
         parentPane.getChildren().remove(view);
     }
     
     @Override
     protected void cleanUp() {
-        view.resetForm(this.listVideoAll);
+        view.resetForm(this.listBannerAll);
         closeView();
         super.cleanUp();
     }
 
     private void loadEntityToList() {
-        VideoDAO videoDAO = new VideoDAOJPA(getPersistenceContext());
-        this.view.getLsvEntity().getSourceItems().addAll((Collection<Video>)videoDAO.getAll());
+        BannerDAO bannerDAO = new BannerDAOJPA(getPersistenceContext());
+        this.view.getLsvEntity().getSourceItems().addAll((Collection<Banner>)bannerDAO.getAll());
     }
     
-    private ListVideo loadListVideoFromView() {
+    private ListBanner loadListBannerFromView() {
         Integer id = null;
         if(!view.getTfId().getText().trim().isEmpty()) {
             id = Integer.valueOf(view.getTfId().getText());
@@ -203,26 +201,26 @@ public class ListVideoController extends PersistenceController {
             description = view.getTfDescription().getText();
         }
         
-        List<Video> listVideo = null;
+        List<Banner> listBanner = null;
         if(!view.getLsvEntity().getTargetItems().isEmpty()) {
-            listVideo = view.getLsvEntity().getTargetItems();
+            listBanner = view.getLsvEntity().getTargetItems();
         }
 
-        return new ListVideo(id, name, description, listVideo);
+        return new ListBanner(id, name, description, listBanner);
     }
     
-    private void showNewVideoController() {
-        if(videoController == null)
-            videoController = new VideoController(this, parentPane, rb);
+    private void showNewBannerController() {
+        if(bannerController == null)
+            bannerController = new BannerController(this, parentPane, rb);
         
-        videoController.showView();
+        bannerController.showView();
     }
     
     public void refreshTable() {
         refreshTable(null);
     }
     
-    private void refreshTable(List<ListVideo> list) {
+    private void refreshTable(List<ListBanner> list) {
         //view.addTransition();
         if (list != null) {
             view.refreshTable(list);
@@ -233,33 +231,33 @@ public class ListVideoController extends PersistenceController {
 
             @Override
             public void run() {
-                ListVideoDAO dao = new ListVideoDAOJPA(getPersistenceContext());
+                ListBannerDAO dao = new ListBannerDAOJPA(getPersistenceContext());
                 view.refreshTable(dao.getAll());
             }
         });
     }
     
-    private void loadListVideoToEdit(ListVideo listVideo) {
-        this.view.getTfId().setText(listVideo.getId().toString());
-        this.view.getTfName().setText(listVideo.getName());
-        this.view.getTfDescription().setText(listVideo.getDescription());
+    private void loadListBannerToEdit(ListBanner listBanner) {
+        this.view.getTfId().setText(listBanner.getId().toString());
+        this.view.getTfName().setText(listBanner.getName());
+        this.view.getTfDescription().setText(listBanner.getDescription());
         
         this.view.getLsvEntity().getSourceItems().clear();
-        this.view.getLsvEntity().getSourceItems().addAll((Collection<Video>)this.listVideoAll);
-        this.view.getLsvEntity().getSourceItems().removeAll((Collection<Video>)listVideo.getListVideo());
+        this.view.getLsvEntity().getSourceItems().addAll((Collection<Banner>)this.listBannerAll);
+        this.view.getLsvEntity().getSourceItems().removeAll((Collection<Banner>)listBanner.getListBanner());
         
         this.view.getLsvEntity().getTargetItems().clear();
-        this.view.getLsvEntity().getTargetItems().addAll((Collection<Video>)listVideo.getListVideo());
+        this.view.getLsvEntity().getTargetItems().addAll((Collection<Banner>)listBanner.getListBanner());
         
         this.view.getBtnDelete().setVisible(true);
     }
     
     public void resetForm(){
-        this.view.resetForm(this.listVideoAll);
+        this.view.resetForm(this.listBannerAll);
     }
     
-    public void refreshListVideosForSelection(){
-        this.videoDAO = new VideoDAOJPA(getPersistenceContext());
-        this.listVideoAll = (Collection<Video>)this.videoDAO.getAll();
+    public void refreshListBannersForSelection(){
+        this.bannerDAO = new BannerDAOJPA(getPersistenceContext());
+        this.listBannerAll = (Collection<Banner>)this.bannerDAO.getAll();
     }
 }

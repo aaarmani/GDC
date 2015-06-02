@@ -17,10 +17,13 @@ public class MainScreenController extends PersistenceController {
     private GoogleMapController googleMapController;
     private BannerController bannerController;
     private VideoController videoController;
+    private RSSController RSSController;
     private ResourceBundle rb;
     private ListPoiController listPoiController;
+    private ListBannerController listBannerController;
     private ListVideoController listVideoController;
-        
+    private ListRSSController listRSSController;
+    
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
         this.rb = rb;
@@ -47,6 +50,13 @@ public class MainScreenController extends PersistenceController {
             }
         });
         
+        registerAction(this.view.getBtnRSS(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showRSSController();
+            }
+        });
+        
         registerAction(this.view.getBtnListPoi(), new AbstractAction() {
             @Override
             protected void action() {
@@ -54,10 +64,24 @@ public class MainScreenController extends PersistenceController {
             }
         });
         
+        registerAction(this.view.getBtnListBanner(), new AbstractAction() {
+           @Override
+           protected void action() {
+               showListBannerController();
+           }
+        });
+        
         registerAction(this.view.getBtnListVideo(), new AbstractAction() {
             @Override
             protected void action() {
                 showListVideoController();
+            }
+        });
+        
+        registerAction(this.view.getBtnListRSS(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showListRSSController();
             }
         });
         
@@ -104,6 +128,13 @@ public class MainScreenController extends PersistenceController {
         videoController.showView();
     }
     
+    private void showRSSController() {
+        cleanUpOldControllers();
+        if(RSSController == null)
+            RSSController = new RSSController(this, this.view.getPaneCenter(), this.rb);
+        RSSController.showView();
+    }
+    
     private void showListPoiController() {
         cleanUpOldControllers();
         if(listPoiController == null)
@@ -111,11 +142,25 @@ public class MainScreenController extends PersistenceController {
         listPoiController.showView();
     }
     
+    private void showListBannerController() {
+        cleanUpOldControllers();
+        if(listBannerController == null)
+            listBannerController = new ListBannerController(this, this.view.getPaneCenter(), this.rb);
+        listBannerController.showView();
+    }
+    
     private void showListVideoController() {
         cleanUpOldControllers();
         if(listVideoController == null)
             listVideoController = new ListVideoController(this, this.view.getPaneCenter(), this.rb);
         listVideoController.showView();
+    }
+    
+    private void showListRSSController() {
+        cleanUpOldControllers();
+        if(listRSSController == null)
+            listRSSController = new ListRSSController(this, this.view.getPaneCenter(), this.rb);
+        listRSSController.showView();
     }
     
     private void cleanUpOldControllers() {
@@ -132,12 +177,24 @@ public class MainScreenController extends PersistenceController {
             videoController.cleanUp();
         }
         
+        if(RSSController != null) {
+            RSSController.cleanUp();
+        }
+        
         if(listPoiController != null) {
             listPoiController.cleanUp();
+        }
+     
+        if(listBannerController != null) {
+            listBannerController.cleanUp();
         }
         
         if(listVideoController != null) {
             listVideoController.cleanUp();
+        }
+        
+        if(listRSSController != null) {
+            listRSSController.cleanUp();
         }
     }
     
@@ -150,4 +207,5 @@ public class MainScreenController extends PersistenceController {
         JPAUtil.closeEntityManagerFactory();
         super.cleanUp();
     }
+    
 }

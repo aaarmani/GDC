@@ -5,8 +5,8 @@
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/adbgc"/>
-      <property name="javax.persistence.jdbc.user" value="teste"/>
-      <property name="javax.persistence.jdbc.password" value="teste"/>
+      <property name="javax.persistence.jdbc.user" value="adbgc"/>
+      <property name="javax.persistence.jdbc.password" value="actia"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
       <property name="hibernate.show_sql" value="false"/>

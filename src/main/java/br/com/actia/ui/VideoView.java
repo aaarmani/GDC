@@ -37,14 +37,14 @@ public class VideoView  extends VBox {
     private ResourceBundle rb;
     private EntityTable<Video> table;
     
-        
+    
     public VideoView(ResourceBundle rb) {
         this.rb = rb;
         this.setMaxHeight(MAX_HEIGHT);
         this.getStyleClass().add("whitePanel");
         initializeComponents();
     }
-
+    
     private void initializeComponents() {
         VBox head = buildHead();
         GridPane chooser = buildChooser();
@@ -177,6 +177,9 @@ public class VideoView  extends VBox {
         tfVideoPath.setText("");
         cbVideoType.getSelectionModel().clearSelection();
         btnDeleteVideo.setVisible(false);
+        
+        this.mediaView.setMediaPlayer(null);
+        btnPlayVideo.setVisible(false);
     }
     
     public Integer getVideoId() {

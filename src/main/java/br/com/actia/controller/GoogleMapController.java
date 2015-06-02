@@ -37,6 +37,8 @@ import javafx.concurrent.Worker;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import netscape.javascript.JSObject;
 
 
@@ -287,6 +289,19 @@ public class GoogleMapController extends PersistenceController {
             throw new RuntimeException("Mapa não inicializado");
         }
     }
+    
+    public boolean verifyMap(){
+        if(!initialized){
+            JOptionPane.showMessageDialog(new JFrame(),
+                "Mapa não inicializado.",
+                "Carregamento do mapa",
+                JOptionPane.WARNING_MESSAGE);
+            
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     void showView() {
         this.parentPane.getChildren().add(view);
@@ -324,7 +339,7 @@ public class GoogleMapController extends PersistenceController {
 
     private void setNewMarker(LatLong latLong) {
         removeNewMarker();
-
+        
         String title = rb.getString("NewBusStop");
         MarkerOptions markerOptions = new MarkerOptions();
         LatLong markerLatLong = latLong;
@@ -333,7 +348,7 @@ public class GoogleMapController extends PersistenceController {
             .animation(Animation.DROP)
             .draggable(true)
             .visible(true);
-
+        
         newMarker = new Marker(markerOptions, Marker.TYPE_NEW_MARKER);
         googleMap.addMarker(newMarker);
         
@@ -374,7 +389,7 @@ public class GoogleMapController extends PersistenceController {
             //.draggable(true)
             .icon(strIcon)
             .visible(true);
-       
+        
         Marker marker = new Marker(markerOptions, type);
         googleMap.addMarker(marker);
         
@@ -468,7 +483,7 @@ public class GoogleMapController extends PersistenceController {
         busStopController.showView(busStopName);
     }
     
-    private void showPoiController(String poiName) {
+    public void showPoiController(String poiName) {
         busStopController.closeView();
         poiController.showView(poiName);
     }

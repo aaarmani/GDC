@@ -150,10 +150,11 @@ public class PoiView extends VBox {
     }
     
     public void setPoi(Poi poi) {
-        resetForm();
         if(poi != null) {
-            if(poi.getId() != null)
+            if(poi.getId() != null){
                 tfId.setText(poi.getId().toString());
+            } 
+            
             //tfType
             tfLatitude.setText(Double.toString(poi.getLatitude()));
             tfLongitude.setText(Double.toString(poi.getLongitude()));

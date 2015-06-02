@@ -8,7 +8,9 @@ import br.com.actia.dao.ListPoiDAO;
 import br.com.actia.dao.ListPoiDAOJPA;
 import br.com.actia.dao.PoiDAO;
 import br.com.actia.dao.PoiDAOJPA;
+import br.com.actia.event.AbstractEventListener;
 import br.com.actia.event.CrudListPoiEvent;
+import br.com.actia.event.CrudPoiEvent;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.Poi;
 import br.com.actia.ui.EntityListView;
@@ -93,6 +95,10 @@ public class ListPoiController extends PersistenceController {
                             //cleanUp();
                             resetForm();
                             refreshTable();
+                            
+                            if(parent instanceof BusStopController){
+                                closeView();
+                            }                            
                         }
                     }))
         );
@@ -118,6 +124,7 @@ public class ListPoiController extends PersistenceController {
                         protected void posAction() {
                             resetForm();
                             refreshTable();
+                            fireEvent(new CrudListPoiEvent(listPoi));
                         }
                         @Override
                         protected void actionFailure(){
@@ -141,7 +148,17 @@ public class ListPoiController extends PersistenceController {
         registerAction(view.getBtnNewEntity(), new AbstractAction() {
             @Override
             protected void action() {
-                showGoogleMapController();
+                showGoogleMapControllerAndNewPOI();
+                
+            }
+        });
+        
+        registerEventListener(CrudPoiEvent.class, new AbstractEventListener<CrudPoiEvent>() {
+            @Override
+            public void handleEvent(CrudPoiEvent event) {
+                refreshListPoisForSelection();
+                resetForm();
+                refreshTable();
             }
         });
         
@@ -189,18 +206,19 @@ public class ListPoiController extends PersistenceController {
         return new ListPoi(id, name, description, listPoi);
     }
     
-    private void showGoogleMapController() {
+    private void showGoogleMapControllerAndNewPOI() {
         if(googleMapController == null)
             googleMapController = new GoogleMapController(this, parentPane, rb);
 
         googleMapController.showView();
+        googleMapController.showPoiController(null);
     }
     
     public void enableNewPoiButton(Boolean enable) {
         view.getBtnNewEntity().setVisible(enable);
     }
     
-    private void refreshTable() {
+    public void refreshTable() {
         refreshTable(null);
     }
     
@@ -238,7 +256,12 @@ public class ListPoiController extends PersistenceController {
         }
     }
     
-    private void resetForm(){
+    public void resetForm(){
         this.view.resetForm(this.listPoiAll);
+    }
+    
+    public void refreshListPoisForSelection(){
+        this.poiDAO = new PoiDAOJPA(getPersistenceContext());
+        this.listPoiAll = (Collection<Poi>)this.poiDAO.getAll();
     }
 }

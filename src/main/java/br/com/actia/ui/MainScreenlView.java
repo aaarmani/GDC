@@ -31,8 +31,11 @@ public class MainScreenlView {
     private Button btnMapEntitys;
     private Button btnBanner;
     private Button btnVideo;
+    private Button btnRSS;
     private Button btnListPoi;
+    private Button btnListBanner;
     private Button btnListVideo;
+    private Button btnListRSS;
     
     private Button btnBR;
     private Button btnEN;
@@ -128,10 +131,13 @@ public class MainScreenlView {
         btnMapEntitys = newMenuItem(rb.getString("Map"));
         btnBanner = newMenuItem(rb.getString("Banner"));
         btnVideo = newMenuItem(rb.getString("Video"));
+        btnRSS = newMenuItem(rb.getString("RSS"));
         btnListPoi = newMenuItem(rb.getString("ListPoi"));
+        btnListBanner = newMenuItem(rb.getString("ListBanner"));
         btnListVideo = newMenuItem(rb.getString("ListVideo"));
+        btnListRSS = newMenuItem(rb.getString("ListRSS"));
         
-        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnListPoi, btnListVideo);
+        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS);
         return vbMenu;
     }
     
@@ -153,7 +159,7 @@ public class MainScreenlView {
         btnES = new Button(null, imgES);
         btnES.getStyleClass().add("LangButton");
         btnES.setId("btnLanES");
-        
+
         imgEN = new ImageView("us.png");
         imgEN.getStyleClass().add("flag");
         imgEN.setFitHeight(20);
@@ -249,98 +255,123 @@ public class MainScreenlView {
     public void setImgEN(ImageView imgEN) {
         this.imgEN = imgEN;
     }
-
+    
     public ImageView getImgUser() {
         return imgUser;
     }
-
+    
     public void setImgUser(ImageView imgUser) {
         this.imgUser = imgUser;
     }
-
+    
     public Button getBtnMapEntitys() {
         return btnMapEntitys;
     }
-
+    
     public void setBtnMapsEntitys(Button btnMapEntitys) {
         this.btnMapEntitys = btnMapEntitys;
     }
-
+    
     public Button getBtnBanner() {
         return btnBanner;
     }
-
+    
     public void setBtnBanner(Button btnBanner) {
         this.btnBanner = btnBanner;
     }
-
+    
     public Button getBtnVideo() {
         return btnVideo;
     }
-
+    
     public void setBtnVideo(Button btnVideo) {
         this.btnVideo = btnVideo;
     }
-
+    
+    public Button getBtnRSS() {
+        return btnRSS;
+    }
+    
+    public void setBtnRSS(Button btnRSS) {
+        this.btnRSS = btnRSS;
+    }
+    
     public Button getBtnListPoi() {
         return btnListPoi;
     }
-
+    
     public void setBtnListPoi(Button btnListPoi) {
         this.btnListPoi = btnListPoi;
     }
-
+    
+    public Button getBtnListBanner() {
+        return btnListBanner;
+    }
+    
+    public void setBtnListBanner(Button btnListBanner) {
+        this.btnListBanner = btnListBanner;
+    }
+    
     public Button getBtnListVideo() {
         return btnListVideo;
     }
-
+    
     public void setBtnListVideo(Button btnListVideo) {
         this.btnListVideo = btnListVideo;
     }
-     public VBox getVboxAction() {
+    
+    public Button getBtnListRSS() {
+        return btnListRSS;
+    }
+    
+    public void setBtnListRSS(Button btnListRSS) {
+        this.btnListRSS = btnListRSS;
+    }
+    
+    public VBox getVboxAction() {
         return vboxAction;
     }
-
+    
     public void setVboxAction(VBox vboxAction) {
         this.vboxAction = vboxAction;
     }
-
+    
     public Pane getPaneCenter() {
         return paneCenter;
     }
-
+    
     public void setPaneCenter(Pane paneCenter) {
         this.paneCenter = paneCenter;
     }
-
+    
     public Button getBtnBR() {
         return btnBR;
     }
-
+    
     public void setBtnBR(Button btnBR) {
         this.btnBR = btnBR;
     }
-
+    
     public Button getBtnEN() {
         return btnEN;
     }
-
+    
     public void setBtnEN(Button btnEN) {
         this.btnEN = btnEN;
     }
-
+    
     public Button getBtnES() {
         return btnES;
     }
-
+    
     public void setBtnES(Button btnES) {
         this.btnES = btnES;
     }
-
+    
     public ResourceBundle getRb() {
         return rb;
     }
-
+    
     public void setRb(ResourceBundle rb) {
         this.rb = rb;
     }

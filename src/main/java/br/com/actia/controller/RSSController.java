@@ -4,12 +4,12 @@ import br.com.actia.action.AbstractAction;
 import br.com.actia.action.BooleanExpression;
 import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
-import br.com.actia.dao.BannerDAO;
-import br.com.actia.dao.BannerDAOJPA;
-import br.com.actia.event.CrudBannerEvent;
-import br.com.actia.model.Banner;
-import br.com.actia.ui.BannerView;
-import br.com.actia.validation.BannerValidator;
+import br.com.actia.dao.RSSDAO;
+import br.com.actia.dao.RSSDAOJPA;
+import br.com.actia.event.CrudRSSEvent;
+import br.com.actia.model.RSS;
+import br.com.actia.ui.RSSView;
+import br.com.actia.validation.RSSValidator;
 import br.com.actia.validation.Validator;
 import java.io.File;
 import java.util.ResourceBundle;
@@ -26,51 +26,46 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-/**
- *
- * @author Armani <anderson.armani@actia.com.br>
- */
-public class BannerController extends PersistenceController {
-    private BannerView view;
-    private final Validator<Banner> validador = new BannerValidator();
+public class RSSController extends PersistenceController {
+    private RSSView view;
+    private final Validator<RSS> validador = new RSSValidator();
     private final Pane parentPane;
     
-    private File imageFile;
-    private File audioFile;
+    private File feedFile;
     
-    private Media mediaFile = null;
-    private MediaPlayer mediaPlayer = null;
-    private Boolean mediaStarted = false;
+    // private Media mediaFile = null;
+    // private MediaPlayer mediaPlayer = null;
+    private Boolean feedStarted = false;
     
     private ResourceBundle rb;
     
-    public BannerController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public RSSController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
         
         this.parentPane = pane;
-        this.view = new BannerView(rb);
+        this.view = new RSSView(rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
         this.view.setMinHeight(parentPane.getHeight());
         this.view.setMinWidth(parentPane.getWidth());
         this.view.getBtnPlay().setVisible(false);
         
-        registerAction(this.view.getBtnCancelBanner(), new AbstractAction() {
+        registerAction(this.view.getBtnCancelRSS(), new AbstractAction() {
             @Override
             protected void action() {
                 closeView();
             }
         });
         
-        registerAction(this.view.getBtnSaveBanner(),
+        registerAction(this.view.getBtnSaveRSS(),
             ConditionalAction.build()
                 .addConditional(new BooleanExpression() {
                     @Override
                     public boolean conditional() {
-                        Banner banner = view.loadBannerFromPanel();
-                        String msg = validador.validate(banner);
+                        RSS RSS = view.loadRSSFromPanel();
+                        String msg = validador.validate(RSS);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);
@@ -81,15 +76,15 @@ public class BannerController extends PersistenceController {
                     }
                 })
                 .addAction(TransactionalAction.build()
-                            .persistenceCtxOwner(BannerController.this)
+                            .persistenceCtxOwner(RSSController.this)
                             .addAction(new AbstractAction() {
-                                private Banner banner;
+                                private RSS RSS;
 
                                 @Override
                                 protected void action() {
-                                    banner = view.loadBannerFromPanel();
-                                    BannerDAO bannerDao = new BannerDAOJPA(getPersistenceContext());
-                                    banner = bannerDao.save(banner);
+                                    RSS = view.loadRSSFromPanel();
+                                    RSSDAO RSSDao = new RSSDAOJPA(getPersistenceContext());
+                                    RSS = RSSDao.save(RSS);
                                 }
 
                                 @Override
@@ -98,29 +93,29 @@ public class BannerController extends PersistenceController {
                                     refreshTable();
                                     //cleanUp();
                                     //MOVER ARQUIVO PARA PASTA DO SISTEMA
-                                    fireEvent(new CrudBannerEvent(banner));
+                                    fireEvent(new CrudRSSEvent(RSS));
                                     
-                                    if(parent instanceof ListBannerController){
+                                    if(parent instanceof ListRSSController){
                                         closeView();
                                     }
                                 }
                             }))
         );
         
-        registerAction(this.view.getBtnDeleteBanner(),
+        registerAction(this.view.getBtnDeleteRSS(),
             TransactionalAction.build()
-                .persistenceCtxOwner(BannerController.this)
+                .persistenceCtxOwner(RSSController.this)
                 .addAction(new AbstractAction() {
-                    private Banner banner;
+                    private RSS RSS;
 
                     @Override
                     protected void action() {
-                        Integer id = view.getBannerId();
+                        Integer id = view.getRSSId();
                         if (id != null) {
-                            BannerDAO bannerDao = new BannerDAOJPA(getPersistenceContext());
-                            banner = bannerDao.findById(id);
-                            if (banner != null) {
-                                bannerDao.remove(banner);
+                            RSSDAO RSSDao = new RSSDAOJPA(getPersistenceContext());
+                            RSS = RSSDao.findById(id);
+                            if (RSS != null) {
+                                RSSDao.remove(RSS);
                             }
                         }
                     }
@@ -128,7 +123,7 @@ public class BannerController extends PersistenceController {
                     protected void posAction() {
                         view.resetForm();
                         refreshTable();
-                        fireEvent(new CrudBannerEvent(banner));
+                        fireEvent(new CrudRSSEvent(RSS));
                     }
                     @Override
                     protected void actionFailure(){
@@ -137,27 +132,15 @@ public class BannerController extends PersistenceController {
                 })
         );
         
-        registerAction(this.view.getBtnChooseImage(), new AbstractAction() {
+        registerAction(this.view.getBtnChooseFeed(), new AbstractAction() {
             @Override
             protected void action() {
-                chooseImage();
+                chooseXML();
             }
             
             @Override
             protected void posAction() {
-                showImage();
-            }
-        });
-        
-        registerAction(this.view.getBtnChooseAudio(), new AbstractAction() {
-            @Override
-            protected void action() {
-                chooseAudio();
-            }
-            
-            @Override
-            protected void posAction() {
-                loadAudio();
+                loadFeed();
             }
         });
         
@@ -172,9 +155,9 @@ public class BannerController extends PersistenceController {
             @Override
             public void handle(MouseEvent t) {
                 if (t.getClickCount() == 2) {
-                    Banner banner = (Banner)view.getTable().getEntitySelected();
-                    if (banner != null) {
-                        view.loadBannerToEdit(banner);
+                    RSS RSS = (RSS)view.getTable().getEntitySelected();
+                    if (RSS != null) {
+                        view.loadRSSToEdit(RSS);
                     }
                 }
             }
@@ -188,54 +171,37 @@ public class BannerController extends PersistenceController {
     public void showView() {
         parentPane.getChildren().add(view);
     }
-        
+    
     public void closeView() {
         parentPane.getChildren().remove(view);
     }
     
-    private void chooseImage() {
+    private void chooseXML() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Selecione uma imagem");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("IMAGEM", "*.jpg", "*.jpeg", "*.bmp", "*.bmp", "*.gif", "*.png", "*.webp"));        
-        imageFile = fileChooser.showOpenDialog(null);
+        fileChooser.setTitle("Selecione um arquivo de feed RSS");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("RSS", "*.xml", "*.rss", "*.opml"));        
+        feedFile = fileChooser.showOpenDialog(null);
     }
     
-    private void showImage() {
-        if(imageFile != null) {
-            view.getTfImgPath().setText(imageFile.getName());
-            Image img = new Image(imageFile.toURI().toString());
-
-            view.getIvImageView().setImage(img);
-        }
-    }
-    
-    private void chooseAudio() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Selecione um áudio");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ÁUDIO", "*.3gp", "*.mp4",
-                "*.m4a", "*.aac", "*.ts", "*.flac", "*.mp3", "*.mid", "*.xmf", "*.mxmf", "*.rtttl", "*.rtx",
-                "*.ota", "*.imy", "*.ogg", "*.mkv", "*.wav"));
-        audioFile = fileChooser.showOpenDialog(null);
-    }
-    
-    private void loadAudio() {
-        if(audioFile != null) {
-            view.getTfAudioPath().setText(audioFile.getName());
+    private void loadFeed() {
+        if(feedFile != null) {
+            view.getTfFeedPath().setText(feedFile.getName());
             view.getBtnPlay().setVisible(true);
         }
     }
     
     private void playAction() {
-        if(mediaStarted == false)
-            audioPlay();
+        if(feedStarted == false)
+            feedPlay();
         else
-            audioStop();
+            feedStop();
     }
     
-    void audioPlay() {
-        if(audioFile == null)
+    void feedPlay() {
+        if(feedFile == null)
             return;
         
+        /*
         mediaFile = new Media(audioFile.toURI().toString());
         
         if(mediaFile != null) {
@@ -251,24 +217,30 @@ public class BannerController extends PersistenceController {
                 }
             });
         }
+        */
     }
     
-    void audioStop() {
+    void feedStop() {
+        /*
         if(mediaPlayer == null)
             return;
         
         mediaStarted = false;
         this.view.setBtToPlay();
         mediaPlayer.stop();
+        */
     }
 
     @Override
     protected void cleanUp() {
         view.resetForm();
         this.view.getBtnPlay().setVisible(false);
+        
+        /*
         if(mediaPlayer != null)
             mediaPlayer.dispose();
-
+        */
+        
         closeView();
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
     }
@@ -277,7 +249,7 @@ public class BannerController extends PersistenceController {
         refreshTable(null);
     }
     
-    private void refreshTable(List<Banner> list) {
+    private void refreshTable(List<RSS> list) {
         //view.addTransition();
         if (list != null) {
             view.refreshTable(list);
@@ -288,7 +260,7 @@ public class BannerController extends PersistenceController {
 
             @Override
             public void run() {
-                BannerDAO dao = new BannerDAOJPA(getPersistenceContext());
+                RSSDAO dao = new RSSDAOJPA(getPersistenceContext());
                 view.refreshTable(dao.getAll());
             }
         });

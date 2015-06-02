@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table (name = "list_banner")
-public class ListBanner implements AbstractEntity, Serializable {
+@Table (name = "list_rss")
+public class ListRSS implements AbstractEntity, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -28,22 +28,17 @@ public class ListBanner implements AbstractEntity, Serializable {
     @Expose
     private String description;
     @NotNull
-    @ManyToMany @JoinColumn(name="banner_id", referencedColumnName="id")
+    @ManyToMany @JoinColumn(name="rss_id", referencedColumnName="id")
     @Expose
-    private List<Banner> listBanner;
-
-    /*
-    @ManyToMany @JoinColumn(name="lst_rss_id", referencedColumnName="id")
-    private List<RSS> lstRss;
-    */
+    private List<RSS> listRSS;
     
-    public ListBanner() {}
+    public ListRSS() {}
 
-    public ListBanner(Integer id, String name, String description, List<Banner> listBanner) {
+    public ListRSS(Integer id, String name, String description, List<RSS> listRSS) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.listBanner = listBanner;
+        this.listRSS = listRSS;
     }
     
     @Override
@@ -71,22 +66,12 @@ public class ListBanner implements AbstractEntity, Serializable {
         this.description = description;
     }
 
-    /*
-    public List<RSS> getListRss() {
-        return lstRss;
+    public List<RSS> getListRSS() {
+        return listRSS;
     }
 
-    public void setListRss(List<RSS> listRss) {
-        this.lstRss = listRss;
-    }
-    */
-
-    public List<Banner> getListBanner() {
-        return listBanner;
-    }
-
-    public void setListBanner(List<Banner> listBanner) {
-        this.listBanner = listBanner;
+    public void setListRSS(List<RSS> listRSS) {
+        this.listRSS = listRSS;
     }
     
     @Override

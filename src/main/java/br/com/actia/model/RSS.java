@@ -10,10 +10,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author Armani <anderson.armani@actia.com.br>
- */
 @Entity
 @Table (name = "rss")
 public class RSS implements AbstractEntity, Serializable {
@@ -30,6 +26,14 @@ public class RSS implements AbstractEntity, Serializable {
     @NotNull
     private String path;
 
+    public RSS() {}
+    
+    public RSS(Integer id, String name, String feedPath) {
+        this.id = id;
+        this.name = name;
+        this.path = feedPath;
+    }
+    
     @Override
     public Integer getId() {
         return id;

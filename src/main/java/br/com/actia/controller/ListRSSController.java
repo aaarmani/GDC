@@ -4,17 +4,17 @@ import br.com.actia.action.AbstractAction;
 import br.com.actia.action.BooleanExpression;
 import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
-import br.com.actia.dao.ListVideoDAO;
-import br.com.actia.dao.ListVideoDAOJPA;
-import br.com.actia.dao.VideoDAO;
-import br.com.actia.dao.VideoDAOJPA;
+import br.com.actia.dao.ListRSSDAO;
+import br.com.actia.dao.ListRSSDAOJPA;
+import br.com.actia.dao.RSSDAO;
+import br.com.actia.dao.RSSDAOJPA;
 import br.com.actia.event.AbstractEventListener;
-import br.com.actia.event.CrudListVideoEvent;
-import br.com.actia.event.CrudVideoEvent;
-import br.com.actia.model.ListVideo;
-import br.com.actia.model.Video;
+import br.com.actia.event.CrudListRSSEvent;
+import br.com.actia.event.CrudRSSEvent;
+import br.com.actia.model.ListRSS;
+import br.com.actia.model.RSS;
 import br.com.actia.ui.EntityListView;
-import br.com.actia.validation.ListVideoValidator;
+import br.com.actia.validation.ListRSSValidator;
 import br.com.actia.validation.Validator;
 import java.util.Collection;
 import java.util.List;
@@ -26,33 +26,29 @@ import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 
-/**
- *
- * @author Armani <anderson.armani@actia.com.br>
- */
-public class ListVideoController extends PersistenceController {
+public class ListRSSController extends PersistenceController {
     private final ResourceBundle rb;
     private final Pane parentPane;
-    private final EntityListView<Video, ListVideo> view;
-    private Validator<ListVideo> validador = new ListVideoValidator();
-    private VideoController videoController = null;
+    private final EntityListView<RSS, ListRSS> view;
+    private Validator<ListRSS> validador = new ListRSSValidator();
+    private RSSController RSSController = null;
     
-    private VideoDAO videoDAO = null;
-    private Collection<Video> listVideoAll = null;
+    private RSSDAO RSSDAO = null;
+    private Collection<RSS> listRSSAll = null;
     
-    public ListVideoController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public ListRSSController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
         this.parentPane = pane;
-        this.view = new EntityListView<Video, ListVideo>(this.rb);
+        this.view = new EntityListView<RSS, ListRSS>(this.rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
         this.view.setMinHeight(parentPane.getHeight());
         this.view.setMinWidth(parentPane.getWidth());
         
-        this.videoDAO = new VideoDAOJPA(getPersistenceContext());
-        this.listVideoAll = (Collection<Video>)this.videoDAO.getAll();
+        this.RSSDAO = new RSSDAOJPA(getPersistenceContext());
+        this.listRSSAll = (Collection<RSS>)this.RSSDAO.getAll();
         
         loadEntityToList();
         
@@ -68,9 +64,9 @@ public class ListVideoController extends PersistenceController {
                 .addConditional(new BooleanExpression() {
                     @Override
                     public boolean conditional() {
-                        ListVideo listVideo = loadListVideoFromView();
+                        ListRSS listRSS = loadListRSSFromView();
 
-                        String msg = validador.validate(listVideo);
+                        String msg = validador.validate(listRSS);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);
@@ -80,14 +76,14 @@ public class ListVideoController extends PersistenceController {
                     }
                 })
                 .addAction(TransactionalAction.build()
-                    .persistenceCtxOwner(ListVideoController.this)
+                    .persistenceCtxOwner(ListRSSController.this)
                     .addAction(new AbstractAction() {
-                        ListVideo listVideo = null;
+                        ListRSS listRSS = null;
                         @Override
                         protected void action() {
-                            listVideo = loadListVideoFromView();
-                            ListVideoDAO listVideoDAO = new ListVideoDAOJPA(getPersistenceContext());
-                            listVideo = listVideoDAO.save(listVideo);
+                            listRSS = loadListRSSFromView();
+                            ListRSSDAO listRSSDAO = new ListRSSDAOJPA(getPersistenceContext());
+                            listRSS = listRSSDAO.save(listRSS);
                         }
                         
                          @Override
@@ -95,11 +91,7 @@ public class ListVideoController extends PersistenceController {
                             //cleanUp();
                             resetForm();
                             refreshTable();
-                            fireEvent(new CrudListVideoEvent(listVideo));
-                            
-                            if(parent instanceof BusStopController){
-                                closeView();
-                            }
+                            fireEvent(new CrudListRSSEvent(listRSS));
                         }
                     }))
         );
@@ -107,7 +99,7 @@ public class ListVideoController extends PersistenceController {
         registerAction(view.getBtnNewEntity(), new AbstractAction() {
             @Override
             protected void action() {
-                showNewVideoController();
+                showNewRSSController();
             }
         });
         
@@ -115,9 +107,9 @@ public class ListVideoController extends PersistenceController {
             @Override
             public void handle(MouseEvent t) {
                 if (t.getClickCount() == 2) {
-                    ListVideo listVideo = (ListVideo)view.getTable().getEntitySelected();
-                    if (listVideo != null) {
-                        loadListVideoToEdit(listVideo);
+                    ListRSS listRSS = (ListRSS)view.getTable().getEntitySelected();
+                    if (listRSS != null) {
+                        loadListRSSToEdit(listRSS);
                     }
                 }
             }
@@ -125,18 +117,18 @@ public class ListVideoController extends PersistenceController {
         
         registerAction(this.view.getBtnDelete(),
                 TransactionalAction.build()
-                    .persistenceCtxOwner(ListVideoController.this)
+                    .persistenceCtxOwner(ListRSSController.this)
                     .addAction(new AbstractAction() {
-                        private ListVideo listVideo;
+                        private ListRSS listRSS;
                         
                         @Override
                         protected void action() {
                             Integer id = Integer.parseInt(view.getTfId().getText());
                             if (id != null) {
-                                ListVideoDAO listVideoDao = new ListVideoDAOJPA(getPersistenceContext());
-                                listVideo = listVideoDao.findById(id);
-                                if(listVideo != null) {
-                                    listVideoDao.remove(listVideo);
+                                ListRSSDAO listRSSDao = new ListRSSDAOJPA(getPersistenceContext());
+                                listRSS = listRSSDao.findById(id);
+                                if(listRSS != null) {
+                                    listRSSDao.remove(listRSS);
                                 }
                             }
                         }
@@ -144,7 +136,7 @@ public class ListVideoController extends PersistenceController {
                         protected void posAction() {
                             resetForm();
                             refreshTable();
-                            fireEvent(new CrudListVideoEvent(listVideo));
+                            fireEvent(new CrudListRSSEvent(listRSS));
                         }
                         @Override
                         protected void actionFailure(){
@@ -153,41 +145,41 @@ public class ListVideoController extends PersistenceController {
                     })
         );
         
-        registerEventListener(CrudVideoEvent.class, new AbstractEventListener<CrudVideoEvent>() {
+        registerEventListener(CrudRSSEvent.class, new AbstractEventListener<CrudRSSEvent>() {
             @Override
-            public void handleEvent(CrudVideoEvent event) {
-                refreshListVideosForSelection();
+            public void handleEvent(CrudRSSEvent event) {
+                refreshListRSSsForSelection();
                 resetForm();
                 refreshTable();
             }
         });
         
         StackPane.setAlignment(view, Pos.CENTER);
-        this.view.resetForm(this.listVideoAll);
+        this.view.resetForm(this.listRSSAll);
         this.refreshTable();
     }
     
     public void showView() {
         parentPane.getChildren().add(view);
     }
-        
+    
     public void closeView() {
         parentPane.getChildren().remove(view);
     }
     
     @Override
     protected void cleanUp() {
-        view.resetForm(this.listVideoAll);
+        view.resetForm(this.listRSSAll);
         closeView();
         super.cleanUp();
     }
 
     private void loadEntityToList() {
-        VideoDAO videoDAO = new VideoDAOJPA(getPersistenceContext());
-        this.view.getLsvEntity().getSourceItems().addAll((Collection<Video>)videoDAO.getAll());
+        RSSDAO RSSDAO = new RSSDAOJPA(getPersistenceContext());
+        this.view.getLsvEntity().getSourceItems().addAll((Collection<RSS>)RSSDAO.getAll());
     }
     
-    private ListVideo loadListVideoFromView() {
+    private ListRSS loadListRSSFromView() {
         Integer id = null;
         if(!view.getTfId().getText().trim().isEmpty()) {
             id = Integer.valueOf(view.getTfId().getText());
@@ -203,26 +195,26 @@ public class ListVideoController extends PersistenceController {
             description = view.getTfDescription().getText();
         }
         
-        List<Video> listVideo = null;
+        List<RSS> listRSS = null;
         if(!view.getLsvEntity().getTargetItems().isEmpty()) {
-            listVideo = view.getLsvEntity().getTargetItems();
+            listRSS = view.getLsvEntity().getTargetItems();
         }
 
-        return new ListVideo(id, name, description, listVideo);
+        return new ListRSS(id, name, description, listRSS);
     }
     
-    private void showNewVideoController() {
-        if(videoController == null)
-            videoController = new VideoController(this, parentPane, rb);
+    private void showNewRSSController() {
+        if(RSSController == null)
+            RSSController = new RSSController(this, parentPane, rb);
         
-        videoController.showView();
+        RSSController.showView();
     }
     
     public void refreshTable() {
         refreshTable(null);
     }
     
-    private void refreshTable(List<ListVideo> list) {
+    private void refreshTable(List<ListRSS> list) {
         //view.addTransition();
         if (list != null) {
             view.refreshTable(list);
@@ -233,33 +225,33 @@ public class ListVideoController extends PersistenceController {
 
             @Override
             public void run() {
-                ListVideoDAO dao = new ListVideoDAOJPA(getPersistenceContext());
+                ListRSSDAO dao = new ListRSSDAOJPA(getPersistenceContext());
                 view.refreshTable(dao.getAll());
             }
         });
     }
     
-    private void loadListVideoToEdit(ListVideo listVideo) {
-        this.view.getTfId().setText(listVideo.getId().toString());
-        this.view.getTfName().setText(listVideo.getName());
-        this.view.getTfDescription().setText(listVideo.getDescription());
+    private void loadListRSSToEdit(ListRSS listRSS) {
+        this.view.getTfId().setText(listRSS.getId().toString());
+        this.view.getTfName().setText(listRSS.getName());
+        this.view.getTfDescription().setText(listRSS.getDescription());
         
         this.view.getLsvEntity().getSourceItems().clear();
-        this.view.getLsvEntity().getSourceItems().addAll((Collection<Video>)this.listVideoAll);
-        this.view.getLsvEntity().getSourceItems().removeAll((Collection<Video>)listVideo.getListVideo());
+        this.view.getLsvEntity().getSourceItems().addAll((Collection<RSS>)this.listRSSAll);
+        this.view.getLsvEntity().getSourceItems().removeAll((Collection<RSS>)listRSS.getListRSS());
         
         this.view.getLsvEntity().getTargetItems().clear();
-        this.view.getLsvEntity().getTargetItems().addAll((Collection<Video>)listVideo.getListVideo());
+        this.view.getLsvEntity().getTargetItems().addAll((Collection<RSS>)listRSS.getListRSS());
         
         this.view.getBtnDelete().setVisible(true);
     }
     
     public void resetForm(){
-        this.view.resetForm(this.listVideoAll);
+        this.view.resetForm(this.listRSSAll);
     }
     
-    public void refreshListVideosForSelection(){
-        this.videoDAO = new VideoDAOJPA(getPersistenceContext());
-        this.listVideoAll = (Collection<Video>)this.videoDAO.getAll();
+    public void refreshListRSSsForSelection(){
+        this.RSSDAO = new RSSDAOJPA(getPersistenceContext());
+        this.listRSSAll = (Collection<RSS>)this.RSSDAO.getAll();
     }
 }
