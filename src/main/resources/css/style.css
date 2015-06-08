@@ -145,3 +145,8 @@
 #94959b - botões
 #e1e1e2 - selecionado
 */
+.lbList{
+    -fx-background-color: #ffffff4f;
+    -fx-background-radius: 5;
+    -fx-padding: 4;
+}
