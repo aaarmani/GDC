@@ -22,10 +22,11 @@ public class GoogleMapView  extends StackPane {
     private  final int MENU_SIZE = BUTTON_SIZE + 4;
     
     private WebView webview;
-    private Button btnZoomIn;
-    private Button btnZoomOut;
+    //private Button btnZoomIn;
+    //private Button btnZoomOut;
     private Button btnNewBusStop;
     private Button btnNewPOI;
+    private Button btnNewBusStopList;
     private Button btnClose;
     private AnchorPane ap;
     private VBox vbControl;
@@ -50,23 +51,25 @@ public class GoogleMapView  extends StackPane {
     private VBox createControlPane() {
         btnNewBusStop = getNewButton("location.png",rb.getString("NewBusStop"));
         btnNewPOI = getNewButton("pin.png", rb.getString("NewPoi"));
-        btnZoomIn = getNewButton("zoom-in.png", rb.getString("ZoomMore"));
-        btnZoomOut = getNewButton("zoom-out.png", rb.getString("ZoomLess"));
+        btnNewBusStopList = getNewButton("route.png", rb.getString("NewBusStopList"));
+        //btnZoomIn = getNewButton("zoom-in.png", rb.getString("ZoomMore"));
+        //btnZoomOut = getNewButton("zoom-out.png", rb.getString("ZoomLess"));
         btnClose = getNewButton("close.png", rb.getString("Close"));
         
         btnNewBusStop.setId("btnNewBusStop");
         btnNewPOI.setId("btnNewPOI");
-        btnZoomIn.setId("btnZoomIn");
-        btnZoomOut.setId("btnZoomOut");
+        btnNewBusStopList.setId("btnNewBusStopList");
+        //btnZoomIn.setId("btnZoomIn");
+        //btnZoomOut.setId("btnZoomOut");
         btnClose.setId("btnClose");
         
         VBox vbox = new VBox();
         vbox.setSpacing(4);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setMaxHeight(5 * MENU_SIZE);
+        vbox.setMaxHeight(4 * MENU_SIZE);
         vbox.setMaxWidth(MENU_SIZE);
         vbox.getStyleClass().add("MenuMain");
-        vbox.getChildren().addAll(btnNewBusStop, btnNewPOI, btnZoomIn, btnZoomOut, btnClose);
+        vbox.getChildren().addAll(btnNewBusStop, btnNewPOI, btnNewBusStopList, btnClose);
         
         return vbox;
     }
@@ -103,7 +106,7 @@ public class GoogleMapView  extends StackPane {
         this.webview = webview;
     }
 
-    public Button getBtnZoomIn() {
+    /*public Button getBtnZoomIn() {
         return btnZoomIn;
     }
 
@@ -117,7 +120,7 @@ public class GoogleMapView  extends StackPane {
 
     public void setBtnZoomOut(Button btnZoomOut) {
         this.btnZoomOut = btnZoomOut;
-    }
+    }*/
 
     public Button getBtnNewBusStop() {
         return btnNewBusStop;
@@ -133,6 +136,14 @@ public class GoogleMapView  extends StackPane {
 
     public void setBtnNewPOI(Button btnNewPOI) {
         this.btnNewPOI = btnNewPOI;
+    }
+
+    public Button getBtnNewBusStopList() {
+        return btnNewBusStopList;
+    }
+
+    public void setBtnNewBusStopList(Button btnNewBusStopList) {
+        this.btnNewBusStopList = btnNewBusStopList;
     }
 
     public Button getBtnClose() {

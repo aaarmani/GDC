@@ -53,11 +53,12 @@ public class GoogleMapController extends PersistenceController {
     private final Pane parentPane;
     private final PoiController poiController;
     private final BusStopController busStopController;
+    private final ListBusStopController listBusStopController;
     
     private Map<String, Marker> mapPoiMarkers = null;
     private final ResourceBundle rb;
     private Marker newMarker = null;
-    private Marker editMarker = null;
+    //private Marker editMarker = null;
     // public MainScreenController mainScreenController;
     
     GoogleMapController(AbstractController parent, Pane pane, ResourceBundle rb) {
@@ -77,6 +78,7 @@ public class GoogleMapController extends PersistenceController {
 
         this.poiController = new PoiController(this, view, this.rb);
         this.busStopController = new BusStopController(this, view, this.rb);
+        this.listBusStopController = new ListBusStopController(this, view, this.rb);
         
         this.mapPoiMarkers = new HashMap<>();
         
@@ -94,7 +96,7 @@ public class GoogleMapController extends PersistenceController {
                     }
                 });
         
-        registerAction(view.getBtnZoomIn(), new AbstractAction() {
+        /*registerAction(view.getBtnZoomIn(), new AbstractAction() {
             @Override
             protected void action() {
                 setZoom(googleMap.getZoom()+1);
@@ -106,7 +108,7 @@ public class GoogleMapController extends PersistenceController {
             protected void action() {
                 setZoom(googleMap.getZoom()-1);
             }
-        });
+        });*/
        
         registerAction(this.view.getBtnNewBusStop(), new AbstractAction() {
             @Override
@@ -119,6 +121,13 @@ public class GoogleMapController extends PersistenceController {
             @Override
             protected void action() {
                 showPoiController(null);
+            }
+        });
+        
+        registerAction(this.view.getBtnNewBusStopList(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showBusStopListController(null);
             }
         });
         
@@ -308,6 +317,10 @@ public class GoogleMapController extends PersistenceController {
     public void closeView() {
         parentPane.getChildren().remove(view);
     }
+
+    private void addBusStopList(String title) {
+        listBusStopController.addBusStop(title);
+    }
     
     public class JSListener {
         public void log(String text){
@@ -429,7 +442,10 @@ public class GoogleMapController extends PersistenceController {
                 String title = markerItem.getTitle();
                 
                 if(markerItem.getType() == Marker.TYPE_BUS_STOP) {
-                    showBusStopController(title);
+                    if(listBusStopController.isVisible())
+                        addBusStopList(title);
+                    else
+                        showBusStopController(title);
                 }
                 else {
                     showPoiController(title);
@@ -478,14 +494,22 @@ public class GoogleMapController extends PersistenceController {
     
     private void showBusStopController(String busStopName) {
         poiController.closeView();
+        listBusStopController.closeView();
         busStopController.showView(busStopName);
     }
     
     public void showPoiController(String poiName) {
         busStopController.closeView();
+        listBusStopController.closeView();
         poiController.showView(poiName);
     }
     
+    public void showBusStopListController(String busStopListName) {
+        busStopController.closeView();
+        poiController.closeView();
+        listBusStopController.showView();
+    }
+
     private void closeMapScreen() {
         closeView();
     }

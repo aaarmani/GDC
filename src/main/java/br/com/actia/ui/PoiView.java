@@ -44,7 +44,7 @@ public class PoiView extends VBox {
         GridPane inputs = buildInputs();
         HBox buttons = buildButtons();
         
-        this.getChildren().addAll(head, inputs, buttons);        
+        this.getChildren().addAll(head, inputs, buttons);  
     }
 
     private VBox buildHead() {

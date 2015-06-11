@@ -230,7 +230,7 @@ public class BusStopController extends PersistenceController {
     }
     
     void showNewListVideo() {
-        if(listPoiController == null)
+        if(listVideoController == null)
             listVideoController = new ListVideoController(this, parentPane, rb);
         
         listVideoController.showView();
