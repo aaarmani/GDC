@@ -1,4 +1,4 @@
-@CHARSET "UTF-8";
+/* @CHARSET "UTF-8"; */
 @font-face {
   font-family: 'FontAwesome';
   src: url('../fonts/fontawesome-webfont.ttf');
@@ -140,6 +140,27 @@
 .titleLabel {
     -fx-font-size: 14pt;
 }
+.feedView {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 10px;
+    -fx-spacing: 5px;
+    -fx-alignment: center-left;
+}
+.feedTitleText {
+    -fx-font-size: 20px;
+}
+.feedContentText {
+    -fx-font-size: 15px;
+}
+.feedDateText {
+    -fx-font-size: 15px;
+}
+.feedImageView {
+    -fx-width: 100px;
+    -fx-height: 100px;
+    -fx-background-color: #000;
+}
+
 /*
 #504f4f - mais escuro
 #94959b - botões

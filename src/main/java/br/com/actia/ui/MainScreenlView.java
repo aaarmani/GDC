@@ -113,7 +113,7 @@ public class MainScreenlView {
         imgvLogo.setPreserveRatio(true);
         imgvLogo.setSmooth(true);
         imgvLogo.setCache(true);
-        imgvLogo.getStyleClass().add("Img");
+       //imgvLogo.getStyleClass().add("Img");
 
         VBox logoVBox = new VBox();
         logoVBox.getStyleClass().add("LogoPanel");

@@ -11,33 +11,44 @@ import br.com.actia.model.RSS;
 import br.com.actia.ui.RSSView;
 import br.com.actia.validation.RSSValidator;
 import br.com.actia.validation.Validator;
-import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.FileChooser;
 
 import java.util.List;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.feed.synd.SyndImage;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.Iterator;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.scene.image.Image;
+
 public class RSSController extends PersistenceController {
     private RSSView view;
     private final Validator<RSS> validador = new RSSValidator();
     private final Pane parentPane;
-    
-    private File feedFile;
-    
-    // private Media mediaFile = null;
-    // private MediaPlayer mediaPlayer = null;
+    private String feedURL;
     private Boolean feedStarted = false;
-    
     private ResourceBundle rb;
+    private ArrayList<SyndEntry> lstRSS = null;
+    private Image feedImg = null;
+    private Timer timerPlayFeed = null;
     
     public RSSController(AbstractController parent, Pane pane, ResourceBundle rb) {
         super(parent);
@@ -132,14 +143,9 @@ public class RSSController extends PersistenceController {
                 })
         );
         
-        registerAction(this.view.getBtnChooseFeed(), new AbstractAction() {
+        registerAction(this.view.getBtnPreviewFeed(), new AbstractAction() {
             @Override
             protected void action() {
-                chooseXML();
-            }
-            
-            @Override
-            protected void posAction() {
                 loadFeed();
             }
         });
@@ -176,17 +182,68 @@ public class RSSController extends PersistenceController {
         parentPane.getChildren().remove(view);
     }
     
-    private void chooseXML() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Selecione um arquivo de feed RSS");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("RSS", "*.xml", "*.rss", "*.opml"));        
-        feedFile = fileChooser.showOpenDialog(null);
-    }
-    
     private void loadFeed() {
-        if(feedFile != null) {
-            view.getTfFeedPath().setText(feedFile.getName());
-            view.getBtnPlay().setVisible(true);
+        feedURL = this.view.getTfFeedPath().getText();
+        
+        if(feedURL != null && feedURL != "") {
+            view.getTfFeedPath().setText(feedURL.trim());
+            
+            if(this.timerPlayFeed != null) {
+                this.timerPlayFeed.cancel();
+            }
+            
+            this.view.getFeedView().setVisible(false);
+            this.feedStarted = false;
+            this.view.setBtToPlay();
+            this.view.getBtnPlay().setVisible(true);
+            
+            URL url;
+            this.lstRSS = new ArrayList<SyndEntry>();
+
+            // Image rssImageDrawable = null;
+
+            SyndImage syndImage = null;
+            
+            try {
+                url = new URL(feedURL);
+                SyndFeedInput input = new SyndFeedInput();
+
+                SyndFeed feed = input.build(new XmlReader(url));
+                List inputs = feed.getEntries();
+                Iterator itInputs = inputs.iterator();
+
+                try {
+                    System.out.println("####CARREGANDO IMAGEM DO RSS###");
+                    syndImage = feed.getImage();
+                    String link = syndImage.getUrl();
+
+                    System.out.println("#### RSS LINK IMAGE = " + link);
+                    if (link != null && !link.isEmpty()) {
+                        // InputStream is = (InputStream) new URL(link).getContent();
+                        InputStream is = (InputStream)  new URL(link).openStream();//getContent();//feed.getImage();
+                        this.feedImg = new Image(is);
+
+                        // rssImageDrawable = Drawable.createFromStream(is, "src name");
+                    }
+                } catch(Exception rssE) {
+                    rssE.printStackTrace();
+                }
+
+                while(itInputs.hasNext()) {
+                    SyndEntry aux = (SyndEntry) itInputs.next();
+                    this.lstRSS.add(aux);
+                }
+
+                System.out.println("QUANTIDADE DE RSS = " + this.lstRSS.size());
+            } catch (MalformedURLException e) {
+               e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (FeedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
     
@@ -197,49 +254,67 @@ public class RSSController extends PersistenceController {
             feedStop();
     }
     
-    void feedPlay() {
-        if(feedFile == null)
+    private void feedPlay() {
+        if(feedURL == null || feedURL == "")
             return;
         
-        /*
-        mediaFile = new Media(audioFile.toURI().toString());
-        
-        if(mediaFile != null) {
-            mediaPlayer = new MediaPlayer(mediaFile);
-            mediaPlayer.play();
-            mediaStarted = true;
-            this.view.setBtToStop();
+        this.timerPlayFeed = new Timer();
+        timerPlayFeed.scheduleAtFixedRate(new TimerTask() {
+            int rssIndex = 0;
             
-            mediaPlayer.setOnEndOfMedia(new Runnable() {
-                @Override
-                public void run() {
-                    audioStop();
-                }
-            });
-        }
-        */
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    System.out.println("----- RODANDO THREAD -----");
+                    
+                    if(lstRSS != null && lstRSS.size() > 0) {
+                    //while(true) {
+                        final SyndEntry entry = lstRSS.get(rssIndex++);
+                        rssIndex = rssIndex >= lstRSS.size() ? 0 : rssIndex;
+                        
+                        try {
+                            String aux = entry.getTitle();
+
+                            view.getFeedTitleText().setText(getTextFromHtml(aux));
+                            aux = entry.getDescription().getValue();
+                            view.getFeedContentText().setText(getTextFromHtml(aux));
+                            view.getFeedDateText().setText("");
+
+                            //rssImage.setImageDrawable(rssImageDrawable);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        view.getFeedImageView().setImage(feedImg);
+                        view.getFeedImageView().setVisible(true);
+
+                        //imageView.setVisibility(View.GONE);
+                        //rssView.setVisibility(View.VISIBLE);
+                   }
+                });
+            }
+        }, 0, 10000);
+        
+        this.view.getFeedView().setVisible(true);
+        feedStarted = true;
+        this.view.setBtToStop();
     }
     
-    void feedStop() {
-        /*
-        if(mediaPlayer == null)
+    private void feedStop() {
+        if(feedURL == null || feedURL == "") 
             return;
         
-        mediaStarted = false;
+        this.timerPlayFeed.cancel();
+        this.view.getFeedView().setVisible(false);
+        feedStarted = false;
         this.view.setBtToPlay();
-        mediaPlayer.stop();
-        */
     }
 
     @Override
     protected void cleanUp() {
         view.resetForm();
         this.view.getBtnPlay().setVisible(false);
-        
-        /*
-        if(mediaPlayer != null)
-            mediaPlayer.dispose();
-        */
+        this.view.getFeedView().setVisible(false);
         
         closeView();
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
@@ -266,4 +341,25 @@ public class RSSController extends PersistenceController {
         });
     }
     
+    /**
+     * Remove all Html tags from text
+     * @param html with tags
+     * @return String withou html tags
+     */
+    private String getTextFromHtml(String html) {
+        String text = "";
+
+        if(html == null || html.isEmpty()) {
+            return text;
+        }
+        html = html.trim();
+        html = html.replaceAll("<(.*?)\\>"," ");//Removes all items in brackets
+        html = html.replaceAll("<(.*?)\\\n"," ");//Must be undeneath
+        html = html.replaceFirst("(.*?)\\>", " ");//Removes any connected item to the last bracket
+        html = html.replaceAll("&nbsp;"," ");
+        html = html.replaceAll("&amp;"," ");
+        text = html.trim();
+
+        return text;
+    }
 }
