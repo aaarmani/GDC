@@ -1,6 +1,8 @@
 package br.com.actia.app;
 
+import br.com.actia.authenticator.SimpleAuthenticator;
 import br.com.actia.controller.MainScreenController;
+import java.net.Authenticator;
 import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -46,11 +48,17 @@ public class GeradorDeConteudoApp extends Application {
         try {
             ProxySelector.getDefault().select(new URI("http://google.com"));
             
+            String username = "armani";
+            String password = "aa4873";
+            
             System.setProperty("http.proxyHost", "10.0.0.202");
             System.setProperty("http.proxyPort", "3128");
-            System.setProperty("http.proxyUser", "armani");
-            System.setProperty("http.proxyPassword", "aa4873");
+            System.setProperty("http.proxyUser", username);
+            System.setProperty("http.proxyPassword", password);
             System.setProperty("java.net.useSystemProxies", "true");
+            
+            Authenticator.setDefault(new SimpleAuthenticator(username, password));
+            
         } catch (URISyntaxException ex) {
             Logger.getLogger(GeradorDeConteudoApp.class.getName()).log(Level.SEVERE, null, ex);
         }
