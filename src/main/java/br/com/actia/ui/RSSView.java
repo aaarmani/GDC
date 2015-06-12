@@ -2,6 +2,7 @@ package br.com.actia.ui;
 
 import br.com.actia.model.RSS;
 import br.com.actia.validation.MaskTextField;
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,17 +18,21 @@ import java.util.List;
 
 public class RSSView extends VBox {
     private final int MAX_HEIGHT = 600;
-    // private final int VIEWER_SIZE = 300;
     private final int VIEWER_SIZE = 100;
     
     private TextField tfId;
     private MaskTextField tfName;
     private TextField tfFeedPath;
-    private Button btnChooseFeed;
+    private Button btnPreviewFeed;
     private Button btnCancelRSS;
     private Button btnSaveRSS;
     private Button btnDeleteRSS;
-    // private ImageView ivImageView;
+    private HBox feedView;
+    private ImageView feedImageView;
+    private VBox feedContentView;
+    private Label feedTitleText;
+    private Label feedContentText;
+    private Label feedDateText;
     private Button btnPlay;
     private ResourceBundle rb;
     private EntityTable<RSS> table;
@@ -64,13 +70,13 @@ public class RSSView extends VBox {
         
         Label lblFeed = new Label(rb.getString("RSChooseFeed"));
         tfFeedPath = new TextField();
-        btnChooseFeed = new Button(rb.getString("Search"));
-        btnChooseFeed.setId("btnChooseFeed");
-        btnChooseFeed.getStyleClass().add("flatButton");
+        btnPreviewFeed = new Button(rb.getString("Preview"));
+        btnPreviewFeed.setId("btnPreviewFeed");
+        btnPreviewFeed.getStyleClass().add("flatButton");
         
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblName, tfName);
-        grid.addRowGenerics(lblFeed, tfFeedPath, btnChooseFeed, null);
+        grid.addRowGenerics(lblFeed, tfFeedPath, btnPreviewFeed, null);
         
         return grid.build();
     }
@@ -101,22 +107,45 @@ public class RSSView extends VBox {
     
     private VBox buildViewer() {
         Separator separator = new Separator();
-        /*
-        ivImageView = new ImageView();
-        ivImageView.setFitWidth(VIEWER_SIZE);
-        ivImageView.setFitHeight(VIEWER_SIZE);
-        ivImageView.setPreserveRatio(true);
-        ivImageView.setSmooth(true);
-        ivImageView.setCache(true);
-        ivImageView.getStyleClass().add("Img");
-        */
+        
+        feedView = new HBox();
+        feedView.setPrefWidth(VIEWER_SIZE);
+        feedView.setPrefHeight(VIEWER_SIZE);
+        feedView.getStyleClass().add("feedView");
+        
+        feedImageView = new ImageView();
+        //feedImageView.setFitWidth(VIEWER_SIZE);
+        //feedImageView.setFitHeight(VIEWER_SIZE);
+
+        feedImageView.setPreserveRatio(true);
+        feedImageView.setCache(true);
+        /*feedImageView.setSmooth(true);
+        feedImageView.getStyleClass().add("Img");*/
+        feedImageView.getStyleClass().add("feedImageView");
+        // feedImageView.getProperties().
+        
+        feedContentView = new VBox();
+        feedTitleText = new Label();
+        feedContentText = new Label();
+        feedDateText = new Label();
+        
+        feedTitleText.getStyleClass().add("feedTitleText");
+        feedContentText.getStyleClass().add("feedContentText");
+        feedDateText.getStyleClass().add("feedDateText");
+        
+        feedContentView.getChildren().add(feedTitleText);
+        feedContentView.getChildren().add(feedContentText);
+        feedContentView.getChildren().add(feedDateText);
+        
+        feedView.getChildren().add(feedImageView);
+        feedView.getChildren().add(feedContentView);
         
         btnPlay = new Button(rb.getString("Play"));
         btnPlay.setId("btnPlayFeed");
         btnPlay.getStyleClass().add("flatButton");
         setBtToPlay();
         
-        VBox vbox = new VBox(separator/*, ivImageView*/, btnPlay);
+        VBox vbox = new VBox(separator, feedView, btnPlay);
         vbox.getStyleClass().add("viewPane");
         
         return vbox;
@@ -154,12 +183,12 @@ public class RSSView extends VBox {
         this.tfFeedPath = tfFeedPath;
     }
 
-    public Button getBtnChooseFeed() {
-        return btnChooseFeed;
+    public Button getBtnPreviewFeed() {
+        return btnPreviewFeed;
     }
 
-    public void setBtnChooseFeed(Button btnChooseFeed) {
-        this.btnChooseFeed = btnChooseFeed;
+    public void setBtnPreviewFeed(Button btnPreviewFeed) {
+        this.btnPreviewFeed = btnPreviewFeed;
     }
 
     public Button getBtnCancelRSS() {
@@ -178,15 +207,53 @@ public class RSSView extends VBox {
         this.btnSaveRSS = btnSaveRSS;
     }
 
-    /*
-    public ImageView getIvImageView() {
-        return ivImageView;
+    public HBox getFeedView() {
+        return feedView;
     }
     
-    public void setIvImageView(ImageView ivImageView) {
-        this.ivImageView = ivImageView;
+    public void setFeedView(HBox feedView) {
+        this.feedView = feedView;
     }
-    */
+    
+    public ImageView getFeedImageView() {
+        return feedImageView;
+    }
+    
+    public void setFeedImageView(ImageView feedImageView) {
+        this.feedImageView = feedImageView;
+    }
+    
+    public VBox getFeedContentView() {
+        return feedContentView;
+    }
+    
+    public void setFeedContentView(VBox feedContentView) {
+        this.feedContentView = feedContentView;
+    }
+    
+    public Label getFeedTitleText() {
+        return feedTitleText;
+    }
+    
+    public void setFeedTitleText(Label feedTitleText) {
+        this.feedTitleText = feedTitleText;
+    }
+    
+    public Label getFeedContentText() {
+        return feedContentText;
+    }
+    
+    public void setFeedContentText(Label feedContentText) {
+        this.feedContentText = feedContentText;
+    }
+    
+    public Label getFeedDateText() {
+        return feedDateText;
+    }
+    
+    public void setFeedDateText(Label feedDateText) {
+        this.feedDateText = feedDateText;
+    }
     
     public Button getBtnPlay() {
         return btnPlay;
@@ -227,9 +294,7 @@ public class RSSView extends VBox {
         tfId.setText("");
         tfName.setText("");
         tfFeedPath.setText("");
-        /*
-        ivImageView.setImage(null);
-        */
+        feedView.setVisible(false);
         btnDeleteRSS.setVisible(false);
     }
 
