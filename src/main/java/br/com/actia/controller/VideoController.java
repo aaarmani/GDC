@@ -8,10 +8,11 @@ import br.com.actia.dao.VideoDAO;
 import br.com.actia.dao.VideoDAOJPA;
 import br.com.actia.dao.VideoTypeDAO;
 import br.com.actia.dao.VideoTypeDAOJPA;
+import br.com.actia.event.CopyFileEvent;
 import br.com.actia.event.CrudVideoEvent;
+import service.FileToCopy;
 import br.com.actia.model.Video;
 import br.com.actia.model.VideoType;
-import br.com.actia.ui.Dialog;
 import br.com.actia.ui.VideoView;
 import br.com.actia.validation.Validator;
 import br.com.actia.validation.VideoValidator;
@@ -101,7 +102,10 @@ public class VideoController extends PersistenceController {
                                 view.resetForm();
                                 refreshTable();
                                 fireEvent(new CrudVideoEvent(video));
-                                //MOVER ARQUIVO PARA PASTA DO SISTEMA
+                                //Move file to APP Folder
+                                System.out.println("ARQUIVO = " + video.getName() + " - " + video.getName());
+                                FileToCopy ftcpy = new FileToCopy(FileToCopy.TYPE_VIDEO, video.getVideoName(), video.getVideoPath());
+                                fireEvent(new CopyFileEvent(ftcpy));
                                 
                                 if(parent instanceof ListVideoController){
                                     closeView();
@@ -190,7 +194,9 @@ public class VideoController extends PersistenceController {
     
     private void showVideo() {
         if(videoFile != null) {
-            view.getTfVideoPath().setText(videoFile.getName());
+            //view.getTfName().setText(videoFile.getName());
+            view.getTfVideoName().setText(videoFile.getName());
+            view.getTfVideoPath().setText(videoFile.getAbsolutePath());
 
             Media mediaVideo = new Media(videoFile.toURI().toString());
             mediaPlayer = new MediaPlayer(mediaVideo);

@@ -1,7 +1,5 @@
 package br.com.actia.ui;
 
-import br.com.actia.model.ListPoi;
-import br.com.actia.model.Poi;
 import br.com.actia.validation.MaskTextField;
 import java.util.ArrayList;
 import java.util.Collection;

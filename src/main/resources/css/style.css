@@ -92,8 +92,6 @@
     -fx-background-color: #94959b;
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
-    -fx-text-fill: #504f4f;//d8d8d8;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
 }
 .flatButton:hover {
     -fx-background-color: #e1e1e2;

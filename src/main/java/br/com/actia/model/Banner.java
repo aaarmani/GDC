@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -31,16 +32,22 @@ public class Banner implements AbstractEntity, Serializable {
     @NotNull
     @Expose
     private String image;
+    @Transient
+    private String imagePath;
     @Expose
     private String audio;
+    @Transient
+    private String audioPath;
 
     public Banner() {}
     
-    public Banner(Integer id, String name, String imagePath, String audioPath) {
+    public Banner(Integer id, String name, String imageName, String imagePath, String audioName, String audioPath) {
         this.id = id;
         this.name = name;
-        this.image = imagePath;
-        this.audio = audioPath;
+        this.image = imageName;
+        this.imagePath = imagePath;
+        this.audio = audioName;
+        this.audioPath = audioPath;
     }
 
     @Override
@@ -74,6 +81,22 @@ public class Banner implements AbstractEntity, Serializable {
 
     public void setAudio(String Audio) {
         this.audio = Audio;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImageOrigPath(String imageOrigPath) {
+        this.imagePath = imageOrigPath;
+    }
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioOrigPath(String audioOrigPath) {
+        this.audioPath = audioOrigPath;
     }
     
     @Override

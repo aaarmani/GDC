@@ -26,7 +26,9 @@ public class BannerView extends VBox {
     private TextField tfId;
     // private TextField tfName;
     private MaskTextField tfName;
+    private TextField tfImgName;
     private TextField tfImgPath;
+    private TextField tfAudioName;
     private TextField tfAudioPath;
     private Button btnChooseImage;
     private Button btnChooseAudio;
@@ -72,21 +74,24 @@ public class BannerView extends VBox {
         tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblImage = new Label(rb.getString("BNChooseImage"));
-        tfImgPath = new TextField();
+        tfImgName = new TextField();
         btnChooseImage = new Button(rb.getString("Search"));
         btnChooseImage.setId("btnChooseImage");
         btnChooseImage.getStyleClass().add("flatButton");
         
         Label lblAudio = new Label(rb.getString("BNChooseAudio"));
-        tfAudioPath = new TextField();
+        tfAudioName = new TextField();
         btnChooseAudio = new Button(rb.getString("Search"));
         btnChooseAudio.setId("btnChooseAudio");
         btnChooseAudio.getStyleClass().add("flatButton");
         
+        tfImgPath = new TextField();
+        tfAudioPath = new TextField();
+        
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblName, tfName);
-        grid.addRowGenerics(lblImage, tfImgPath, btnChooseImage, null);
-        grid.addRowGenerics(lblAudio, tfAudioPath, btnChooseAudio, null);
+        grid.addRowGenerics(lblImage, tfImgName, btnChooseImage, null);
+        grid.addRowGenerics(lblAudio, tfAudioName, btnChooseAudio, null);
         
         return grid.build();
     }
@@ -160,12 +165,28 @@ public class BannerView extends VBox {
         this.tfName = tfName;
     }
     
+    public TextField getTfImgName() {
+        return tfImgName;
+    }
+
+    public void setTfImgName(TextField tfImgName) {
+        this.tfImgName = tfImgName;
+    }
+
     public TextField getTfImgPath() {
         return tfImgPath;
     }
 
     public void setTfImgPath(TextField tfImgPath) {
         this.tfImgPath = tfImgPath;
+    }
+
+    public TextField getTfAudioName() {
+        return tfAudioName;
+    }
+
+    public void setTfAudioName(TextField tfAudioName) {
+        this.tfAudioName = tfAudioName;
     }
 
     public TextField getTfAudioPath() {
@@ -175,7 +196,7 @@ public class BannerView extends VBox {
     public void setTfAudioPath(TextField tfAudioPath) {
         this.tfAudioPath = tfAudioPath;
     }
-
+    
     public Button getBtnChooseImage() {
         return btnChooseImage;
     }
@@ -243,22 +264,35 @@ public class BannerView extends VBox {
             name = tfName.getText();
         }
         
+        String imageName = null;
+        if(!tfImgName.getText().trim().isEmpty()) {
+            imageName = tfImgName.getText();
+        }
+        
         String imagePath = null;
         if(!tfImgPath.getText().trim().isEmpty()) {
             imagePath = tfImgPath.getText();
+        }
+        
+        String audioName = null;
+        if(tfAudioName.getText() != null && !tfAudioName.getText().trim().isEmpty()) {
+            audioName = tfAudioName.getText();
         }
         
         String audioPath = null;
         if(tfAudioPath.getText() != null && !tfAudioPath.getText().trim().isEmpty()) {
             audioPath = tfAudioPath.getText();
         }
-        return new Banner(id, name, imagePath, audioPath);
+        
+        return new Banner(id, name, imageName, imagePath, audioName, audioPath);
     }
 
     public void resetForm() {
         tfId.setText("");
         tfName.setText("");
+        tfImgName.setText("");
         tfImgPath.setText("");
+        tfAudioName.setText("");
         tfAudioPath.setText("");
         ivImageView.setImage(null);
         btnDeleteBanner.setVisible(false);
@@ -286,8 +320,10 @@ public class BannerView extends VBox {
             btnDeleteBanner.setVisible(true);
         }
         tfName.setText(banner.getName());
-        tfImgPath.setText(banner.getImage());
-        tfAudioPath.setText(banner.getAudio());
+        tfImgName.setText(banner.getImage());
+        tfImgPath.setText(banner.getImagePath());
+        tfAudioName.setText(banner.getAudio());
+        tfAudioPath.setText(banner.getAudioPath());
     }
     
 }
