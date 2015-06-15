@@ -119,6 +119,7 @@ public class RouteController extends PersistenceController {
                                 @Override
                                 protected void posAction() {
                                     view.resetForm();
+                                    reloadAllLists();
                                     refreshTable();
                                     //cleanUp();
                                     //MOVER ARQUIVO PARA PASTA DO SISTEMA
@@ -148,6 +149,7 @@ public class RouteController extends PersistenceController {
                     protected void posAction() {
                         view.resetForm();
                         refreshTable();
+                        reloadAllLists();
                         fireEvent(new CrudRouteEvent(route));
                     }
                     @Override
@@ -310,16 +312,20 @@ public class RouteController extends PersistenceController {
     @Override
     protected void cleanUp() {
         view.resetForm();
-        loadListBannerList();
-        loadListRSSList();
-        loadListVideoList();
-        loadListBusStopList();
+        reloadAllLists();
         
         // this.view.getBtnPlay().setVisible(false);
         // this.view.getFeedView().setVisible(false);
         
         closeView();
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private void reloadAllLists() {
+        loadListBannerList();
+        loadListRSSList();
+        loadListVideoList();
+        loadListBusStopList();
     }
     
     private void loadListBannerList() {
