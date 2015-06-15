@@ -492,7 +492,7 @@ public class GoogleMapController extends PersistenceController {
         });
     }
     
-    private void showBusStopController(String busStopName) {
+    public void showBusStopController(String busStopName) {
         poiController.closeView();
         listBusStopController.closeView();
         busStopController.showView(busStopName);

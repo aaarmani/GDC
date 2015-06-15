@@ -28,6 +28,7 @@ public class MainScreenlView {
     private ImageView imgEN;
     private ImageView imgUser;
     
+    private Button btnRoute;
     private Button btnMapEntitys;
     private Button btnBanner;
     private Button btnVideo;
@@ -128,6 +129,7 @@ public class MainScreenlView {
     private VBox getMenu() {
         VBox vbMenu = new VBox();
         
+        btnRoute = newMenuItem(rb.getString("Route"));
         btnMapEntitys = newMenuItem(rb.getString("Map"));
         btnBanner = newMenuItem(rb.getString("Banner"));
         btnVideo = newMenuItem(rb.getString("Video"));
@@ -137,7 +139,7 @@ public class MainScreenlView {
         btnListVideo = newMenuItem(rb.getString("ListVideo"));
         btnListRSS = newMenuItem(rb.getString("ListRSS"));
         
-        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS);
+        vbMenu.getChildren().addAll(btnRoute, btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS);
         return vbMenu;
     }
     
@@ -262,6 +264,14 @@ public class MainScreenlView {
     
     public void setImgUser(ImageView imgUser) {
         this.imgUser = imgUser;
+    }
+    
+    public Button getBtnRoute() {
+        return btnRoute;
+    }
+    
+    public void setBtnRoute(Button btnRoute) {
+        this.btnRoute = btnRoute;
     }
     
     public Button getBtnMapEntitys() {

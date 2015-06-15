@@ -78,6 +78,16 @@ public class ListBusStopController extends PersistenceController {
             protected void action() {
                 closeView();
             }
+            
+            @Override
+            protected void posAction() {
+                if (parent instanceof GoogleMapController && parent.getParentController() instanceof RouteController) {
+                    GoogleMapController googleMapCtrl = (GoogleMapController) parent;
+                    googleMapCtrl.closeView();
+
+                    closeView();
+                }
+            }
         });
         
         registerAction(this.view.getBtnSave(),
@@ -114,6 +124,13 @@ public class ListBusStopController extends PersistenceController {
                             view.resetForm();
                             refreshForm(null);
                             obsListBusStop.add(listBusStopAux);
+                            
+                            if (parent instanceof GoogleMapController && parent.getParentController() instanceof RouteController) {
+                                GoogleMapController googleMapCtrl = (GoogleMapController) parent;
+                                googleMapCtrl.closeView();
+
+                                closeView();
+                            }
                         }
                     }))
         );

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
  */
 public class MainScreenController extends PersistenceController {
     private final MainScreenlView view;
+    private RouteController routeController;
     private GoogleMapController googleMapController;
     private BannerController bannerController;
     private VideoController videoController;
@@ -28,6 +29,13 @@ public class MainScreenController extends PersistenceController {
         loadPersistenceContext();
         this.rb = rb;
         this.view = new MainScreenlView(mainStage, rb);
+        
+        registerAction(this.view.getBtnRoute(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showRouteController();
+            }
+        });
         
         registerAction(this.view.getBtnMapEntitys(), new AbstractAction() {
             @Override
@@ -107,6 +115,13 @@ public class MainScreenController extends PersistenceController {
         });
     }
 
+    private void showRouteController() {
+        cleanUpOldControllers();
+        if(routeController == null)
+            routeController = new RouteController(this, this.view.getPaneCenter(), this.rb);
+        routeController.showView();
+    }
+    
     private void showGoogleMapController() {
         cleanUpOldControllers();
         if(googleMapController == null)
@@ -165,6 +180,10 @@ public class MainScreenController extends PersistenceController {
     
     private void cleanUpOldControllers() {
 
+        if(routeController != null) {
+            routeController.cleanUp();
+        }
+        
         if(googleMapController != null) {
             googleMapController.cleanUp();
         }

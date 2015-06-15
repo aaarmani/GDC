@@ -99,6 +99,10 @@ public class ListVideoController extends PersistenceController {
                             
                             if(parent instanceof BusStopController){
                                 closeView();
+                            } 
+                            
+                            if(parent instanceof RouteController){
+                                closeView();
                             }
                         }
                     }))
