@@ -2,6 +2,9 @@
 package br.com.actia.controller;
 
 import br.com.actia.action.AbstractAction;
+import br.com.actia.event.AbstractEventListener;
+import br.com.actia.event.CopyFileEvent;
+import service.FileToCopy;
 import br.com.actia.ui.MainScreenlView;
 import br.com.actia.util.JPAUtil;
 import java.util.Locale;
@@ -24,16 +27,25 @@ public class MainScreenController extends PersistenceController {
     private ListBannerController listBannerController;
     private ListVideoController listVideoController;
     private ListRSSController listRSSController;
+    private ActionScreenController actionController;
     
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
         this.rb = rb;
         this.view = new MainScreenlView(mainStage, rb);
+        actionController = new ActionScreenController(this, this.view.getPaneCenter(), this.rb);
         
         registerAction(this.view.getBtnRoute(), new AbstractAction() {
             @Override
             protected void action() {
                 showRouteController();
+            }
+        });        
+        
+        registerAction(this.view.getBtnDowloadService(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showActionScreenController();
             }
         });
         
@@ -113,6 +125,14 @@ public class MainScreenController extends PersistenceController {
                 setLanguage(new Locale("es",""));
             }
         });
+        
+        registerEventListener(CopyFileEvent.class, new AbstractEventListener<CopyFileEvent>() {
+            @Override
+            public void handleEvent(CopyFileEvent event) {
+                FileToCopy ftcpy = event.getTarget();
+                actionController.startDownload(ftcpy.getOrigFile(), ftcpy.getDestFile());
+            }
+        });
     }
 
     private void showRouteController() {
@@ -178,6 +198,12 @@ public class MainScreenController extends PersistenceController {
         listRSSController.showView();
     }
     
+    private void showActionScreenController() {
+        if(actionController == null)
+            actionController = new ActionScreenController(this, this.view.getPaneCenter(), this.rb);
+        actionController.showView();
+    }
+    
     private void cleanUpOldControllers() {
 
         if(routeController != null) {
@@ -214,6 +240,10 @@ public class MainScreenController extends PersistenceController {
         
         if(listRSSController != null) {
             listRSSController.cleanUp();
+        }
+        
+        if(actionController != null) {
+            actionController.cleanUp();
         }
     }
     

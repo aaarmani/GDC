@@ -6,8 +6,10 @@ import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
 import br.com.actia.dao.BannerDAO;
 import br.com.actia.dao.BannerDAOJPA;
+import br.com.actia.event.CopyFileEvent;
 import br.com.actia.event.CrudBannerEvent;
 import br.com.actia.model.Banner;
+import service.FileToCopy;
 import br.com.actia.ui.BannerView;
 import br.com.actia.validation.BannerValidator;
 import br.com.actia.validation.Validator;
@@ -99,7 +101,7 @@ public class BannerController extends PersistenceController {
                                     //cleanUp();
                                     //MOVER ARQUIVO PARA PASTA DO SISTEMA
                                     fireEvent(new CrudBannerEvent(banner));
-                                    
+                                    copyFileToDisk(banner);
                                     if(parent instanceof ListBannerController){
                                         closeView();
                                     }
@@ -202,10 +204,10 @@ public class BannerController extends PersistenceController {
     
     private void showImage() {
         if(imageFile != null) {
-            view.getTfImgPath().setText(imageFile.getName());
-            Image img = new Image(imageFile.toURI().toString());
-
-            view.getIvImageView().setImage(img);
+            view.getTfImgName().setText(imageFile.getName());
+            view.getTfImgPath().setText(imageFile.getAbsolutePath());
+            
+            view.getIvImageView().setImage(new Image(imageFile.toURI().toString()));
         }
     }
     
@@ -220,7 +222,8 @@ public class BannerController extends PersistenceController {
     
     private void loadAudio() {
         if(audioFile != null) {
-            view.getTfAudioPath().setText(audioFile.getName());
+            view.getTfAudioName().setText(audioFile.getName());
+            view.getTfAudioPath().setText(audioFile.getAbsolutePath());
             view.getBtnPlay().setVisible(true);
         }
     }
@@ -292,6 +295,20 @@ public class BannerController extends PersistenceController {
                 view.refreshTable(dao.getAll());
             }
         });
+    }
+    
+    /**
+     * 
+     * @param banner
+     */
+    private void copyFileToDisk(Banner banner) {
+        FileToCopy fcpy = new FileToCopy(FileToCopy.TYPE_IMAGE, banner.getImage(), banner.getImagePath());
+        fireEvent(new CopyFileEvent(fcpy));
+        
+        if(banner.getAudio() != null && !banner.getAudio().isEmpty() && !banner.getAudioPath().isEmpty()) {
+            fcpy = new FileToCopy(FileToCopy.TYPE_AUDIO, banner.getAudio(), banner.getAudioPath());
+            fireEvent(new CopyFileEvent(fcpy));
+        }
     }
     
 }

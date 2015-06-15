@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -37,15 +38,18 @@ public class Video implements AbstractEntity, Serializable {
     private VideoType type;
     @NotNull
     @Expose
-    private String filePath;
+    private String videoName;
+    @Transient
+    private String videoPath;
 
     public Video() {}
 
-    public Video(Integer id, VideoType type, String name, String filePath) {
+    public Video(Integer id, VideoType type, String name, String videoName, String videoPath) {
         this.id = id;
         this.type = type;
         this.name = name;
-        this.filePath = filePath;
+        this.videoName = videoName;
+        this.videoPath = videoPath;
     }
     
     @Override
@@ -73,12 +77,20 @@ public class Video implements AbstractEntity, Serializable {
         this.name = name;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getVideoName() {
+        return videoName;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setVideoName(String videoName) {
+        this.videoName = videoName;
+    }
+
+    public String getVideoPath() {
+        return videoPath;
+    }
+
+    public void setVideoPath(String videoPath) {
+        this.videoPath = videoPath;
     }
     
     @Override

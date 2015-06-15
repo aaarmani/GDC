@@ -26,6 +26,7 @@ public class VideoView  extends VBox {
     
     private TextField tfId;
     private MaskTextField tfName;
+    private TextField tfVideoName;
     private TextField tfVideoPath;
     private Button btnChooseVideo;
     private Button btnCancelVideo;
@@ -72,6 +73,7 @@ public class VideoView  extends VBox {
         cbVideoType = new ComboBox<>();
         
         Label lblImage = new Label(rb.getString("VDChooseVideo"));
+        tfVideoName = new TextField();
         tfVideoPath = new TextField();
         btnChooseVideo = new Button(rb.getString("Search"));
         btnChooseVideo.setId("btnChooseVideo");
@@ -79,7 +81,7 @@ public class VideoView  extends VBox {
         
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblName, tfName, lblType, cbVideoType);
-        grid.addRowGenerics(lblImage, tfVideoPath, btnChooseVideo, null);
+        grid.addRowGenerics(lblImage, tfVideoName, btnChooseVideo, null);
         
         return grid.build();
     }
@@ -148,6 +150,11 @@ public class VideoView  extends VBox {
             name = tfName.getText();
         }
         
+        String videoName = null;
+        if(!tfVideoName.getText().trim().isEmpty()) {
+            videoName = tfVideoName.getText();
+        }
+        
         String videoPath = null;
         if(!tfVideoPath.getText().trim().isEmpty()) {
             videoPath = tfVideoPath.getText();
@@ -158,7 +165,7 @@ public class VideoView  extends VBox {
             videoType = cbVideoType.getSelectionModel().getSelectedItem();
         }
 
-        return new Video(id, videoType, name, videoPath);
+        return new Video(id, videoType, name, videoName, videoPath);
     }
     
     public void loadVideoToEdit(Video video) {
@@ -167,13 +174,16 @@ public class VideoView  extends VBox {
             btnDeleteVideo.setVisible(true);
         }
         tfName.setText(video.getName());
-        tfVideoPath.setText(video.getFilePath());
+        tfVideoName.setText(video.getVideoName());
+        tfVideoPath.setText(video.getVideoPath());
+        
         cbVideoType.getSelectionModel().select(video.getType());
     }
 
     public void resetForm() {
         tfId.setText("");
         tfName.setText("");
+        tfVideoName.setText("");
         tfVideoPath.setText("");
         cbVideoType.getSelectionModel().clearSelection();
         btnDeleteVideo.setVisible(false);
@@ -204,6 +214,14 @@ public class VideoView  extends VBox {
 
     public void setTfName(MaskTextField tfName) {
         this.tfName = tfName;
+    }
+
+    public TextField getTfVideoName() {
+        return tfVideoName;
+    }
+
+    public void setTfVideoName(TextField tfVideoName) {
+        this.tfVideoName = tfVideoName;
     }
 
     public TextField getTfVideoPath() {

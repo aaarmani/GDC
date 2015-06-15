@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -37,6 +38,7 @@ public class MainScreenlView {
     private Button btnListBanner;
     private Button btnListVideo;
     private Button btnListRSS;
+    private Button btnDowloadService;
     
     private Button btnBR;
     private Button btnEN;
@@ -70,9 +72,7 @@ public class MainScreenlView {
         stage.show();
     }
 
-    private void inicializaComponentes() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    private void inicializaComponentes() {}
 
     private BorderPane getBorderPaneMenu() {
         BorderPane borderPane = new BorderPane();
@@ -96,7 +96,7 @@ public class MainScreenlView {
         vbox.setMinWidth(50);
         vbox.setMaxWidth(50);
         vbox.getStyleClass().add("MenuMain");
-
+        
         vbox.getChildren().add(getUserLogo());
 
         return vbox;
@@ -138,8 +138,9 @@ public class MainScreenlView {
         btnListBanner = newMenuItem(rb.getString("ListBanner"));
         btnListVideo = newMenuItem(rb.getString("ListVideo"));
         btnListRSS = newMenuItem(rb.getString("ListRSS"));
+        btnDowloadService = newMenuItem("Download");
         
-        vbMenu.getChildren().addAll(btnRoute, btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS);
+        vbMenu.getChildren().addAll(btnRoute, btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS, btnDowloadService);
         return vbMenu;
     }
     
@@ -337,6 +338,14 @@ public class MainScreenlView {
     public void setBtnListRSS(Button btnListRSS) {
         this.btnListRSS = btnListRSS;
     }
+
+    public Button getBtnDowloadService() {
+        return btnDowloadService;
+    }
+
+    public void setBtnDowloadService(Button btnDowloadService) {
+        this.btnDowloadService = btnDowloadService;
+    }
     
     public VBox getVboxAction() {
         return vboxAction;
@@ -385,4 +394,4 @@ public class MainScreenlView {
     public void setRb(ResourceBundle rb) {
         this.rb = rb;
     }
-}
+    }

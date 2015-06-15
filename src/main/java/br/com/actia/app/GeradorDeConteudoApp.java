@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -25,6 +26,7 @@ public class GeradorDeConteudoApp extends Application {
     @Override
     public void start(Stage stage){
         try {
+            Font.loadFont(GeradorDeConteudoApp.class.getResource("/fonts/fontawesome-webfont.ttf").toExternalForm(), 12);
             //Locale.setDefault(Locale.ENGLISH);
             rb = ResourceBundle.getBundle("languages.messages");
         }catch (Exception e) {
