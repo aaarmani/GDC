@@ -1,6 +1,7 @@
 package br.com.actia.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,21 +27,25 @@ public class Route implements AbstractEntity, Serializable {
     @Size(max=16)
     @Column(unique=true, nullable=false)
     @Expose
+    @SerializedName("name")
     private String name;
     @Size(max=48)
-    @Expose
     private String description;
     @ManyToOne @JoinColumn(name="lst_banner_id", referencedColumnName="id")
     @Expose
+    @SerializedName("bannerPath")
     private ListBanner banners;
     @ManyToOne @JoinColumn(name="lst_rss_id", referencedColumnName="id")
     @Expose
+    @SerializedName("rssPath")
     private ListRSS RSSs;
     @ManyToOne @JoinColumn(name="lst_video_id", referencedColumnName="id")
     @Expose
+    @SerializedName("videoPath")
     private ListVideo videos;
     @ManyToOne @JoinColumn(name="lst_bus_stop_id", referencedColumnName="id")
     @Expose
+    @SerializedName("gpsPointPath")
     private ListBusStop busStops;
 
     public Route(){

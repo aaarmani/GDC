@@ -14,7 +14,7 @@ public class ListVideoAdapter extends TypeAdapter<ListVideo> {
 
     @Override
     public void write(JsonWriter writer, ListVideo listVideo) throws IOException {
-        writer.value(listVideo.getName());
+        writer.value(listVideo.getName() + ".json");
     }
 
     @Override

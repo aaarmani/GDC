@@ -1,5 +1,6 @@
 package br.com.actia.model;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,8 +23,10 @@ public class RSS implements AbstractEntity, Serializable {
     @NotNull
     @Size(max=16)
     @Column(unique=true, nullable=false) 
+    @Expose
     private String name;
     @NotNull
+    @Expose
     private String path;
 
     public RSS() {}
