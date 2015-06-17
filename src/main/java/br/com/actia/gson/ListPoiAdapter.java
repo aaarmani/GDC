@@ -21,7 +21,21 @@ public class ListPoiAdapter extends TypeAdapter<ListPoi>{
     
     @Override
     public void write(JsonWriter writer, ListPoi listPoi) throws IOException {
-        embedded.toJson(embedded.toJsonTree(listPoi.getListPoi()), writer);
+        // embedded.toJson(embedded.toJsonTree(listPoi.getListPoi()), writer);
+        
+        writer.beginArray();
+        
+        for(Poi poi: listPoi.getListPoi()){  
+            if(poi != null) {
+                System.out.println("poi.getName(): " + poi.getName());
+            }
+            writer.beginObject();
+            writer.name("name").value(poi.getName());
+            writer.name("type").value(poi.getType().getType());
+            writer.endObject();
+        }
+        
+        writer.endArray();
     }
 
     @Override

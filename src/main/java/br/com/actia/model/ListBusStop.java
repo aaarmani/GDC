@@ -1,6 +1,7 @@
 package br.com.actia.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -30,6 +31,7 @@ public class ListBusStop implements AbstractEntity, Serializable {
     @NotNull
     @ManyToMany @JoinColumn(name="busstop_id", referencedColumnName="id")
     @Expose
+    @SerializedName("listGpsPoint")
     private List<BusStop> listBusStop;
     
     public ListBusStop() {}

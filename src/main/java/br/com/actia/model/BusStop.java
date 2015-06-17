@@ -1,6 +1,7 @@
 package br.com.actia.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,6 @@ public class BusStop implements AbstractEntity, Serializable {
     @Expose
     private String name;
     @Size(max=48)
-    @Expose
     private String description;
     @NotNull
     @Expose
@@ -51,6 +51,7 @@ public class BusStop implements AbstractEntity, Serializable {
     private ListPoi pois;
     @ManyToOne @JoinColumn(name="lst_video_id", referencedColumnName="id")
     @Expose
+    @SerializedName("videosPath")
     private ListVideo videos;
 
     public BusStop(){
