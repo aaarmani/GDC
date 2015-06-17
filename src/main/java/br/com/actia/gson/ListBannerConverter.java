@@ -3,22 +3,17 @@ package br.com.actia.gson;
 import br.com.actia.model.ListBanner;
 import br.com.actia.model.Banner;
 
-public class ListBannerConverter {
-    private final ListBanner listBanner;
-
+public class ListBannerConverter extends AbstractConverter{
     public ListBannerConverter(ListBanner listBanner) {
-        this.listBanner = listBanner;
-    }
-    /**
-     * Convert ListBanner in JSON String
-     * @return String JSON
-     */
-    public String convert() {
-        GsonGenerator<ListBanner> gsonGen = new GsonGenerator<>();
+        super(listBanner);
         
-        gsonGen.addAdapter(Banner.class, new BannerAdapter());
-        
-        return gsonGen.expToJson(listBanner);
+        this.MAIN_DIRECTORY = "banner";
+        this.buildAdapters();
+        this.path = this.CONTENT_FILES_DIRECTORY + this.SEPARATOR_CHAR + this.MAIN_DIRECTORY;
+        this.filePath = this.path + this.SEPARATOR_CHAR + ((ListBanner)this.Entity).getName() + ".json";
     }
     
+    public void buildAdapters(){
+        this.gsonGen.addAdapter(Banner.class, new BannerAdapter());
+    }
 }

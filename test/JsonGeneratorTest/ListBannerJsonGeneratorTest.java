@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GsonTest;
+package JsonGeneratorTest;
 
-import br.com.actia.gson.AbstractConverter;
 import br.com.actia.gson.ListBannerConverter;
 import br.com.actia.model.ListBanner;
 import br.com.actia.model.Banner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListBannerConverterTest {
+public class ListBannerJsonGeneratorTest {
     public static void main(String[] args) {
         ListBanner listBanner = new ListBanner();
         listBanner.setId(78);
@@ -43,10 +42,10 @@ public class ListBannerConverterTest {
         
         listBanner.setListBanner(banners);
         
-        AbstractConverter listBannerConverter = new ListBannerConverter(listBanner);
-        String conversion = listBannerConverter.convert();
+        ListBannerConverter listBannerConverter = new ListBannerConverter(listBanner);
+        String pathCreated = listBannerConverter.generate();
         
-        System.out.println("Conversion: \n");
-        System.out.println(conversion);
+        System.out.println("Created file: \n");
+        System.out.println(pathCreated);
     }
 }
