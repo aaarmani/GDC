@@ -25,7 +25,6 @@ public class ListBanner implements AbstractEntity, Serializable {
     private String name;
     @NotNull
     @Size(max=48)
-    @Expose
     private String description;
     @NotNull
     @ManyToMany @JoinColumn(name="banner_id", referencedColumnName="id")
