@@ -2,24 +2,18 @@ package br.com.actia.gson;
 
 import br.com.actia.model.ListVideo;
 import br.com.actia.model.Video;
-import br.com.actia.model.VideoType;
 
-public class ListVideoConverter {
-    private final ListVideo listVideo;
-
+public class ListVideoConverter extends AbstractConverter{
     public ListVideoConverter(ListVideo listVideo) {
-        this.listVideo = listVideo;
-    }
-    /**
-     * Convert ListVideo in JSON String
-     * @return String JSON
-     */
-    public String convert() {
-        GsonGenerator<ListVideo> gsonGen = new GsonGenerator<>();
+        super(listVideo);
         
-        gsonGen.addAdapter(Video.class, new VideoAdapter());
-        
-        return gsonGen.expToJson(listVideo);
+        this.MAIN_DIRECTORY = "video";
+        this.buildAdapters();
+        this.path = this.CONTENT_FILES_DIRECTORY + this.SEPARATOR_CHAR + this.MAIN_DIRECTORY;
+        this.filePath = this.path + this.SEPARATOR_CHAR + ((ListVideo)this.Entity).getName() + ".json";
     }
     
+    public void buildAdapters(){
+        gsonGen.addAdapter(Video.class, new VideoAdapter());
+    }
 }
