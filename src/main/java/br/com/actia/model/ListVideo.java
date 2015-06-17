@@ -37,7 +37,6 @@ public class ListVideo implements AbstractEntity, Serializable {
     private String name;
     @NotNull
     @Size(max=48)
-    @Expose
     private String description;
     @NotNull
     @ManyToMany @JoinColumn(name="video_id", referencedColumnName="id")
