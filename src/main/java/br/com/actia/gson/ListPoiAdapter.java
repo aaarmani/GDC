@@ -26,9 +26,6 @@ public class ListPoiAdapter extends TypeAdapter<ListPoi>{
         writer.beginArray();
         
         for(Poi poi: listPoi.getListPoi()){  
-            if(poi != null) {
-                System.out.println("poi.getName(): " + poi.getName());
-            }
             writer.beginObject();
             writer.name("name").value(poi.getName());
             writer.name("type").value(poi.getType().getType());
