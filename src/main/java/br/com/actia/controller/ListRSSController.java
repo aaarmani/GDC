@@ -92,6 +92,10 @@ public class ListRSSController extends PersistenceController {
                             resetForm();
                             refreshTable();
                             fireEvent(new CrudListRSSEvent(listRSS));
+                            
+                            if(parent instanceof RouteController){
+                                closeView();
+                            }
                         }
                     }))
         );

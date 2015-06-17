@@ -93,11 +93,9 @@ public class ListBannerController extends PersistenceController {
                             refreshTable();
                             fireEvent(new CrudListBannerEvent(listBanner));
                             
-                            /*
-                            if(parent instanceof BusStopController){
+                            if(parent instanceof RouteController){
                                 closeView();
                             }
-                            */
                         }
                     }))
         );
