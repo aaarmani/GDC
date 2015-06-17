@@ -6,7 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.geometry.Pos;
+import org.controlsfx.control.Notifications;
 
 /**
  *
@@ -31,8 +34,6 @@ public class DownloadFileTask extends Task<Integer> {
             filesIsOK();
             diskIsOK();
             createDestFile();
-            
-            //Start Thread to copy file
         } catch(Exception e) {
             System.out.println(e.getMessage());
             updateMessage(e.getMessage());
@@ -40,7 +41,7 @@ public class DownloadFileTask extends Task<Integer> {
         }
        
         updateMessage(rb.getString("FILE_COPY"));
-        
+        //Start Thread to copy file
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -50,20 +51,45 @@ public class DownloadFileTask extends Task<Integer> {
         thread.setDaemon(true);
         thread.start();
         
+        //Update download file progress
         double orgiSize = origFile.length();
-        double destSize;
-        long cnt = 0;
+        double destSize = 0;
         do {
             destSize = destFile.length();
             updateProgress((100*(destSize/orgiSize)), 100);
+            if(thread.getState() == Thread.State.TERMINATED)
+                break;
+            
             Thread.sleep(20);
-            cnt++;
         } while(orgiSize > destSize);
 
-        updateMessage(rb.getString("FILE_CPSUCCESS"));
+        //File copy OK
+        if(destSize >= orgiSize) {
+            final String msg = rb.getString("FILE_CPSUCCESS") + " " + origFile.getName();
+            
+            updateMessage(msg);
+            Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                    Notifications.create().title(rb.getString("FILE_COPIED")).text(msg).position(Pos.TOP_RIGHT).showConfirm();
+                }
+            });
+        }
+        //File copy ERROR
+        else {
+            final String msg = rb.getString("FILE_CPERROR") + " " + origFile.getName();
+            
+            updateMessage(msg);
+            Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                    Notifications.create().title(rb.getString("FILE_COPIED")).text(msg).position(Pos.TOP_RIGHT).showError();
+                }
+            });
+        }
+        
         Thread.sleep(2000);
-
-        return null;
+        return 0;
     }
 
     private void filesIsOK() throws InterruptedException {
@@ -107,7 +133,7 @@ public class DownloadFileTask extends Task<Integer> {
         
         destFile.createNewFile();
     }
-
+    
     private void copyFile() {
         FileChannel inChannel = null;
         FileChannel outChannel = null;
@@ -117,9 +143,8 @@ public class DownloadFileTask extends Task<Integer> {
             outChannel = new FileOutputStream(destFile).getChannel();
 
             inChannel.transferTo(0, inChannel.size(), outChannel);
-            
-            //Banner indicando OK
         } catch(Exception e) {
+  
         } finally {
             try {
                 if(inChannel != null)

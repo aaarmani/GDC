@@ -103,7 +103,6 @@ public class VideoController extends PersistenceController {
                                 refreshTable();
                                 fireEvent(new CrudVideoEvent(video));
                                 //Move file to APP Folder
-                                System.out.println("ARQUIVO = " + video.getName() + " - " + video.getName());
                                 FileToCopy ftcpy = new FileToCopy(FileToCopy.TYPE_VIDEO, video.getVideoName(), video.getVideoPath());
                                 fireEvent(new CopyFileEvent(ftcpy));
                                 

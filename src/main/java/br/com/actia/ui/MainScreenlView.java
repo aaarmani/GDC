@@ -21,7 +21,7 @@ public class MainScreenlView {
 
     private Scene mainScene;
     private BorderPane bpMenu;
-    private VBox vboxAction;
+    private BorderPane bpAction;
     private Pane paneCenter;
     private ImageView imgvLogo;
     private ImageView imgBR;
@@ -55,12 +55,12 @@ public class MainScreenlView {
         mainScene.getStylesheets().add("css/style.css");
 
         bpMenu = getBorderPaneMenu();
-        vboxAction = createVboxAction();
+        bpAction = createBpAction();
         paneCenter = createPaneCenter();
 
         borderPane.setLeft(bpMenu);
         borderPane.setCenter(paneCenter);
-        borderPane.setRight(vboxAction);
+        borderPane.setRight(bpAction);
 
         stage.setTitle(rb.getString("MainFrameTitle"));
         stage.setWidth(1000);
@@ -90,15 +90,16 @@ public class MainScreenlView {
         return new Pane();
     }
         
-    private VBox createVboxAction() {
-        VBox vbox = new VBox();
-        vbox.setMinWidth(50);
-        vbox.setMaxWidth(50);
-        vbox.getStyleClass().add("MenuMain");
+    private BorderPane createBpAction() {
+        BorderPane bpAct = new BorderPane();
+        bpAct.setMinWidth(50);
+        bpAct.setMaxWidth(50);
+        bpAct.getStyleClass().add("MenuMain");
         
-        vbox.getChildren().add(getUserLogo());
-
-        return vbox;
+        bpAct.setTop(getUserLogo());
+        bpAct.setBottom(getDownloadButton());
+        
+        return bpAct;
     }
 
     /**
@@ -136,9 +137,8 @@ public class MainScreenlView {
         btnListBanner = newMenuItem(rb.getString("ListBanner"));
         btnListVideo = newMenuItem(rb.getString("ListVideo"));
         btnListRSS = newMenuItem(rb.getString("ListRSS"));
-        btnDowloadService = newMenuItem("Download");
         
-        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS, btnDowloadService);
+        vbMenu.getChildren().addAll(btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS);
         return vbMenu;
     }
     
@@ -191,6 +191,30 @@ public class MainScreenlView {
         return vbox;
     }
     
+    private VBox getDownloadButton() {
+        Image downloadImg = new Image("download.png");
+        ImageView imgvDownload = new ImageView(downloadImg);
+        imgvDownload.setFitWidth(30);
+        imgvDownload.setFitHeight(30);
+        imgvDownload.setPreserveRatio(true);
+        imgvDownload.setSmooth(true);
+        imgvDownload.setCache(true);
+        btnDowloadService = new Button(null, imgvDownload);
+        btnDowloadService.setMinWidth(50);
+        btnDowloadService.setMaxWidth(50);
+        btnDowloadService.setMinHeight(50);
+        btnDowloadService.setMaxHeight(50);
+        btnDowloadService.getStyleClass().add("flatButton");
+        btnDowloadService.getStyleClass().add("flatIcon");
+        btnDowloadService.setId("btnDownloadService");
+        
+        VBox vbox = new VBox();
+        vbox.getStyleClass().add("Img");
+        vbox.getChildren().add(btnDowloadService);
+        
+        return vbox;
+    }
+    
     private Button newMenuItem(String item) {
         Button btn = new Button(item);
         btn.setMinSize(150, 40);
@@ -217,12 +241,12 @@ public class MainScreenlView {
         this.bpMenu = bpMenu;
     }
 
-    public VBox getVbAction() {
-        return vboxAction;
+    public BorderPane getBpAction() {
+        return bpAction;
     }
 
-    public void setVbAction(VBox vbAction) {
-        this.vboxAction = vbAction;
+    public void setBpAction(BorderPane bpAction) {
+        this.bpAction = bpAction;
     }
 
     public ImageView getImgvLogo() {
@@ -335,14 +359,6 @@ public class MainScreenlView {
 
     public void setBtnDowloadService(Button btnDowloadService) {
         this.btnDowloadService = btnDowloadService;
-    }
-    
-    public VBox getVboxAction() {
-        return vboxAction;
-    }
-    
-    public void setVboxAction(VBox vboxAction) {
-        this.vboxAction = vboxAction;
     }
     
     public Pane getPaneCenter() {

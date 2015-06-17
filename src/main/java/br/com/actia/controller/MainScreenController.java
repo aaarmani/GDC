@@ -9,7 +9,9 @@ import br.com.actia.ui.MainScreenlView;
 import br.com.actia.util.JPAUtil;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.animation.ScaleTransition;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  *
@@ -21,7 +23,7 @@ public class MainScreenController extends PersistenceController {
     private BannerController bannerController;
     private VideoController videoController;
     private RSSController RSSController;
-    private ResourceBundle rb;
+    private final ResourceBundle rb;
     private ListPoiController listPoiController;
     private ListBannerController listBannerController;
     private ListVideoController listVideoController;
@@ -32,7 +34,7 @@ public class MainScreenController extends PersistenceController {
         loadPersistenceContext();
         this.rb = rb;
         this.view = new MainScreenlView(mainStage, rb);
-        actionController = new ActionScreenController(this, this.view.getPaneCenter(), this.rb);
+        actionController = new ActionScreenController(this, this.view.getBtnDowloadService(), this.rb);
         
         registerAction(this.view.getBtnDowloadService(), new AbstractAction() {
             @Override
@@ -123,6 +125,7 @@ public class MainScreenController extends PersistenceController {
             public void handleEvent(CopyFileEvent event) {
                 FileToCopy ftcpy = event.getTarget();
                 actionController.startDownload(ftcpy.getOrigFile(), ftcpy.getDestFile());
+                startDownloadAnimation();
             }
         });
     }
@@ -184,8 +187,9 @@ public class MainScreenController extends PersistenceController {
     }
     
     private void showActionScreenController() {
-        if(actionController == null)
-            actionController = new ActionScreenController(this, this.view.getPaneCenter(), this.rb);
+        
+        //if(actionController == null)
+            //actionController = new ActionScreenController(this, this.view.getPaneCenter(), this.rb);
         actionController.showView();
     }
     
@@ -232,10 +236,18 @@ public class MainScreenController extends PersistenceController {
         Locale.setDefault(locale);
     }
     
+    private void startDownloadAnimation() {
+        ScaleTransition transition = new ScaleTransition(Duration.millis(400), view.getBtnDowloadService());
+        transition.setFromX(1.5);
+        transition.setFromY(1.5);
+        transition.setToX(1.0);
+        transition.setToY(1.0);
+        transition.play();
+    }
+    
     @Override
     public void cleanUp() {
         JPAUtil.closeEntityManagerFactory();
         super.cleanUp();
     }
-    
 }

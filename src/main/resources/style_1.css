@@ -93,11 +93,6 @@
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
 }
-.flatIcon {
-    -fx-padding:0;
-    -fx-alignment: center;
-    -fx-margin-left: -10;
-}
 .flatButton:hover {
     -fx-background-color: #e1e1e2;
 }
