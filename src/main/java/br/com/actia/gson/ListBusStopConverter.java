@@ -4,23 +4,20 @@ import br.com.actia.model.ListBusStop;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.ListVideo;
 
-public class ListBusStopConverter {
-    private final ListBusStop listBusStop;
-
+public class ListBusStopConverter extends AbstractConverter{
     public ListBusStopConverter(ListBusStop listBusStop) {
-        this.listBusStop = listBusStop;
-    }
-    /**
-     * Convert ListBusStop in JSON String
-     * @return String JSON
-     */
-    public String convert() {
-        GsonGenerator<ListBusStop> gsonGen = new GsonGenerator<>();
+        super(listBusStop);
         
-        gsonGen.addAdapter(ListPoi.class, new ListPoiAdapter());
-        gsonGen.addAdapter(ListVideo.class, new ListVideoAdapter());
-        
-        return gsonGen.expToJson(listBusStop);
+        this.MAIN_DIRECTORY = "gps";
+        this.buildAdapters();
+        this.path = this.CONTENT_FILES_DIRECTORY + this.SEPARATOR_CHAR + this.MAIN_DIRECTORY;
+        this.filePath = this.path + this.SEPARATOR_CHAR + ((ListBusStop)this.Entity).getName() + ".json";
     }
     
+    public void buildAdapters(){
+        this.gsonGen.addAdapter(ListPoi.class, new ListPoiAdapter());
+        this.gsonGen.addAdapter(ListVideo.class, new ListVideoAdapter());
+    }
 }
+
+
