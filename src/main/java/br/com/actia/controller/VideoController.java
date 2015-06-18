@@ -13,6 +13,7 @@ import br.com.actia.event.CrudVideoEvent;
 import service.FileToCopy;
 import br.com.actia.model.Video;
 import br.com.actia.model.VideoType;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.ui.VideoView;
 import br.com.actia.validation.Validator;
 import br.com.actia.validation.VideoValidator;
@@ -39,6 +40,7 @@ public class VideoController extends PersistenceController {
     private VideoView view;
     private final Validator<Video> validador = new VideoValidator();
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     
     private File videoFile;
     
@@ -47,12 +49,12 @@ public class VideoController extends PersistenceController {
     
     private ResourceBundle rb;
 
-    public VideoController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public VideoController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        
-        this.parentPane = pane;
+        this.mainScreenView = mainScreenView;
+        this.parentPane = mainScreenView.getPaneCenter();
         this.view = new VideoView(rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());

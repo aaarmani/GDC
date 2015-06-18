@@ -4,7 +4,6 @@ import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +16,7 @@ import javafx.stage.Stage;
  *
  * @author Armani
  */
-public class MainScreenlView {
+public class MainScreenView {
 
     private Scene mainScene;
     private BorderPane bpMenu;
@@ -46,7 +45,7 @@ public class MainScreenlView {
     
     private ResourceBundle rb;
 
-    public MainScreenlView(Stage stage, ResourceBundle rb) {
+    public MainScreenView(Stage stage, ResourceBundle rb) {
         this.rb = rb;
         inicializaComponentes();
         
@@ -291,16 +290,16 @@ public class MainScreenlView {
         this.imgUser = imgUser;
     }
     
-    public Button getBtnMapEntitys() {
-        return btnMapEntitys;
-    }
-    
     public Button getBtnRoute() {
         return btnRoute;
     }
     
     public void setBtnRoute(Button btnRoute) {
         this.btnRoute = btnRoute;
+    }
+    
+    public Button getBtnMapEntitys() {
+        return btnMapEntitys;
     }
     
     public void setBtnMapsEntitys(Button btnMapEntitys) {

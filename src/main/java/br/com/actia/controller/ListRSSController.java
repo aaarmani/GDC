@@ -14,6 +14,7 @@ import br.com.actia.event.CrudRSSEvent;
 import br.com.actia.model.ListRSS;
 import br.com.actia.model.RSS;
 import br.com.actia.ui.EntityListView;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListRSSValidator;
 import br.com.actia.validation.Validator;
 import java.util.Collection;
@@ -29,6 +30,7 @@ import javafx.event.EventHandler;
 public class ListRSSController extends PersistenceController {
     private final ResourceBundle rb;
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     private final EntityListView<RSS, ListRSS> view;
     private Validator<ListRSS> validador = new ListRSSValidator();
     private RSSController RSSController = null;
@@ -36,11 +38,12 @@ public class ListRSSController extends PersistenceController {
     private RSSDAO RSSDAO = null;
     private Collection<RSS> listRSSAll = null;
     
-    public ListRSSController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public ListRSSController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        this.parentPane = pane;
+        this.mainScreenView = mainScreenView;
+        this.parentPane = mainScreenView.getPaneCenter();
         this.view = new EntityListView<RSS, ListRSS>(this.rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
@@ -209,7 +212,7 @@ public class ListRSSController extends PersistenceController {
     
     private void showNewRSSController() {
         if(RSSController == null)
-            RSSController = new RSSController(this, parentPane, rb);
+            RSSController = new RSSController(this, mainScreenView, rb);
         
         RSSController.showView();
     }

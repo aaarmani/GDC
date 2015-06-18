@@ -14,6 +14,7 @@ import br.com.actia.event.CrudBannerEvent;
 import br.com.actia.model.ListBanner;
 import br.com.actia.model.Banner;
 import br.com.actia.ui.EntityListView;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListBannerValidator;
 import br.com.actia.validation.Validator;
 import java.util.Collection;
@@ -29,6 +30,7 @@ import javafx.event.EventHandler;
 public class ListBannerController extends PersistenceController {
     private final ResourceBundle rb;
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     private final EntityListView<Banner, ListBanner> view;
     private Validator<ListBanner> validador = new ListBannerValidator();
     private BannerController bannerController = null;
@@ -36,11 +38,12 @@ public class ListBannerController extends PersistenceController {
     private BannerDAO bannerDAO = null;
     private Collection<Banner> listBannerAll = null;
     
-    public ListBannerController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public ListBannerController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        this.parentPane = pane;
+        this.mainScreenView = mainScreenView;
+        this.parentPane = mainScreenView.getPaneCenter();
         this.view = new EntityListView<Banner, ListBanner>(this.rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
@@ -209,7 +212,7 @@ public class ListBannerController extends PersistenceController {
     
     private void showNewBannerController() {
         if(bannerController == null)
-            bannerController = new BannerController(this, parentPane, rb);
+            bannerController = new BannerController(this, mainScreenView, rb);
         
         bannerController.showView();
     }

@@ -4,7 +4,7 @@ import br.com.actia.action.AbstractAction;
 import br.com.actia.event.AbstractEventListener;
 import br.com.actia.event.CopyFileEvent;
 import service.FileToCopy;
-import br.com.actia.ui.MainScreenlView;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.util.JPAUtil;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -17,7 +17,7 @@ import javafx.util.Duration;
  * @author Armani <anderson.armani@actia.com.br>
  */
 public class MainScreenController extends PersistenceController {
-    private final MainScreenlView view;
+    private final MainScreenView view;
     private RouteController routeController;
     private GoogleMapController googleMapController;
     private BannerController bannerController;
@@ -33,7 +33,7 @@ public class MainScreenController extends PersistenceController {
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
         this.rb = rb;
-        this.view = new MainScreenlView(mainStage, rb);
+        this.view = new MainScreenView(mainStage, rb);
         actionController = new ActionScreenController(this, this.view.getBtnDowloadService(), this.rb);
         
         registerAction(this.view.getBtnRoute(), new AbstractAction() {
@@ -140,63 +140,63 @@ public class MainScreenController extends PersistenceController {
     private void showRouteController() {
         cleanUpOldControllers();
         if(routeController == null)
-            routeController = new RouteController(this, this.view.getPaneCenter(), this.rb);
+            routeController = new RouteController(this, this.view, this.rb);
         routeController.showView();
     }
     
     private void showGoogleMapController() {
         cleanUpOldControllers();
         if(googleMapController == null)
-            googleMapController = new GoogleMapController(this, this.view.getPaneCenter(), this.rb);
+            googleMapController = new GoogleMapController(this, this.view, this.rb);
         googleMapController.showView();
     }
     
     private void showBannerController() {
         cleanUpOldControllers();
         if(bannerController == null)
-            bannerController = new BannerController(this, this.view.getPaneCenter(), this.rb);
+            bannerController = new BannerController(this, this.view, this.rb);
         bannerController.showView();
     }
     
     private void showVideoController() {
         cleanUpOldControllers();
         if(videoController == null)
-            videoController = new VideoController(this, this.view.getPaneCenter(), this.rb);
+            videoController = new VideoController(this, this.view, this.rb);
         videoController.showView();
     }
     
     private void showRSSController() {
         cleanUpOldControllers();
         if(RSSController == null)
-            RSSController = new RSSController(this, this.view.getPaneCenter(), this.rb);
+            RSSController = new RSSController(this, this.view, this.rb);
         RSSController.showView();
     }
     
     private void showListPoiController() {
         cleanUpOldControllers();
         if(listPoiController == null)
-            listPoiController = new ListPoiController(this, this.view.getPaneCenter(), this.rb);
+            listPoiController = new ListPoiController(this, this.view, this.rb);
         listPoiController.showView();
     }
     
     private void showListBannerController() {
         cleanUpOldControllers();
         if(listBannerController == null)
-            listBannerController = new ListBannerController(this, this.view.getPaneCenter(), this.rb);
+            listBannerController = new ListBannerController(this, this.view, this.rb);
         listBannerController.showView();
     }
     
     private void showListVideoController() {
         cleanUpOldControllers();
         if(listVideoController == null)
-            listVideoController = new ListVideoController(this, this.view.getPaneCenter(), this.rb);
+            listVideoController = new ListVideoController(this, this.view, this.rb);
         listVideoController.showView();
     }
     
     private void showListRSSController() {
         cleanUpOldControllers();
         if(listRSSController == null)
-            listRSSController = new ListRSSController(this, this.view.getPaneCenter(), this.rb);
+            listRSSController = new ListRSSController(this, this.view, this.rb);
         listRSSController.showView();
     }
     

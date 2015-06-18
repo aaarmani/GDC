@@ -14,6 +14,7 @@ import br.com.actia.event.CrudVideoEvent;
 import br.com.actia.model.ListVideo;
 import br.com.actia.model.Video;
 import br.com.actia.ui.EntityListView;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListVideoValidator;
 import br.com.actia.validation.Validator;
 import java.util.Collection;
@@ -33,6 +34,7 @@ import javafx.event.EventHandler;
 public class ListVideoController extends PersistenceController {
     private final ResourceBundle rb;
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     private final EntityListView<Video, ListVideo> view;
     private Validator<ListVideo> validador = new ListVideoValidator();
     private VideoController videoController = null;
@@ -40,11 +42,12 @@ public class ListVideoController extends PersistenceController {
     private VideoDAO videoDAO = null;
     private Collection<Video> listVideoAll = null;
     
-    public ListVideoController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public ListVideoController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        this.parentPane = pane;
+        this.mainScreenView = mainScreenView;
+        this.parentPane = mainScreenView.getPaneCenter();
         this.view = new EntityListView<Video, ListVideo>(this.rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
@@ -217,7 +220,7 @@ public class ListVideoController extends PersistenceController {
     
     private void showNewVideoController() {
         if(videoController == null)
-            videoController = new VideoController(this, parentPane, rb);
+            videoController = new VideoController(this, mainScreenView, rb);
         
         videoController.showView();
     }

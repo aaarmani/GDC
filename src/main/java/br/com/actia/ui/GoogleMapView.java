@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
@@ -18,7 +19,7 @@ import javafx.scene.web.WebView;
  */
 public class GoogleMapView  extends StackPane {
     private  final int IMG_BUTTON_SIZE = 30;
-    private  final int BUTTON_SIZE = 36;
+    private  final int BUTTON_SIZE = 50;
     private  final int MENU_SIZE = BUTTON_SIZE + 4;
     
     private WebView webview;
@@ -35,7 +36,6 @@ public class GoogleMapView  extends StackPane {
     public GoogleMapView(ResourceBundle rb) {
         this.rb = rb;
         webview = new WebView();
-        
         ap = new AnchorPane();
         ap.setTopAnchor(webview,0.0);
         ap.setLeftAnchor(webview,0.0);
@@ -45,7 +45,8 @@ public class GoogleMapView  extends StackPane {
 
         getChildren().add(ap);
         setAlignment(Pos.CENTER_RIGHT);
-        getChildren().add(createControlPane());
+        //getChildren().add(createControlPane());
+        vbControl = createControlPane();
     }
     
     private VBox createControlPane() {
@@ -83,7 +84,7 @@ public class GoogleMapView  extends StackPane {
         imgView.setPreserveRatio(true);
         imgView.setSmooth(true);
         imgView.setCache(true);
-        imgView.getStyleClass().add("Img");
+        //imgView.getStyleClass().add("Img");
                
         Button btn = new Button(null, imgView);
         btn.setTooltip(new Tooltip(toolType));
@@ -94,6 +95,8 @@ public class GoogleMapView  extends StackPane {
         btn.setMinHeight(BUTTON_SIZE);
         btn.setBackground(Background.EMPTY);
         btn.getStyleClass().add("flatButton");
+        btn.getStyleClass().add("flatIcon");
+        
         return btn;
     }
     
