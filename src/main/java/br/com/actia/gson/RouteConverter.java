@@ -5,6 +5,7 @@ import br.com.actia.model.ListBanner;
 import br.com.actia.model.ListRSS;
 import br.com.actia.model.ListVideo;
 import br.com.actia.model.ListBusStop;
+import java.util.ArrayList;
 
 public class RouteConverter extends AbstractConverter{
     public RouteConverter(Route route) {
@@ -21,5 +22,46 @@ public class RouteConverter extends AbstractConverter{
         gsonGen.addAdapter(ListRSS.class, new ListRSSAdapter());
         gsonGen.addAdapter(ListVideo.class, new ListVideoAdapter());
         gsonGen.addAdapter(ListBusStop.class, new ListBusStopAdapter());
+    }
+    
+    /**
+     * Different method to generate all elements from Route
+     * Generate file JSON
+     * @return String path and file created
+     */
+    public String generateAllFromRoute() {
+        ArrayList<String> pathsCreated = new ArrayList<String>();
+        
+        pathsCreated.add(this.generate());
+        
+        Route route = (Route)this.Entity;
+        
+        ListBanner listBanner = route.getBanners();
+        ListBannerConverter listBannerConverter = new ListBannerConverter(listBanner);
+        pathsCreated.add(listBannerConverter.generate());
+        
+        ListBusStop listBusStop = route.getBusStops();
+        ListBusStopConverter listBusStopConverter = new ListBusStopConverter(listBusStop);
+        pathsCreated.add(listBusStopConverter.generate());
+        
+        ListRSS listRSS = route.getRSSs();
+        ListRSSConverter listRSSConverter = new ListRSSConverter(listRSS);
+        pathsCreated.add(listRSSConverter.generate());
+        
+        ListVideo listVideo = route.getVideos();
+        ListVideoConverter listVideoConverter = new ListVideoConverter(listVideo);
+        pathsCreated.add(listVideoConverter.generate());
+        
+        return this.convertResultFromArrayListToString(pathsCreated);
+    }
+    
+    public String convertResultFromArrayListToString(ArrayList<String> pathsCreated){
+        String pathsCreatedToString = "";
+        
+        for(String line : pathsCreated){
+            pathsCreatedToString += line + "\n";
+        }
+        
+        return pathsCreatedToString;
     }
 }
