@@ -8,6 +8,7 @@ import br.com.actia.dao.RSSDAO;
 import br.com.actia.dao.RSSDAOJPA;
 import br.com.actia.event.CrudRSSEvent;
 import br.com.actia.model.RSS;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.ui.RSSView;
 import br.com.actia.validation.RSSValidator;
 import br.com.actia.validation.Validator;
@@ -43,6 +44,7 @@ public class RSSController extends PersistenceController {
     private RSSView view;
     private final Validator<RSS> validador = new RSSValidator();
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     private String feedURL;
     private Boolean feedStarted = false;
     private ResourceBundle rb;
@@ -50,12 +52,12 @@ public class RSSController extends PersistenceController {
     private Image feedImg = null;
     private Timer timerPlayFeed = null;
     
-    public RSSController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public RSSController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        
-        this.parentPane = pane;
+        this.mainScreenView = mainScreenView;
+        this.parentPane = mainScreenView.getPaneCenter();
         this.view = new RSSView(rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());

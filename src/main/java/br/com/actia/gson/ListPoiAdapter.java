@@ -1,7 +1,6 @@
 package br.com.actia.gson;
 
 import br.com.actia.model.ListPoi;
-import br.com.actia.model.Poi;
 import br.com.actia.model.PoiType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

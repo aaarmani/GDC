@@ -25,6 +25,7 @@ import br.com.actia.model.ListBusStop;
 import br.com.actia.model.ListRSS;
 import br.com.actia.model.ListVideo;
 import br.com.actia.model.Route;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.ui.RouteView;
 import br.com.actia.validation.RouteValidator;
 import br.com.actia.validation.Validator;
@@ -55,6 +56,7 @@ public class RouteController extends PersistenceController {
     private RouteView view;
     private final Validator<Route> validador = new RouteValidator();
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     private ResourceBundle rb;
     
     private ListBannerController listBannerController = null;
@@ -64,12 +66,12 @@ public class RouteController extends PersistenceController {
     
     private GoogleMapController googleMapController = null;
     
-    public RouteController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public RouteController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        
-        this.parentPane = pane;
+        this.mainScreenView = mainScreenView;
+        this.parentPane = mainScreenView.getPaneCenter();
         this.view = new RouteView(rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
@@ -262,28 +264,28 @@ public class RouteController extends PersistenceController {
     
     void showNewListBanner() {
         if(listBannerController == null)
-            listBannerController = new ListBannerController(this, parentPane, rb);
+            listBannerController = new ListBannerController(this, mainScreenView, rb);
         
         listBannerController.showView();
     }
     
     void showNewListRSS() {
         if(listRSSController == null)
-            listRSSController = new ListRSSController(this, parentPane, rb);
+            listRSSController = new ListRSSController(this, mainScreenView, rb);
         
         listRSSController.showView();
     }
     
     void showNewListVideo() {
         if(listVideoController == null)
-            listVideoController = new ListVideoController(this, parentPane, rb);
+            listVideoController = new ListVideoController(this, mainScreenView, rb);
         
         listVideoController.showView();
     }
     
     void showGoogleMapControllerAndNewListBusStop() {
         if(googleMapController == null)
-            googleMapController = new GoogleMapController(this, parentPane, rb);
+            googleMapController = new GoogleMapController(this, mainScreenView, rb);
 
         googleMapController.showView();
         googleMapController.showBusStopListController(null);

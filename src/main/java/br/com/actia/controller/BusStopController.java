@@ -25,6 +25,7 @@ import br.com.actia.model.BusStop;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.ListVideo;
 import br.com.actia.ui.BusStopView;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.BusStopValidator;
 import br.com.actia.validation.Validator;
 import java.util.List;
@@ -42,6 +43,7 @@ import javafx.scene.layout.StackPane;
  */
 public class BusStopController extends PersistenceController {
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     private final BusStopView view;
     private final Validator<BusStop> validador = new BusStopValidator();
     private BusStop busStop = null;
@@ -50,11 +52,11 @@ public class BusStopController extends PersistenceController {
     private ListPoiController listPoiController = null;
     private ListVideoController listVideoController = null;
     
-    public BusStopController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public BusStopController(AbstractController parent, MainScreenView mainScreenView, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        
+        this.mainScreenView = mainScreenView;
         this.parentPane = pane;
         this.view = new BusStopView(this.rb);
         this.busStop = new BusStop();
@@ -223,7 +225,7 @@ public class BusStopController extends PersistenceController {
     
     void showNewListPoi() {
         if(listPoiController == null)
-            listPoiController = new ListPoiController(this, parentPane, rb);
+            listPoiController = new ListPoiController(this, mainScreenView, rb);
         
         listPoiController.showView();
         listPoiController.enableNewPoiButton(false);
@@ -231,7 +233,7 @@ public class BusStopController extends PersistenceController {
     
     void showNewListVideo() {
         if(listVideoController == null)
-            listVideoController = new ListVideoController(this, parentPane, rb);
+            listVideoController = new ListVideoController(this, mainScreenView, rb);
         
         listVideoController.showView();
     }

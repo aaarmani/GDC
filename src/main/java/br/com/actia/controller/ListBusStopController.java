@@ -13,6 +13,7 @@ import br.com.actia.model.BusStop;
 import br.com.actia.model.ListBusStop;
 import br.com.actia.ui.BusStopList2View;
 import br.com.actia.ui.BusStopListView;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListBusStopValidator;
 import br.com.actia.validation.Validator;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import javafx.scene.layout.StackPane;
 public class ListBusStopController extends PersistenceController {
     private final ResourceBundle rb;
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     private final BusStopListView view;
     private final BusStopList2View viewList;
     private Validator<ListBusStop> validador = new ListBusStopValidator();
@@ -43,10 +45,11 @@ public class ListBusStopController extends PersistenceController {
     private Map<String, Label> mapOfBusStops;
     private ObservableList<ListBusStop> obsListBusStop;
 
-    public ListBusStopController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public ListBusStopController(AbstractController parent, MainScreenView mainScreenView, Pane pane, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
+        this.mainScreenView = mainScreenView;
         this.parentPane = pane;
         this.view = new BusStopListView(this.rb);
         this.viewList = new BusStopList2View(this.rb);
@@ -257,5 +260,12 @@ public class ListBusStopController extends PersistenceController {
         for (BusStop bst : lstBusStop.getListBusStop()) {
             addBusStop(bst.getName());
         }
+    }
+    
+    @Override
+    protected void cleanUp() {
+        view.resetForm();
+        closeView();
+        super.cleanUp();
     }
 }

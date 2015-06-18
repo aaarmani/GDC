@@ -14,7 +14,7 @@ import service.DownloadFileTask;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class ActionScreenController extends PersistenceController {
+public class ActionScreenController extends AbstractController {
     private final ResourceBundle rb;
     private final TaskProgressView<DownloadFileTask> view;
     private final PopOver popOverView;
@@ -23,12 +23,11 @@ public class ActionScreenController extends PersistenceController {
 
     public ActionScreenController(AbstractController parent, Node ownerNode, ResourceBundle rb) {
         super(parent);
-        loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
         this.ownerNode = ownerNode;
         this.view = new TaskProgressView<>();
         this.popOverView = new PopOver(view);
-        //this.popOverView.setArrowLocation(PopOver.ArrowLocation.RIGHT_BOTTOM);
+        this.popOverView.setArrowLocation(PopOver.ArrowLocation.RIGHT_BOTTOM);
         
         lstDownloadTask =  new LinkedList<>();
     }
@@ -43,7 +42,7 @@ public class ActionScreenController extends PersistenceController {
         thread.setDaemon(true);
         thread.start();
     }
-
+    
     public void showView() {
         if(!popOverView.isShowing())
             popOverView.show(ownerNode);

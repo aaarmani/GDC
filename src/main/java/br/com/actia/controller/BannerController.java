@@ -11,6 +11,7 @@ import br.com.actia.event.CrudBannerEvent;
 import br.com.actia.model.Banner;
 import service.FileToCopy;
 import br.com.actia.ui.BannerView;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.BannerValidator;
 import br.com.actia.validation.Validator;
 import java.io.File;
@@ -36,6 +37,7 @@ public class BannerController extends PersistenceController {
     private BannerView view;
     private final Validator<Banner> validador = new BannerValidator();
     private final Pane parentPane;
+    private MainScreenView mainScreenView;
     
     private File imageFile;
     private File audioFile;
@@ -46,12 +48,12 @@ public class BannerController extends PersistenceController {
     
     private ResourceBundle rb;
     
-    public BannerController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public BannerController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        
-        this.parentPane = pane;
+        this.mainScreenView = mainScreenView;
+        this.parentPane = mainScreenView.getPaneCenter();
         this.view = new BannerView(rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());

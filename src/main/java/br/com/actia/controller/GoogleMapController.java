@@ -24,6 +24,7 @@ import br.com.actia.javascript.object.MarkerOptions;
 import br.com.actia.model.BusStop;
 import br.com.actia.model.Poi;
 import br.com.actia.ui.GoogleMapView;
+import br.com.actia.ui.MainScreenView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.geometry.Point2D;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 import javax.swing.JFrame;
@@ -46,6 +48,7 @@ import netscape.javascript.JSObject;
  */
 public class GoogleMapController extends PersistenceController {
     protected GoogleMapView view;
+    protected BorderPane bpAction;
     protected WebView webView;
     protected JavaFxWebEngine webEngine;
     protected GoogleMap googleMap;
@@ -61,7 +64,7 @@ public class GoogleMapController extends PersistenceController {
     //private Marker editMarker = null;
     // public MainScreenController mainScreenController;
     
-    GoogleMapController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    GoogleMapController(AbstractController parent, MainScreenView mainScreen, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
@@ -70,15 +73,16 @@ public class GoogleMapController extends PersistenceController {
         
         String htmlFile = "/html/maps.html";
 
-        this.parentPane = pane;
+        this.parentPane = mainScreen.getPaneCenter();
+        this.bpAction = mainScreen.getBpAction();
         this.view = new GoogleMapView(this.rb);
         this.webView = view.getWebview();
         this.webEngine = new JavaFxWebEngine(webView.getEngine());
         JavascriptRuntime.setDefaultWebEngine(webEngine);
 
         this.poiController = new PoiController(this, view, this.rb);
-        this.busStopController = new BusStopController(this, view, this.rb);
-        this.listBusStopController = new ListBusStopController(this, view, this.rb);
+        this.busStopController = new BusStopController(this, mainScreen, view, this.rb);
+        this.listBusStopController = new ListBusStopController(this, mainScreen, view, this.rb);
         
         this.mapPoiMarkers = new HashMap<>();
         
@@ -312,10 +316,12 @@ public class GoogleMapController extends PersistenceController {
 
     void showView() {
         this.parentPane.getChildren().add(view);
+        this.bpAction.setCenter(view.getVbControl());
     }
 
     public void closeView() {
         parentPane.getChildren().remove(view);
+        this.bpAction.setCenter(null);
     }
 
     private void addBusStopList(String title) {

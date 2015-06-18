@@ -14,6 +14,7 @@ import br.com.actia.event.CrudPoiEvent;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.Poi;
 import br.com.actia.ui.EntityListView;
+import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListPoiValidator;
 import br.com.actia.validation.Validator;
 import java.util.Collection;
@@ -36,15 +37,17 @@ public class ListPoiController extends PersistenceController {
     private final EntityListView<Poi, ListPoi> view;
     private Validator<ListPoi> validador = new ListPoiValidator();
     private GoogleMapController googleMapController = null;
+    private MainScreenView mainScreenView;
     
     private PoiDAO poiDAO = null;
     private Collection<Poi> listPoiAll = null;
     
-    public ListPoiController(AbstractController parent, Pane pane, ResourceBundle rb) {
+    public ListPoiController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
         loadPersistenceContext(((PersistenceController) getParentController()).getPersistenceContext());
         this.rb = rb;
-        this.parentPane = pane;
+        this.mainScreenView = mainScreenView;
+        this.parentPane = mainScreenView.getPaneCenter();
         this.view = new EntityListView<>(this.rb);
         this.view.setMaxHeight(parentPane.getHeight());
         this.view.setMaxWidth(parentPane.getWidth());
@@ -208,7 +211,7 @@ public class ListPoiController extends PersistenceController {
     
     private void showGoogleMapControllerAndNewPOI() {
         if(googleMapController == null)
-            googleMapController = new GoogleMapController(this, parentPane, rb);
+            googleMapController = new GoogleMapController(this, mainScreenView, rb);
 
         googleMapController.showView();
         googleMapController.showPoiController(null);
