@@ -29,6 +29,7 @@ public class MainScreenController extends PersistenceController {
     private ListVideoController listVideoController;
     private ListRSSController listRSSController;
     private ActionScreenController actionController;
+    private UserOptionsController userOptionsController;
     
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
@@ -36,12 +37,12 @@ public class MainScreenController extends PersistenceController {
         this.view = new MainScreenView(mainStage, rb);
         actionController = new ActionScreenController(this, this.view.getBtnDowloadService(), this.rb);
         
-        registerAction(this.view.getBtnRoute(), new AbstractAction() {
+        registerAction(this.view.getBtnUserOptions(), new AbstractAction() {
             @Override
             protected void action() {
-                showRouteController();
+                showUserOptionController();
             }
-        });   
+        });
         
         registerAction(this.view.getBtnDowloadService(), new AbstractAction() {
             @Override
@@ -49,6 +50,13 @@ public class MainScreenController extends PersistenceController {
                 showActionScreenController();
             }
         });
+        
+        registerAction(this.view.getBtnRoute(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showRouteController();
+            }
+        });   
         
         registerAction(this.view.getBtnMapEntitys(), new AbstractAction() {
             @Override
@@ -207,6 +215,12 @@ public class MainScreenController extends PersistenceController {
         actionController.showView();
     }
     
+    private void showUserOptionController() {
+        if(userOptionsController == null)
+            userOptionsController = new UserOptionsController(this, this.view.getBtnUserOptions(), this.rb);
+        userOptionsController.showView();
+    }
+    
     private void cleanUpOldControllers() {
         if(routeController != null) {
             routeController.cleanUp();
@@ -246,6 +260,10 @@ public class MainScreenController extends PersistenceController {
         
         if(actionController != null) {
             actionController.cleanUp();
+        }
+        
+        if(userOptionsController != null) {
+            userOptionsController.cleanUp();
         }
     }
     

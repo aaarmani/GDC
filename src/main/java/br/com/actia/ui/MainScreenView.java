@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 
 /**
  *
@@ -38,12 +40,14 @@ public class MainScreenView {
     private Button btnListVideo;
     private Button btnListRSS;
     private Button btnDowloadService;
+    private Button btnUserOptions;
     
     private Button btnBR;
     private Button btnEN;
     private Button btnES;
     
     private ResourceBundle rb;
+    private FontAwesome fontAwesome;
 
     public MainScreenView(Stage stage, ResourceBundle rb) {
         this.rb = rb;
@@ -71,7 +75,9 @@ public class MainScreenView {
         stage.show();
     }
 
-    private void inicializaComponentes() {}
+    private void inicializaComponentes() {
+        fontAwesome = new FontAwesome();
+    }
 
     private BorderPane getBorderPaneMenu() {
         BorderPane borderPane = new BorderPane();
@@ -129,15 +135,15 @@ public class MainScreenView {
     private VBox getMenu() {
         VBox vbMenu = new VBox();
         
-        btnRoute = newMenuItem(rb.getString("Route"));
-        btnMapEntitys = newMenuItem(rb.getString("Map"));
-        btnBanner = newMenuItem(rb.getString("Banner"));
-        btnVideo = newMenuItem(rb.getString("Video"));
-        btnRSS = newMenuItem(rb.getString("RSS"));
-        btnListPoi = newMenuItem(rb.getString("ListPoi"));
-        btnListBanner = newMenuItem(rb.getString("ListBanner"));
-        btnListVideo = newMenuItem(rb.getString("ListVideo"));
-        btnListRSS = newMenuItem(rb.getString("ListRSS"));
+        btnRoute = newMenuItem(rb.getString("Route"), "CODE_FORK");
+        btnMapEntitys = newMenuItem(rb.getString("Map"), "GLOBE");
+        btnBanner = newMenuItem(rb.getString("Banner"), "IMAGE");
+        btnVideo = newMenuItem(rb.getString("Video"), "VIDEO_CAMERA");
+        btnRSS = newMenuItem(rb.getString("RSS"), "RSS");
+        btnListPoi = newMenuItem(rb.getString("ListPoi"), "LIST_UL");
+        btnListBanner = newMenuItem(rb.getString("ListBanner"), "LIST_UL");
+        btnListVideo = newMenuItem(rb.getString("ListVideo"), "LIST_UL");
+        btnListRSS = newMenuItem(rb.getString("ListRSS"), "LIST_UL");
         
         vbMenu.getChildren().addAll(btnRoute, btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS);
         return vbMenu;
@@ -183,11 +189,19 @@ public class MainScreenView {
         imgUser.setPreserveRatio(true);
         imgUser.setSmooth(true);
         imgUser.setCache(true);
-        imgUser.getStyleClass().add("Img");
+        
+        btnUserOptions = new Button(null, imgUser);
+        btnUserOptions.setMinWidth(50);
+        btnUserOptions.setMaxWidth(50);
+        btnUserOptions.setMinHeight(50);
+        btnUserOptions.setMaxHeight(50);
+        btnUserOptions.getStyleClass().add("flatButton");
+        btnUserOptions.getStyleClass().add("flatIcon");
+        btnUserOptions.setId("btnUserOptions");
         
         VBox vbox = new VBox();
-        vbox.getStyleClass().add("ImgUser");
-        vbox.getChildren().add(imgUser);
+        vbox.getStyleClass().add("Img");
+        vbox.getChildren().add(btnUserOptions);
         
         return vbox;
     }
@@ -216,8 +230,8 @@ public class MainScreenView {
         return vbox;
     }
     
-    private Button newMenuItem(String item) {
-        Button btn = new Button(item);
+    private Button newMenuItem(String item, String strImage) {
+        Button btn = new Button(item, fontAwesome.create(strImage));
         btn.setMinSize(150, 40);
         btn.getStyleClass().add("flatButton");
         btn.setId(item);
@@ -368,6 +382,14 @@ public class MainScreenView {
 
     public void setBtnDowloadService(Button btnDowloadService) {
         this.btnDowloadService = btnDowloadService;
+    }
+
+    public Button getBtnUserOptions() {
+        return btnUserOptions;
+    }
+
+    public void setBtnUserOptions(Button btnUserOptions) {
+        this.btnUserOptions = btnUserOptions;
     }
     
     public Pane getPaneCenter() {
