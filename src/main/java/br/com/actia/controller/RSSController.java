@@ -267,7 +267,7 @@ public class RSSController extends PersistenceController {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    System.out.println("----- RODANDO THREAD -----");
+                    // System.out.println("----- RODANDO THREAD -----");
                     
                     if(lstRSS != null && lstRSS.size() > 0) {
                     //while(true) {
