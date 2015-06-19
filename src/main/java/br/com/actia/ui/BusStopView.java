@@ -100,10 +100,12 @@ public class BusStopView extends VBox {
         
         Label lblBanner = new Label(rb.getString("Banner"));
         cbBanner = new ComboBox<Banner>();
+        cbBanner.setMaxWidth(Double.MAX_VALUE);
         cbBanner.setPromptText(rb.getString("ChooseBanner"));
         
         Label lblListVideo = new Label(rb.getString("Video"));
         cbListVideos = new ComboBox<ListVideo>();
+        cbListVideos.setMaxWidth(Double.MAX_VALUE);
         cbListVideos.setPromptText(rb.getString("ChooseList"));
         
         Label lblNewListVideo = new Label(rb.getString("NewVideoList"));
@@ -114,6 +116,7 @@ public class BusStopView extends VBox {
         
         Label lblListPoi = new Label(rb.getString("Poi"));
         cbListPois = new ComboBox<ListPoi>();
+        cbListPois.setMaxWidth(Double.MAX_VALUE);
         cbListPois.setPromptText(rb.getString("ChooseList"));
         
         Label lblNewListPoi = new Label(rb.getString("NewPoiList"));

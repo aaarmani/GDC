@@ -22,7 +22,7 @@ import javafx.scene.media.MediaView;
  */
 public class VideoView  extends VBox {
     private final int MAX_HEIGHT = 600;
-    private final int VIEWER_SIZE = 200;
+    private final int VIEWER_SIZE = 100;
     
     private TextField tfId;
     private MaskTextField tfName;
@@ -71,6 +71,8 @@ public class VideoView  extends VBox {
         
         Label lblType = new Label(rb.getString("Type"));
         cbVideoType = new ComboBox<>();
+        cbVideoType.setMaxWidth(Double.MAX_VALUE);
+        cbVideoType.setPromptText(rb.getString("ChooseType"));
         
         Label lblImage = new Label(rb.getString("VDChooseVideo"));
         tfVideoName = new TextField();

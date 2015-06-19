@@ -68,7 +68,8 @@ public class PoiView extends VBox {
         
         Label lblType = new Label(rb.getString("Type"));
         cbPoiType = new ComboBox();
-        cbPoiType.setPromptText("escolha um tipo");
+        cbPoiType.setMaxWidth(Double.MAX_VALUE);
+        cbPoiType.setPromptText(rb.getString("ChooseType"));
         
         Label lblLat = new Label(rb.getString("Latitude"));
         tfLatitude = new MaskTextField();

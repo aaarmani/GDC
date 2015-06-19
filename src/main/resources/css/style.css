@@ -180,9 +180,23 @@
     -fx-padding: 5px ;
     -fx-background-color: #55504f4f;
 }
-
 .list-cell:empty {
     -fx-padding: 2px ;
     -fx-background-color: transparent ;
     -fx-background-insets: 5 ;
+}
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.table-view *.scroll-bar:horizontal *.increment-arrow, 
+.table-view *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
 }

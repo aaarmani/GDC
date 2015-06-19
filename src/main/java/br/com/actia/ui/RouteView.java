@@ -77,6 +77,7 @@ public class RouteView extends VBox {
         
         Label lblListBanner = new Label(rb.getString("Banner"));
         cbListBanners = new ComboBox<ListBanner>();
+        cbListBanners.setMaxWidth(Double.MAX_VALUE);
         cbListBanners.setPromptText(rb.getString("ChooseList"));
         
         Label lblNewListBanner = new Label(rb.getString("NewBannerList"));
@@ -87,6 +88,7 @@ public class RouteView extends VBox {
         
         Label lblListRSS = new Label(rb.getString("RSS"));
         cbListRSSs = new ComboBox<ListRSS>();
+        cbListRSSs.setMaxWidth(Double.MAX_VALUE);
         cbListRSSs.setPromptText(rb.getString("ChooseList"));
         
         Label lblNewListRSS = new Label(rb.getString("NewRSSList"));
@@ -97,6 +99,7 @@ public class RouteView extends VBox {
 
         Label lblListVideo = new Label(rb.getString("Video"));
         cbListVideos = new ComboBox<ListVideo>();
+        cbListVideos.setMaxWidth(Double.MAX_VALUE);
         cbListVideos.setPromptText(rb.getString("ChooseList"));
         
         Label lblNewListVideo = new Label(rb.getString("NewVideoList"));
@@ -107,6 +110,7 @@ public class RouteView extends VBox {
 
         Label lblListBusStop = new Label(rb.getString("BusStop"));
         cbListBusStops = new ComboBox<ListBusStop>();
+        cbListBusStops.setMaxWidth(Double.MAX_VALUE);
         cbListBusStops.setPromptText(rb.getString("ChooseList"));
         
         Label lblNewListBusStop = new Label(rb.getString("NewBusStopList"));
