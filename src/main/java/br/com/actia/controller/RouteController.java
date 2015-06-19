@@ -126,6 +126,12 @@ public class RouteController extends PersistenceController {
                                     //cleanUp();
                                     //MOVER ARQUIVO PARA PASTA DO SISTEMA
                                     fireEvent(new CrudRouteEvent(route));
+                                    
+                                    /*
+                                    if(parent instanceof FileGeneratorController){
+                                        closeView();
+                                    }
+                                    */
                                 }
                             }))
         );

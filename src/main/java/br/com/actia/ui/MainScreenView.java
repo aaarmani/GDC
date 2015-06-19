@@ -39,15 +39,16 @@ public class MainScreenView {
     private Button btnListBanner;
     private Button btnListVideo;
     private Button btnListRSS;
+    private Button btnFileGenerator;
     private Button btnDowloadService;
-    private Button btnUserOptions;
+	private Button btnUserOptions;
     
     private Button btnBR;
     private Button btnEN;
     private Button btnES;
     
     private ResourceBundle rb;
-    private FontAwesome fontAwesome;
+	private FontAwesome fontAwesome;
 
     public MainScreenView(Stage stage, ResourceBundle rb) {
         this.rb = rb;
@@ -144,8 +145,9 @@ public class MainScreenView {
         btnListBanner = newMenuItem(rb.getString("ListBanner"), "LIST_UL");
         btnListVideo = newMenuItem(rb.getString("ListVideo"), "LIST_UL");
         btnListRSS = newMenuItem(rb.getString("ListRSS"), "LIST_UL");
+        btnFileGenerator = newMenuItem(rb.getString("GenerateFiles"), "GEARS");
         
-        vbMenu.getChildren().addAll(btnRoute, btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS);
+        vbMenu.getChildren().addAll(btnRoute, btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS, btnFileGenerator);
         return vbMenu;
     }
     
@@ -189,7 +191,7 @@ public class MainScreenView {
         imgUser.setPreserveRatio(true);
         imgUser.setSmooth(true);
         imgUser.setCache(true);
-        
+		
         btnUserOptions = new Button(null, imgUser);
         btnUserOptions.setMinWidth(50);
         btnUserOptions.setMaxWidth(50);
@@ -230,7 +232,7 @@ public class MainScreenView {
         return vbox;
     }
     
-    private Button newMenuItem(String item, String strImage) {
+   private Button newMenuItem(String item, String strImage) {
         Button btn = new Button(item, fontAwesome.create(strImage));
         btn.setMinSize(150, 40);
         btn.getStyleClass().add("flatButton");
@@ -376,20 +378,28 @@ public class MainScreenView {
         this.btnListRSS = btnListRSS;
     }
 
-    public Button getBtnDowloadService() {
-        return btnDowloadService;
+    public Button getBtnFileGenerator() {
+        return btnFileGenerator;
     }
-
-    public void setBtnDowloadService(Button btnDowloadService) {
-        this.btnDowloadService = btnDowloadService;
+    
+    public void setBtnFileGenerator(Button btnFileGenerator) {
+        this.btnFileGenerator = btnFileGenerator;
     }
-
-    public Button getBtnUserOptions() {
+    
+	public Button getBtnUserOptions() {
         return btnUserOptions;
     }
 
     public void setBtnUserOptions(Button btnUserOptions) {
         this.btnUserOptions = btnUserOptions;
+    }    
+
+	public Button getBtnDowloadService() {
+        return btnDowloadService;
+    }
+
+    public void setBtnDowloadService(Button btnDowloadService) {
+        this.btnDowloadService = btnDowloadService;
     }
     
     public Pane getPaneCenter() {

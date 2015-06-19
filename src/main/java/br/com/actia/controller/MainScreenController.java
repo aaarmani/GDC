@@ -30,14 +30,15 @@ public class MainScreenController extends PersistenceController {
     private ListVideoController listVideoController;
     private ListRSSController listRSSController;
     private ActionScreenController actionController;
-    private UserOptionsController userOptionsController;
+    private FileGeneratorController fileGeneratorController;
+	private UserOptionsController userOptionsController;
     
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
         this.rb = rb;
         this.view = new MainScreenView(mainStage, rb);
         actionController = new ActionScreenController(this, this.view.getBtnDowloadService(), this.rb);
-        userOptionsController = new UserOptionsController(this, this.view.getBtnUserOptions(), this.rb);
+		userOptionsController = new UserOptionsController(this, this.view.getBtnUserOptions(), this.rb);
         
         registerAction(this.view.getBtnUserOptions(), new AbstractAction() {
             @Override
@@ -67,19 +68,19 @@ public class MainScreenController extends PersistenceController {
             }
         });
         
-        registerAction(this.view.getBtnDowloadService(), new AbstractAction() {
-            @Override
-            protected void action() {
-                showActionScreenController();
-            }
-        });
-        
         registerAction(this.view.getBtnRoute(), new AbstractAction() {
             @Override
             protected void action() {
                 showRouteController();
             }
         });   
+        
+        registerAction(this.view.getBtnDowloadService(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showActionScreenController();
+            }
+        });
         
         registerAction(this.view.getBtnMapEntitys(), new AbstractAction() {
             @Override
@@ -134,6 +135,13 @@ public class MainScreenController extends PersistenceController {
             @Override
             protected void action() {
                 showListRSSController();
+            }
+        });
+        
+        registerAction(this.view.getBtnFileGenerator(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showFileGeneratorController();
             }
         });
         
@@ -231,17 +239,24 @@ public class MainScreenController extends PersistenceController {
         listRSSController.showView();
     }
     
+    private void showFileGeneratorController() {
+        cleanUpOldControllers();
+        if(fileGeneratorController == null)
+            fileGeneratorController = new FileGeneratorController(this, this.view, this.rb);
+        fileGeneratorController.showView();
+    }
+	
+	private void showUserOptionController() {
+        if(userOptionsController == null)
+            userOptionsController = new UserOptionsController(this, this.view.getBtnUserOptions(), this.rb);
+        userOptionsController.showView();
+    }
+    
     private void showActionScreenController() {
         
         //if(actionController == null)
             //actionController = new ActionScreenController(this, this.view.getPaneCenter(), this.rb);
         actionController.showView();
-    }
-    
-    private void showUserOptionController() {
-        if(userOptionsController == null)
-            userOptionsController = new UserOptionsController(this, this.view.getBtnUserOptions(), this.rb);
-        userOptionsController.showView();
     }
     
     private void cleanUpOldControllers() {
@@ -285,7 +300,11 @@ public class MainScreenController extends PersistenceController {
             actionController.cleanUp();
         }
         
-        if(userOptionsController != null) {
+        if(fileGeneratorController != null) {
+            fileGeneratorController.cleanUp();
+        }
+
+		if(userOptionsController != null) {
             userOptionsController.cleanUp();
         }
     }
