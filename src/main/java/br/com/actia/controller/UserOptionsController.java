@@ -1,5 +1,6 @@
 package br.com.actia.controller;
 
+import br.com.actia.action.AbstractAction;
 import br.com.actia.ui.UserOptionsView;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
@@ -15,7 +16,6 @@ public class UserOptionsController extends AbstractController {
     private final UserOptionsView view;
     private final PopOver popOverView;
     
-
     public UserOptionsController(AbstractController parent, Node ownerNode, ResourceBundle rb) {
         super(parent);
         this.rb = rb;
@@ -34,6 +34,10 @@ public class UserOptionsController extends AbstractController {
     
     public void closeView() {
         popOverView.hide();
+    }
+    
+    public UserOptionsView getView() {
+        return this.view;
     }
     
     @Override

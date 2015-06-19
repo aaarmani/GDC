@@ -9,6 +9,7 @@ import br.com.actia.util.JPAUtil;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -36,11 +37,33 @@ public class MainScreenController extends PersistenceController {
         this.rb = rb;
         this.view = new MainScreenView(mainStage, rb);
         actionController = new ActionScreenController(this, this.view.getBtnDowloadService(), this.rb);
+        userOptionsController = new UserOptionsController(this, this.view.getBtnUserOptions(), this.rb);
         
         registerAction(this.view.getBtnUserOptions(), new AbstractAction() {
             @Override
             protected void action() {
                 showUserOptionController();
+            }
+        });
+        
+        registerAction(userOptionsController.getView().getBtnUserEdit(), new AbstractAction() {
+            @Override
+            protected void action() {
+                //show user page
+            }
+        });
+        
+        registerAction(userOptionsController.getView().getBtnNewCompany(), new AbstractAction() {
+            @Override
+            protected void action() {
+                //show company page
+            }
+        });
+        
+        registerAction(userOptionsController.getView().getBtnLogInOut(), new AbstractAction() {
+            @Override
+            protected void action() {
+                Platform.exit();
             }
         });
         
