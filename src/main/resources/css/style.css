@@ -169,15 +169,20 @@
 #94959b - botões
 #e1e1e2 - selecionado
 */
-.lbList{
-    -fx-background-color: #ffffff4f;
-    -fx-background-radius: 5;
-    -fx-padding: 4;
-}
 .userMenu{
     -fx-background-color: #504f4f;
     -fx-padding: 10;
 }
 .textWhite{
-    -fx-text-fill: #fff;   
+    -fx-text-fill: #fff;
+}
+.list-view {
+    -fx-padding: 5px ;
+    -fx-background-color: #55504f4f;
+}
+
+.list-cell:empty {
+    -fx-padding: 2px ;
+    -fx-background-color: transparent ;
+    -fx-background-insets: 5 ;
 }

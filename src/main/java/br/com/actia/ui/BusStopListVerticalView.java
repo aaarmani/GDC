@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
  *
  * @author Armani <anderson.armani@actia.com.br>
  */
-public class BusStopList2View extends VBox {
+public class BusStopListVerticalView extends VBox {
     private final int MAX_HEIGHT = 400;
     private final int MAX_WIDTH = 200;
     private final ResourceBundle rb;
@@ -20,7 +20,7 @@ public class BusStopList2View extends VBox {
     private TextField tfFilter;
     private ListView<ListBusStop> lstvBSList;
     
-    public BusStopList2View(ResourceBundle rb) {
+    public BusStopListVerticalView(ResourceBundle rb) {
         this.rb = rb;
         this.setMaxHeight(MAX_HEIGHT);
         this.setMaxWidth(MAX_WIDTH);
@@ -33,7 +33,6 @@ public class BusStopList2View extends VBox {
         
         VBox head = buildHead();
         lstvBSList = new ListView<>();
-        lstvBSList.getStyleClass().add("transparentPanel");
         this.getChildren().addAll(head, lstvBSList);
     }
 

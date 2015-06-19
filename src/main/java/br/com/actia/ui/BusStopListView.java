@@ -6,9 +6,11 @@ import br.com.actia.validation.MaskTextField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -25,11 +27,11 @@ public class BusStopListView extends VBox {
     
     private TextField tfId;
     private MaskTextField tfName;
-    private HBox HbLabels;
     private Button btnCancel;
     private Button btnDelete;
     private Button btnSave;
-
+    private ListView<BusStop> lstvBusStops;
+    
     public BusStopListView(ResourceBundle rb) {
         this.rb = rb;
         this.setMaxHeight(MAX_HEIGHT);
@@ -41,9 +43,10 @@ public class BusStopListView extends VBox {
     private void initializeComponents() {
         VBox head = buildHead();
         GridPane inputs = buildInputs();
+        lstvBusStops = buildListViewBusStops();
         HBox buttons = buildButtons();
         
-        this.getChildren().addAll(head, inputs, HbLabels, buttons);
+        this.getChildren().addAll(head, inputs, lstvBusStops, buttons);
     }
     
     private VBox buildHead() {
@@ -66,21 +69,22 @@ public class BusStopListView extends VBox {
         tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblBusStops = new Label(rb.getString("BusStops"));
-        HbLabels = buildHbLabels();
         
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblName, tfName);
-        grid.addRowGenerics(lblBusStops, HbLabels);
+        grid.addRowGenerics(lblBusStops, null);
 
         return grid.build();
     }
 
-    private HBox buildHbLabels() {
-        HBox hb = new HBox();
-        hb.setSpacing(5);
-        return hb;
+    private ListView<BusStop> buildListViewBusStops() {
+        ListView<BusStop> lstv = new ListView<>();
+        lstv.setId("ListBusStops");
+        lstv.setOrientation(Orientation.HORIZONTAL);
+        
+        return lstv;
     }
-    
+
     private HBox buildButtons() {
         btnDelete = new Button(rb.getString("Delete"));
         btnDelete.setId("deleteBSL");
@@ -165,11 +169,11 @@ public class BusStopListView extends VBox {
         this.btnSave = btnSave;
     }
 
-    public HBox getHbLabels() {
-        return HbLabels;
+    public ListView<BusStop> getLstvBusStops() {
+        return lstvBusStops;
     }
 
-    public void setHbLabels(HBox HbLabels) {
-        this.HbLabels = HbLabels;
+    public void setLstvBusStops(ListView<BusStop> lstvBusStops) {
+        this.lstvBusStops = lstvBusStops;
     }
 }
