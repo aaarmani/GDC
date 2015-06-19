@@ -1,31 +1,30 @@
 package br.com.actia.ui;
 
-import br.com.actia.model.RSS;
 import br.com.actia.model.Route;
-import br.com.actia.validation.MaskTextField;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import java.util.List;
+import javafx.geometry.Orientation;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 
 public class FileGeneratorView extends VBox {
     private final int MAX_HEIGHT = 600;
+    private final int MAX_HEIGHT_LIST_VIEW = 50;
     
     private ComboBox<Route> cbRoute;
-    private Button btnNewRoute;
+    private Button btnAddRoute;
     private Button btnCancelFileGenerator;
     private Button btnGenerateFileGenerator;
+    private ListView<Route> lstvRoutesToGenerate;
+
     private ResourceBundle rb;
     
     public FileGeneratorView(ResourceBundle rb) {
@@ -38,9 +37,10 @@ public class FileGeneratorView extends VBox {
     private void initializeComponents() {
         VBox head = buildHead();
         GridPane inputs = buildInputs();
+        lstvRoutesToGenerate = buildListViewRoutesToGenerate();
         HBox buttons = buildButtons();
         
-        this.getChildren().addAll(head, inputs, buttons);
+        this.getChildren().addAll(head, inputs, lstvRoutesToGenerate, buttons);
     }
 
     private VBox buildHead() {
@@ -55,18 +55,30 @@ public class FileGeneratorView extends VBox {
         cbRoute = new ComboBox<Route>();
         cbRoute.setPromptText(rb.getString("ChooseRoute"));
         
-        Label lblNewRoute = new Label(rb.getString("NewRoute"));
-        btnNewRoute = new Button("+");
-        btnNewRoute.tooltipProperty().set(new Tooltip(rb.getString("CreateNewVideoList")));
-        btnNewRoute.getStyleClass().add("flatButton");
-        btnNewRoute.setId("newRouteFileGenerator");
+        Label lblAddRoute = new Label(rb.getString("AddRoute"));
+        btnAddRoute = new Button("+");
+        btnAddRoute.tooltipProperty().set(new Tooltip(rb.getString("AddRouteToList")));
+        btnAddRoute.getStyleClass().add("flatButton");
+        btnAddRoute.setId("addRouteFileGenerator");
+        
+        Label lblRoutesSelected = new Label(rb.getString("SelectedRoutes"));
         
         GridFormBuilder grid = new GridFormBuilder();
-        grid.addRowGenerics(lblRoute, cbRoute, btnNewRoute, lblNewRoute);
+        grid.addRowGenerics(lblRoute, cbRoute, btnAddRoute, lblAddRoute);
+        grid.addRowGenerics(lblRoutesSelected, null);
         
         return grid.build();
     }
 
+    private ListView<Route> buildListViewRoutesToGenerate() {
+        ListView<Route> lstv = new ListView<>();
+        lstv.setId("ListRoutesToGenerate");
+        lstv.setOrientation(Orientation.HORIZONTAL);
+        lstv.setMaxHeight(MAX_HEIGHT_LIST_VIEW);
+        
+        return lstv;
+    }
+    
     private HBox buildButtons() {
         btnGenerateFileGenerator = new Button(rb.getString("Generate"));
         btnGenerateFileGenerator.setId("btnGenerateFileGenerator");
@@ -85,12 +97,12 @@ public class FileGeneratorView extends VBox {
         return hbox;
     }
     
-    public Button getBtnNewRoute() {
-        return btnNewRoute;
+    public Button getBtnAddRoute() {
+        return btnAddRoute;
     }
 
-    public void setBtnNewRoute(Button btnNewRoute) {
-        this.btnNewRoute = btnNewRoute;
+    public void setBtnAddRoute(Button btnNewRoute) {
+        this.btnAddRoute = btnNewRoute;
     }
 
     public Button getBtnCancelFileGenerator() {
@@ -117,20 +129,12 @@ public class FileGeneratorView extends VBox {
         this.cbRoute = cbRoute;
     }
     
-    public void resetForm() {
-        // TO DO
+    public ListView<Route> getLstvRoutesToGenerate() {
+        return lstvRoutesToGenerate;
+    }
+
+    public void setLstvRoutesToGenerate(ListView<Route> lstvRoutesToGenerate) {
+        this.lstvRoutesToGenerate = lstvRoutesToGenerate;
     }
     
-    public ArrayList<Route> loadRoutesToGenerate() {
-        ArrayList<Route> routesToGenerate = new ArrayList<Route>();
-        
-        Route route = null;
-        if(!cbRoute.getSelectionModel().isEmpty()) {
-            route = cbRoute.getSelectionModel().getSelectedItem();
-        }
-        
-        routesToGenerate.add(route);
-        
-        return routesToGenerate;
-    }
 }

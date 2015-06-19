@@ -19,17 +19,21 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class FileGeneratorController extends PersistenceController {
     private FileGeneratorView view;
-    private final Validator<ArrayList<Route>> validador = new RoutesToGenerateValidator();
+    private final Validator<ObservableList<Route>> validador = new RoutesToGenerateValidator();
     private final Pane parentPane;
     private MainScreenView mainScreenView;
     private ResourceBundle rb;
     private RouteController routeController = null;
+    
+    private ObservableList<Route> obsRoutesSelecteds;
     
     public FileGeneratorController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
@@ -45,11 +49,14 @@ public class FileGeneratorController extends PersistenceController {
         
         loadRouteList();
         
+        obsRoutesSelecteds = FXCollections.observableArrayList();
+        this.view.getLstvRoutesToGenerate().setItems(obsRoutesSelecteds);
+        
         registerAction(this.view.getBtnCancelFileGenerator(), new AbstractAction() {
             @Override
             protected void action() {
                 closeView();
-                refreshForm();
+                resetForm();
             }
         });
         
@@ -58,7 +65,7 @@ public class FileGeneratorController extends PersistenceController {
                     .addConditional(new BooleanExpression() {
                         @Override
                         public boolean conditional() {
-                            ArrayList<Route> routes = view.loadRoutesToGenerate();
+                            ObservableList<Route> routes = obsRoutesSelecteds;
                             String msg = validador.validate(routes);
                             if (!"".equals(msg == null ? "" : msg)) {
                                // Dialog.showInfo("Validacão", msg, );
@@ -72,12 +79,11 @@ public class FileGeneratorController extends PersistenceController {
                     .addAction(TransactionalAction.build()
                             .persistenceCtxOwner(FileGeneratorController.this)
                             .addAction(new AbstractAction() {
-                                private ArrayList<Route> routes;
+                                private ObservableList<Route> routes;
 
                                 @Override
                                 protected void action() {
-                                    routes = view.loadRoutesToGenerate();
-                                    
+                                    routes = obsRoutesSelecteds;
                                     RouteConverter routeConverter = null;
                                     for(Route r : routes){
                                         routeConverter = new RouteConverter(r);
@@ -90,16 +96,16 @@ public class FileGeneratorController extends PersistenceController {
                                     Platform.runLater(new Runnable() {
                                         @Override
                                         public void run() {
-                                            // TO DO
+                                            resetForm();
                                         }
                                     });
                                 }
                             })));
         
-        registerAction(view.getBtnNewRoute(), new AbstractAction() {
+        registerAction(view.getBtnAddRoute(), new AbstractAction() {
             @Override
             protected void action() {
-                showNewRouteController();
+                putSelectedRouteInList();
             }
         });
         
@@ -110,8 +116,20 @@ public class FileGeneratorController extends PersistenceController {
             }
         });
         
+        this.view.getLstvRoutesToGenerate().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Route selectedRt = view.getLstvRoutesToGenerate().getSelectionModel().getSelectedItem();
+                if(obsRoutesSelecteds.contains(selectedRt)) {
+                    obsRoutesSelecteds.remove(selectedRt);
+                    view.getLstvRoutesToGenerate().getSelectionModel().clearSelection();
+                }
+            }
+            
+        });
+        
         StackPane.setAlignment(view, Pos.CENTER);
-        this.view.resetForm();
+        this.resetForm();
     }
     
     public void showView() {
@@ -124,17 +142,17 @@ public class FileGeneratorController extends PersistenceController {
     
     @Override
     protected void cleanUp() {
-        view.resetForm();
+        this.resetForm();
         
         closeView();
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
     }
     
-    private void showNewRouteController() {
-        if(routeController == null)
-            routeController = new RouteController(this, mainScreenView, rb);
-        
-        routeController.showView();
+    private void putSelectedRouteInList() {
+        Route selectedRoute = this.view.getCbRoute().getSelectionModel().getSelectedItem();
+        if(selectedRoute != null && !obsRoutesSelecteds.contains(selectedRoute)) {
+            obsRoutesSelecteds.add(selectedRoute);
+        }
     }
     
     private void loadRouteList() {
@@ -148,7 +166,8 @@ public class FileGeneratorController extends PersistenceController {
         return FXCollections.observableArrayList(routeDAO.getAll());
     }
     
-    private void refreshForm() {
+    private void resetForm() {
         this.view.getCbRoute().getSelectionModel().clearSelection();
+        obsRoutesSelecteds.clear();
     }
 }

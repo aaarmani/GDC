@@ -1,13 +1,13 @@
 package br.com.actia.validation;
 
 import br.com.actia.model.Route;
-import java.util.ArrayList;
 import java.util.Set;
+import javafx.collections.ObservableList;
 import javax.validation.ConstraintViolation;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 import javax.validation.ValidatorFactory;
 
-public class RoutesToGenerateValidator  implements Validator<ArrayList<Route>> {
+public class RoutesToGenerateValidator  implements Validator<ObservableList<Route>> {
 
     private static ValidatorFactory factory;
 
@@ -16,15 +16,15 @@ public class RoutesToGenerateValidator  implements Validator<ArrayList<Route>> {
     }
 
     @Override
-    public String validate(ArrayList<Route> routes) {
+    public String validate(ObservableList<Route> routes) {
         StringBuilder sb = new StringBuilder();
         if (routes != null) {
             javax.validation.Validator validator = factory.getValidator();
-            Set<ConstraintViolation<ArrayList<Route>>> constraintViolations = validator.validate(routes);
+            Set<ConstraintViolation<ObservableList<Route>>> constraintViolations = validator.validate(routes);
 
             if (!constraintViolations.isEmpty()) {
                 sb.append("Validação da entidade routes\n");
-                for (ConstraintViolation<ArrayList<Route>> constraint : constraintViolations) {
+                for (ConstraintViolation<ObservableList<Route>> constraint : constraintViolations) {
                     sb.append(String.format("%n%s: %s", constraint.getPropertyPath(), constraint.getMessage()));
                 }
             }
