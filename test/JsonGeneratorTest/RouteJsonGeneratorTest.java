@@ -23,7 +23,6 @@ import br.com.actia.model.PoiType;
 import br.com.actia.model.VideoType;
 import java.util.ArrayList;
 import java.util.List;
-import br.com.actia.controller.RouteJsonGeneratorController;
 
 public class RouteJsonGeneratorTest {
     public static void main(String[] args) {
