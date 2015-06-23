@@ -79,6 +79,7 @@ public class RouteView extends VBox {
         cbListBanners = new ComboBox<ListBanner>();
         cbListBanners.setMaxWidth(Double.MAX_VALUE);
         cbListBanners.setPromptText(rb.getString("ChooseList"));
+        // TRATAR: new AutoCompleteComboBoxListener<ListBanner>(cbListBanners);
         
         Label lblNewListBanner = new Label(rb.getString("NewBannerList"));
         btnNewListBanner = new Button("+");
@@ -90,6 +91,7 @@ public class RouteView extends VBox {
         cbListRSSs = new ComboBox<ListRSS>();
         cbListRSSs.setMaxWidth(Double.MAX_VALUE);
         cbListRSSs.setPromptText(rb.getString("ChooseList"));
+        // TRATAR: new AutoCompleteComboBoxListener<ListRSS>(cbListRSSs);
         
         Label lblNewListRSS = new Label(rb.getString("NewRSSList"));
         btnNewListRSS = new Button("+");
@@ -101,6 +103,7 @@ public class RouteView extends VBox {
         cbListVideos = new ComboBox<ListVideo>();
         cbListVideos.setMaxWidth(Double.MAX_VALUE);
         cbListVideos.setPromptText(rb.getString("ChooseList"));
+        // TRATAR: new AutoCompleteComboBoxListener<ListVideo>(cbListVideos);
         
         Label lblNewListVideo = new Label(rb.getString("NewVideoList"));
         btnNewListVideo = new Button("+");
@@ -112,6 +115,7 @@ public class RouteView extends VBox {
         cbListBusStops = new ComboBox<ListBusStop>();
         cbListBusStops.setMaxWidth(Double.MAX_VALUE);
         cbListBusStops.setPromptText(rb.getString("ChooseList"));
+        // TRATAR: new AutoCompleteComboBoxListener<ListBusStop>(cbListBusStops);
         
         Label lblNewListBusStop = new Label(rb.getString("NewBusStopList"));
         btnNewListBusStop = new Button("+");

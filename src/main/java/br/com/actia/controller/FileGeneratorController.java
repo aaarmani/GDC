@@ -10,6 +10,7 @@ import br.com.actia.event.AbstractEventListener;
 import br.com.actia.event.CrudRouteEvent;
 import br.com.actia.gson.RouteConverter;
 import br.com.actia.model.Route;
+import br.com.actia.ui.AutoCompleteComboBoxListener;
 import br.com.actia.ui.FileGeneratorView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.RoutesToGenerateValidator;
@@ -46,6 +47,8 @@ public class FileGeneratorController extends PersistenceController {
         this.view.setMaxWidth(parentPane.getWidth());
         this.view.setMinHeight(parentPane.getHeight());
         this.view.setMinWidth(parentPane.getWidth());
+        
+        AutoCompleteComboBoxListener<Route> listener = new AutoCompleteComboBoxListener<Route>(this.view.getCbRoute());
         
         loadRouteList();
         
@@ -149,10 +152,10 @@ public class FileGeneratorController extends PersistenceController {
     }
     
     private void putSelectedRouteInList() {
-        Route selectedRoute = this.view.getCbRoute().getSelectionModel().getSelectedItem();
-        if(selectedRoute != null && !obsRoutesSelecteds.contains(selectedRoute)) {
-            obsRoutesSelecteds.add(selectedRoute);
-        }
+         Route selectedRoute = this.view.getCbRoute().getSelectionModel().getSelectedItem();
+         if(selectedRoute != null && !obsRoutesSelecteds.contains(selectedRoute)) {
+             obsRoutesSelecteds.add(selectedRoute);
+         }
     }
     
     private void loadRouteList() {
