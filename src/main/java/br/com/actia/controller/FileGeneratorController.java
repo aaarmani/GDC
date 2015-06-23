@@ -48,8 +48,6 @@ public class FileGeneratorController extends PersistenceController {
         this.view.setMinHeight(parentPane.getHeight());
         this.view.setMinWidth(parentPane.getWidth());
         
-        AutoCompleteComboBoxListener<Route> listener = new AutoCompleteComboBoxListener<Route>(this.view.getCbRoute());
-        
         loadRouteList();
         
         obsRoutesSelecteds = FXCollections.observableArrayList();

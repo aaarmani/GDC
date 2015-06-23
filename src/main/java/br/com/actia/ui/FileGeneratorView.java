@@ -54,7 +54,7 @@ public class FileGeneratorView extends VBox {
         Label lblRoute = new Label(rb.getString("Route"));
         cbRoute = new ComboBox<Route>();
         cbRoute.setPromptText(rb.getString("ChooseRoute"));
-        // new AutoCompleteComboBoxListener<Route>(cbRoute);
+        // TRATAR: new AutoCompleteComboBoxListener<Route>(cbRoute);
         
         Label lblAddRoute = new Label(rb.getString("AddRoute"));
         btnAddRoute = new Button("+");
