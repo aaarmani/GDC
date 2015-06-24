@@ -1,6 +1,7 @@
 package br.com.actia.ui;
 
 import br.com.actia.model.Route;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
@@ -13,11 +14,15 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Orientation;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 
 public class FileGeneratorView extends VBox {
     private final int MAX_HEIGHT = 600;
     private final int MAX_HEIGHT_LIST_VIEW = 50;
+    
+    private TextField tfDirectoryPath;
+    private Button btnChooseDirectory;
     
     private ComboBox<Route> cbRoute;
     private Button btnAddRoute;
@@ -51,6 +56,13 @@ public class FileGeneratorView extends VBox {
     }
 
     private GridPane buildInputs() {
+        Label lblDirectoryPath = new Label(rb.getString("FGChooseDirectory"));
+        btnChooseDirectory = new Button(rb.getString("Search"));
+        btnChooseDirectory.setId("btnChooseDirectory");
+        btnChooseDirectory.getStyleClass().add("flatButton");
+        
+        tfDirectoryPath = new TextField();
+        
         Label lblRoute = new Label(rb.getString("Route"));
         cbRoute = new ComboBox<Route>();
         cbRoute.setPromptText(rb.getString("ChooseRoute"));
@@ -65,6 +77,7 @@ public class FileGeneratorView extends VBox {
         Label lblRoutesSelected = new Label(rb.getString("SelectedRoutes"));
         
         GridFormBuilder grid = new GridFormBuilder();
+        grid.addRowGenerics(lblDirectoryPath, tfDirectoryPath, btnChooseDirectory, null);
         grid.addRowGenerics(lblRoute, cbRoute, btnAddRoute, lblAddRoute);
         grid.addRowGenerics(lblRoutesSelected, null);
         
@@ -120,6 +133,22 @@ public class FileGeneratorView extends VBox {
 
     public void setBtnGenerateFileGenerator(Button btnGenerateFileGenerator) {
         this.btnGenerateFileGenerator = btnGenerateFileGenerator;
+    }
+    
+    public Button getBtnChooseDirectory() {
+        return btnChooseDirectory;
+    }
+
+    public void setBtnChooseDirectory(Button btnChooseDirectory) {
+        this.btnChooseDirectory = btnChooseDirectory;
+    }
+    
+    public TextField getTfDirectoryPath() {
+        return tfDirectoryPath;
+    }
+
+    public void setTfDirectoryPath(TextField tfDirectoryPath) {
+        this.tfDirectoryPath = tfDirectoryPath;
     }
     
     public ComboBox<Route> getCbRoute() {

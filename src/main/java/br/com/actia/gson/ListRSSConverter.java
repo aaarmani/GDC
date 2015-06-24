@@ -4,8 +4,8 @@ import br.com.actia.model.ListRSS;
 import br.com.actia.model.RSS;
 
 public class ListRSSConverter extends AbstractConverter{
-    public ListRSSConverter(ListRSS listRSS) {
-        super(listRSS);
+    public ListRSSConverter(ListRSS listRSS, String destinationPath) {
+        super(listRSS, destinationPath);
         
         this.MAIN_DIRECTORY = "rss";
         this.buildAdapters();

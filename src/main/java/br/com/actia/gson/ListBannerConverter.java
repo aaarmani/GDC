@@ -4,8 +4,8 @@ import br.com.actia.model.ListBanner;
 import br.com.actia.model.Banner;
 
 public class ListBannerConverter extends AbstractConverter{
-    public ListBannerConverter(ListBanner listBanner) {
-        super(listBanner);
+    public ListBannerConverter(ListBanner listBanner, String destinationPath) {
+        super(listBanner, destinationPath);
         
         this.MAIN_DIRECTORY = "banner";
         this.buildAdapters();

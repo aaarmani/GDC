@@ -4,8 +4,8 @@ import br.com.actia.model.ListVideo;
 import br.com.actia.model.Video;
 
 public class ListVideoConverter extends AbstractConverter{
-    public ListVideoConverter(ListVideo listVideo) {
-        super(listVideo);
+    public ListVideoConverter(ListVideo listVideo, String destinationPath) {
+        super(listVideo, destinationPath);
         
         this.MAIN_DIRECTORY = "video";
         this.buildAdapters();

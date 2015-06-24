@@ -5,8 +5,8 @@ import br.com.actia.model.ListPoi;
 import br.com.actia.model.ListVideo;
 
 public class ListBusStopConverter extends AbstractConverter{
-    public ListBusStopConverter(ListBusStop listBusStop) {
-        super(listBusStop);
+    public ListBusStopConverter(ListBusStop listBusStop, String destinationPath) {
+        super(listBusStop, destinationPath);
         
         this.MAIN_DIRECTORY = "gps";
         this.buildAdapters();

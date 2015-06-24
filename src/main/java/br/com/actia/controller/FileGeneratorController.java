@@ -15,6 +15,7 @@ import br.com.actia.ui.FileGeneratorView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.RoutesToGenerateValidator;
 import br.com.actia.validation.Validator;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -25,6 +26,7 @@ import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
 
 public class FileGeneratorController extends PersistenceController {
     private FileGeneratorView view;
@@ -33,6 +35,8 @@ public class FileGeneratorController extends PersistenceController {
     private MainScreenView mainScreenView;
     private ResourceBundle rb;
     private RouteController routeController = null;
+    
+    private File directoryFile;
     
     private ObservableList<Route> obsRoutesSelecteds;
     
@@ -85,9 +89,13 @@ public class FileGeneratorController extends PersistenceController {
                                 @Override
                                 protected void action() {
                                     routes = obsRoutesSelecteds;
-                                    RouteConverter routeConverter = null;
+                                    RouteConverter routeConverter = new RouteConverter();
+                                    routeConverter.setPath(view.getTfDirectoryPath().getText());
+                                    routeConverter.buildFolderStructure();
+                                    
                                     for(Route r : routes){
-                                        routeConverter = new RouteConverter(r);
+                                        routeConverter.setRoute(r);
+                                        routeConverter.setFilePath();
                                         routeConverter.generateAllFromRoute();
                                     }
                                 }
@@ -102,6 +110,18 @@ public class FileGeneratorController extends PersistenceController {
                                     });
                                 }
                             })));
+        
+        registerAction(this.view.getBtnChooseDirectory(), new AbstractAction() {
+            @Override
+            protected void action() {
+                chooseDirectory();
+            }
+            
+            @Override
+            protected void posAction() { 
+                showDirectoryPath();
+            }
+        });
         
         registerAction(view.getBtnAddRoute(), new AbstractAction() {
             @Override
@@ -139,6 +159,18 @@ public class FileGeneratorController extends PersistenceController {
     
     public void closeView() {
         parentPane.getChildren().remove(view);
+    }
+    
+    private void chooseDirectory() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Selecione um diretório");
+        directoryFile = directoryChooser.showDialog(null);
+    }
+    
+    private void showDirectoryPath() {
+        if(directoryFile != null) {
+            view.getTfDirectoryPath().setText(directoryFile.getAbsolutePath());
+        }
     }
     
     @Override
