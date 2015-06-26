@@ -275,4 +275,33 @@ public class GoogleMap extends JavascriptObject {
 
     }
 
+    //Set SearchBox event
+    public void addUIEventHandlerWithCode(JavascriptObject obj, UIEventType type, String mapName) {
+        //Add function to handle places change in map
+        String mcall = "google.maps.event.addListener(" + obj.getVariableName() + ", '" + type.name() + "', "
+                + "function() {"
+                + "var places = " + obj.getVariableName() + ".getPlaces();"
+                + "if (places.length == 0) {return;}\n" +
+                "    var bounds = new google.maps.LatLngBounds();\n" +
+                "    for (var i = 0, place; place = places[i]; i++) {\n" +
+                "      var image = {\n" +
+                "        url: place.icon,\n" +
+                "        size: new google.maps.Size(71, 71),\n" +
+                "        origin: new google.maps.Point(0, 0),\n" +
+                "        anchor: new google.maps.Point(17, 34),\n" +
+                "        scaledSize: new google.maps.Size(25, 25)\n" +
+                "      };\n" +
+                "\n" +
+                "\n" +
+                "      bounds.extend(place.geometry.location);\n" +
+                "    }\n"
+                + mapName + ".fitBounds(bounds);"
+                + mapName + ".setZoom(18);"
+                + "});";
+        runtime.execute(mcall);
+    }
+    //Set data in javascript
+    public void addJavaScriptObjs(String text) {
+        runtime.execute(text);
+    }
 }
