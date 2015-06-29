@@ -31,7 +31,6 @@ public class RSSView extends VBox {
     private Label feedTitleText;
     private Label feedContentText;
     private Label feedDateText;
-    private Button btnPlay;
     private ResourceBundle rb;
     private EntityTable<RSS> table;
     
@@ -112,15 +111,10 @@ public class RSSView extends VBox {
         feedView.getStyleClass().add("feedView");
         
         feedImageView = new ImageView();
-        //feedImageView.setFitWidth(VIEWER_SIZE);
-        //feedImageView.setFitHeight(VIEWER_SIZE);
 
         feedImageView.setPreserveRatio(true);
         feedImageView.setCache(true);
-        /*feedImageView.setSmooth(true);
-        feedImageView.getStyleClass().add("Img");*/
         feedImageView.getStyleClass().add("feedImageView");
-        // feedImageView.getProperties().
         
         feedContentView = new VBox();
         feedTitleText = new Label();
@@ -138,12 +132,7 @@ public class RSSView extends VBox {
         feedView.getChildren().add(feedImageView);
         feedView.getChildren().add(feedContentView);
         
-        btnPlay = new Button(rb.getString("Play"));
-        btnPlay.setId("btnPlayFeed");
-        btnPlay.getStyleClass().add("flatButton");
-        setBtToPlay();
-        
-        VBox vbox = new VBox(separator, feedView, btnPlay);
+        VBox vbox = new VBox(separator, feedView);//, btnPlay);
         vbox.getStyleClass().add("viewPane");
         
         return vbox;
@@ -253,14 +242,6 @@ public class RSSView extends VBox {
         this.feedDateText = feedDateText;
     }
     
-    public Button getBtnPlay() {
-        return btnPlay;
-    }
-
-    public void setBtnPlay(Button btnPlay) {
-        this.btnPlay = btnPlay;
-    }
-
     public Button getBtnDeleteRSS() {
         return btnDeleteRSS;
     }
@@ -296,14 +277,6 @@ public class RSSView extends VBox {
         btnDeleteRSS.setVisible(false);
     }
 
-    public void setBtToPlay() {
-        btnPlay.setText(rb.getString("Play"));
-    }
-
-    public void setBtToStop() {
-        btnPlay.setText(rb.getString("Stop"));
-    }
-    
     public void refreshTable(List<RSS> listEntity) {
         table.reload(listEntity);   
     }

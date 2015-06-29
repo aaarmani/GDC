@@ -63,7 +63,6 @@ public class RSSController extends PersistenceController {
         this.view.setMaxWidth(parentPane.getWidth());
         this.view.setMinHeight(parentPane.getHeight());
         this.view.setMinWidth(parentPane.getWidth());
-        this.view.getBtnPlay().setVisible(false);
         
         registerAction(this.view.getBtnCancelRSS(), new AbstractAction() {
             @Override
@@ -105,7 +104,6 @@ public class RSSController extends PersistenceController {
                                     view.resetForm();
                                     refreshTable();
                                     //cleanUp();
-                                    //MOVER ARQUIVO PARA PASTA DO SISTEMA
                                     fireEvent(new CrudRSSEvent(RSS));
                                     
                                     if(parent instanceof ListRSSController){
@@ -137,6 +135,7 @@ public class RSSController extends PersistenceController {
                         view.resetForm();
                         refreshTable();
                         fireEvent(new CrudRSSEvent(RSS));
+                        feedStop();
                     }
                     @Override
                     protected void actionFailure(){
@@ -149,12 +148,6 @@ public class RSSController extends PersistenceController {
             @Override
             protected void action() {
                 loadFeed();
-            }
-        });
-        
-        registerAction(view.getBtnPlay(), new AbstractAction() {
-            @Override
-            protected void action() {
                 playAction();
             }
         });
@@ -181,6 +174,7 @@ public class RSSController extends PersistenceController {
     }
     
     public void closeView() {
+        feedStop();
         parentPane.getChildren().remove(view);
     }
     
@@ -196,14 +190,9 @@ public class RSSController extends PersistenceController {
             
             this.view.getFeedView().setVisible(false);
             this.feedStarted = false;
-            this.view.setBtToPlay();
-            this.view.getBtnPlay().setVisible(true);
             
             URL url;
             this.lstRSS = new ArrayList<SyndEntry>();
-
-            // Image rssImageDrawable = null;
-
             SyndImage syndImage = null;
             
             try {
@@ -215,17 +204,12 @@ public class RSSController extends PersistenceController {
                 Iterator itInputs = inputs.iterator();
 
                 try {
-                    System.out.println("####CARREGANDO IMAGEM DO RSS###");
                     syndImage = feed.getImage();
                     String link = syndImage.getUrl();
 
-                    System.out.println("#### RSS LINK IMAGE = " + link);
                     if (link != null && !link.isEmpty()) {
-                        // InputStream is = (InputStream) new URL(link).getContent();
-                        InputStream is = (InputStream)  new URL(link).openStream();//getContent();//feed.getImage();
+                        InputStream is = (InputStream)  new URL(link).openStream();
                         this.feedImg = new Image(is);
-
-                        // rssImageDrawable = Drawable.createFromStream(is, "src name");
                     }
                 } catch(Exception rssE) {
                     rssE.printStackTrace();
@@ -236,7 +220,6 @@ public class RSSController extends PersistenceController {
                     this.lstRSS.add(aux);
                 }
 
-                System.out.println("QUANTIDADE DE RSS = " + this.lstRSS.size());
             } catch (MalformedURLException e) {
                e.printStackTrace();
             } catch (IllegalArgumentException e) {
@@ -250,10 +233,9 @@ public class RSSController extends PersistenceController {
     }
     
     private void playAction() {
-        if(feedStarted == false)
-            feedPlay();
-        else
+        if(feedStarted == true)
             feedStop();
+        feedPlay();
     }
     
     private void feedPlay() {
@@ -270,7 +252,6 @@ public class RSSController extends PersistenceController {
                     // System.out.println("----- RODANDO THREAD -----");
                     
                     if(lstRSS != null && lstRSS.size() > 0) {
-                    //while(true) {
                         final SyndEntry entry = lstRSS.get(rssIndex++);
                         rssIndex = rssIndex >= lstRSS.size() ? 0 : rssIndex;
                         
@@ -289,9 +270,6 @@ public class RSSController extends PersistenceController {
 
                         view.getFeedImageView().setImage(feedImg);
                         view.getFeedImageView().setVisible(true);
-
-                        //imageView.setVisibility(View.GONE);
-                        //rssView.setVisibility(View.VISIBLE);
                    }
                 });
             }
@@ -299,7 +277,6 @@ public class RSSController extends PersistenceController {
         
         this.view.getFeedView().setVisible(true);
         feedStarted = true;
-        this.view.setBtToStop();
     }
     
     private void feedStop() {
@@ -309,13 +286,11 @@ public class RSSController extends PersistenceController {
         this.timerPlayFeed.cancel();
         this.view.getFeedView().setVisible(false);
         feedStarted = false;
-        this.view.setBtToPlay();
     }
 
     @Override
     protected void cleanUp() {
         view.resetForm();
-        this.view.getBtnPlay().setVisible(false);
         this.view.getFeedView().setVisible(false);
         
         closeView();
@@ -327,7 +302,6 @@ public class RSSController extends PersistenceController {
     }
     
     private void refreshTable(List<RSS> list) {
-        //view.addTransition();
         if (list != null) {
             view.refreshTable(list);
             return;
