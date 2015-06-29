@@ -16,11 +16,13 @@ import br.com.actia.javascript.event.MapStateEventType;
 import br.com.actia.javascript.event.UIEventType;
 import br.com.actia.javascript.object.Animation;
 import br.com.actia.javascript.object.GoogleMap;
+import br.com.actia.javascript.object.Input;
 import br.com.actia.javascript.object.LatLong;
 import br.com.actia.javascript.object.MapOptions;
 import br.com.actia.javascript.object.MapTypeIdEnum;
 import br.com.actia.javascript.object.Marker;
 import br.com.actia.javascript.object.MarkerOptions;
+import br.com.actia.javascript.object.SearchBox;
 import br.com.actia.model.BusStop;
 import br.com.actia.model.Poi;
 import br.com.actia.ui.GoogleMapView;
@@ -210,6 +212,11 @@ public class GoogleMapController extends PersistenceController {
         googleMap = createMap(options);
         googleMap.setHeading(123.2);
         
+        //### config map SearchBox
+        Input input = new Input();
+        SearchBox searchBox = new SearchBox(input);
+        googleMap.addJavaScriptObjs(googleMap.getVariableName() + ".controls[google.maps.ControlPosition.TOP_LEFT].push("+input.getVariableName()+");");
+        this.googleMap.addUIEventHandlerWithCode(searchBox, UIEventType.places_changed, googleMap.getVariableName());
         
         //### Define listners
         this.googleMap.addUIEventHandler(UIEventType.click, (JSObject obj) -> {

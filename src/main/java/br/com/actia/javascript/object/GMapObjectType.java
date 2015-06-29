@@ -40,5 +40,6 @@ public interface GMapObjectType {
     public static final String MAX_ZOOM_RESULT = "google.maps.MaxZoomResult";
     public static final String PROJECTION = "google.maps.Projection";
     public static final String POINT = "google.maps.Point";
-    
+    public static final String SEARCH_BOX = "google.maps.places.SearchBox";
+    public static final String INPUT = "input";
 }
