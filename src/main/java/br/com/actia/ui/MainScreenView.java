@@ -47,6 +47,8 @@ public class MainScreenView {
     private Button btnEN;
     private Button btnES;
     
+    BorderPane borderPane = null;
+    
     private ResourceBundle rb;
 	private FontAwesome fontAwesome;
 
@@ -54,7 +56,7 @@ public class MainScreenView {
         this.rb = rb;
         inicializaComponentes();
         
-        BorderPane borderPane = new BorderPane();
+        this.borderPane = new BorderPane();
         borderPane.getStyleClass().add("MainScreen");
         mainScene = new Scene(borderPane);
         mainScene.getStylesheets().add("css/style.css");
@@ -440,5 +442,9 @@ public class MainScreenView {
     
     public void setRb(ResourceBundle rb) {
         this.rb = rb;
+    }
+    
+    public BorderPane getBorderPane() {
+        return this.borderPane;
     }
 }

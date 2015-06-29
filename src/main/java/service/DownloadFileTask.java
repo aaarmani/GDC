@@ -20,6 +20,9 @@ public class DownloadFileTask extends Task<Integer> {
     private final File origFile;
     private final File destFile;
     
+    private FileChannel inChannel = null;
+    private FileChannel outChannel = null;
+    
     public DownloadFileTask(ResourceBundle rb, File origFile, File destFile) {
         this.rb = rb;
         this.origFile = origFile;
@@ -57,8 +60,12 @@ public class DownloadFileTask extends Task<Integer> {
         do {
             destSize = destFile.length();
             updateProgress((100*(destSize/orgiSize)), 100);
-            if(thread.getState() == Thread.State.TERMINATED)
+            if(thread.getState() == Thread.State.TERMINATED) {
+                Thread.sleep(20);
+                destSize = destFile.length();
+                updateProgress((100*(destSize/orgiSize)), 100);
                 break;
+            }
             
             Thread.sleep(20);
         } while(orgiSize > destSize);
@@ -135,8 +142,8 @@ public class DownloadFileTask extends Task<Integer> {
     }
     
     private void copyFile() {
-        FileChannel inChannel = null;
-        FileChannel outChannel = null;
+        this.inChannel = null;
+        this.outChannel = null;
         
         try {
             inChannel = new FileInputStream(origFile).getChannel();
@@ -156,4 +163,23 @@ public class DownloadFileTask extends Task<Integer> {
             }
         }
     }
+
+    @Override
+    protected void cancelled() {
+        // super.cancelled(); //To change body of generated methods, choose Tools | Templates.
+        
+        try {
+            if(inChannel != null) {
+                inChannel.close();
+            }
+            if(outChannel != null) {
+                outChannel.close();
+            }
+            destFile.delete();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
 }

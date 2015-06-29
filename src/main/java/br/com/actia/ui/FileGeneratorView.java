@@ -12,10 +12,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Orientation;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import org.controlsfx.control.ListSelectionView;
 
 public class FileGeneratorView extends VBox {
     private final int MAX_HEIGHT = 600;
@@ -24,12 +26,14 @@ public class FileGeneratorView extends VBox {
     private TextField tfDirectoryPath;
     private Button btnChooseDirectory;
     
-    private ComboBox<Route> cbRoute;
-    private Button btnAddRoute;
+    //private ComboBox<Route> cbRoute;
+    //private Button btnAddRoute;
     private Button btnCancelFileGenerator;
     private Button btnGenerateFileGenerator;
-    private ListView<Route> lstvRoutesToGenerate;
+    //private ListView<Route> lstvRoutesToGenerate;
 
+    private ListSelectionView<Route> lsvRoutesToGenerate;
+    
     private ResourceBundle rb;
     
     public FileGeneratorView(ResourceBundle rb) {
@@ -42,10 +46,11 @@ public class FileGeneratorView extends VBox {
     private void initializeComponents() {
         VBox head = buildHead();
         GridPane inputs = buildInputs();
-        lstvRoutesToGenerate = buildListViewRoutesToGenerate();
+        // lstvRoutesToGenerate = buildListViewRoutesToGenerate();
+        lsvRoutesToGenerate = buildListRoutesToGenerate();
         HBox buttons = buildButtons();
         
-        this.getChildren().addAll(head, inputs, lstvRoutesToGenerate, buttons);
+        this.getChildren().addAll(head, inputs, lsvRoutesToGenerate, buttons);
     }
 
     private VBox buildHead() {
@@ -63,27 +68,30 @@ public class FileGeneratorView extends VBox {
         
         tfDirectoryPath = new TextField();
         
+        /*
         Label lblRoute = new Label(rb.getString("Route"));
         cbRoute = new ComboBox<Route>();
         cbRoute.setPromptText(rb.getString("ChooseRoute"));
         // TRATAR: new AutoCompleteComboBoxListener<Route>(cbRoute);
-        
+                
         Label lblAddRoute = new Label(rb.getString("AddRoute"));
         btnAddRoute = new Button("+");
         btnAddRoute.tooltipProperty().set(new Tooltip(rb.getString("AddRouteToList")));
         btnAddRoute.getStyleClass().add("flatButton");
         btnAddRoute.setId("addRouteFileGenerator");
-        
+                
         Label lblRoutesSelected = new Label(rb.getString("SelectedRoutes"));
+        */
         
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblDirectoryPath, tfDirectoryPath, btnChooseDirectory, null);
-        grid.addRowGenerics(lblRoute, cbRoute, btnAddRoute, lblAddRoute);
-        grid.addRowGenerics(lblRoutesSelected, null);
+        // grid.addRowGenerics(lblRoute, cbRoute, btnAddRoute, lblAddRoute);
+        // grid.addRowGenerics(lblRoutesSelected, null);
         
         return grid.build();
     }
 
+    /*
     private ListView<Route> buildListViewRoutesToGenerate() {
         ListView<Route> lstv = new ListView<>();
         lstv.setId("ListRoutesToGenerate");
@@ -91,6 +99,12 @@ public class FileGeneratorView extends VBox {
         lstv.setMaxHeight(MAX_HEIGHT_LIST_VIEW);
         
         return lstv;
+    }
+    */
+    
+    private ListSelectionView<Route> buildListRoutesToGenerate() {
+        ListSelectionView<Route> lsv = new ListSelectionView<Route>();
+        return lsv;
     }
     
     private HBox buildButtons() {
@@ -111,6 +125,7 @@ public class FileGeneratorView extends VBox {
         return hbox;
     }
     
+    /*
     public Button getBtnAddRoute() {
         return btnAddRoute;
     }
@@ -118,7 +133,8 @@ public class FileGeneratorView extends VBox {
     public void setBtnAddRoute(Button btnNewRoute) {
         this.btnAddRoute = btnNewRoute;
     }
-
+    */
+    
     public Button getBtnCancelFileGenerator() {
         return btnCancelFileGenerator;
     }
@@ -151,6 +167,7 @@ public class FileGeneratorView extends VBox {
         this.tfDirectoryPath = tfDirectoryPath;
     }
     
+    /*
     public ComboBox<Route> getCbRoute() {
         return cbRoute;
     }
@@ -162,9 +179,29 @@ public class FileGeneratorView extends VBox {
     public ListView<Route> getLstvRoutesToGenerate() {
         return lstvRoutesToGenerate;
     }
-
+    
     public void setLstvRoutesToGenerate(ListView<Route> lstvRoutesToGenerate) {
         this.lstvRoutesToGenerate = lstvRoutesToGenerate;
     }
+
+    public ListSelectionView<Route> getLsvEntity() {
+        return lsvEntity;
+    }
+    */
     
+    public ListSelectionView<Route> getLsvRoutesToGenerate(){
+        return this.lsvRoutesToGenerate;
+    }
+    
+//    public VBox transparentPane() {
+//        VBox transparentPane = new VBox();
+//        
+//        transparentPane.setPrefHeight(1000);
+//        transparentPane.setPrefWidth(1000);
+//        
+//        // transparentPane.setMaxHeight(200);
+//        transparentPane.getStyleClass().add("transparentPanel");
+//        
+//        return transparentPane;
+//    }
 }
