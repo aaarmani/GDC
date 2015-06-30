@@ -16,16 +16,27 @@ import br.com.actia.ui.BusStopListView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListBusStopValidator;
 import br.com.actia.validation.Validator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 
 /**
  *
@@ -70,6 +81,112 @@ public class ListBusStopController extends PersistenceController {
                 filteredData.setPredicate(s -> s.toString().toLowerCase().contains(filter.toLowerCase()));
             }
         });
+        
+        //Drag and Drop ListView  ##############################################
+        final IntegerProperty dragFromIndex = new SimpleIntegerProperty(-1);
+        view.getLstvBusStops().setCellFactory(new Callback<ListView<BusStop>, ListCell<BusStop>>() {
+
+            @Override
+            public ListCell<BusStop> call(ListView<BusStop> lv) {
+                final ListCell<BusStop> cell = new ListCell<BusStop>() {
+                    @Override
+                    public void updateItem(BusStop item, boolean empty) {
+                        super.updateItem(item,  empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(item.getName());
+                        }
+                    }
+                };
+
+                cell.setOnDragDetected(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (! cell.isEmpty()) {
+                            dragFromIndex.set(cell.getIndex());
+                            Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
+                            ClipboardContent cc = new ClipboardContent();
+                            cc.putString(cell.getItem().getName());
+                            db.setContent(cc);
+                            // Java 8 only:
+//                          db.setDragView(cell.snapshot(null, null));
+                        }
+                    }
+                });
+
+                cell.setOnDragOver(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent event) {
+                        if (dragFromIndex.get() >= 0 && dragFromIndex.get() != cell.getIndex()) {
+                            event.acceptTransferModes(TransferMode.MOVE);
+                        }
+                    }
+                });
+
+                // highlight drop target by changing background color:
+                cell.setOnDragEntered(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent event) {
+                        if (dragFromIndex.get() >= 0 && dragFromIndex.get() != cell.getIndex()) {
+                            // should really set a style class and use an external style sheet,
+                            // but this works for demo purposes:
+                            cell.setStyle("-fx-background-color: gold;");
+                        }
+                    }
+                });
+
+                // remove highlight:
+                cell.setOnDragExited(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent event) {
+                        cell.setStyle("");
+                    }
+                });
+
+                cell.setOnDragDropped(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent event) {
+
+                        int dragItemsStartIndex ;
+                        int dragItemsEndIndex ;
+                        int direction ;
+                        if (cell.isEmpty()) {
+                            dragItemsStartIndex = dragFromIndex.get();
+                            dragItemsEndIndex = view.getLstvBusStops().getItems().size();
+                            direction = -1;
+                        } else {
+                            if (cell.getIndex() < dragFromIndex.get()) {
+                                dragItemsStartIndex = cell.getIndex();
+                                dragItemsEndIndex = dragFromIndex.get() + 1 ;
+                                direction = 1 ;
+                            } else {
+                                dragItemsStartIndex = dragFromIndex.get();
+                                dragItemsEndIndex = cell.getIndex() + 1 ;
+                                direction = -1 ;
+                            }
+                        }
+
+                        List<BusStop> rotatingItems = view.getLstvBusStops().getItems().subList(dragItemsStartIndex, dragItemsEndIndex);
+                        List<BusStop> rotatingItemsCopy = new ArrayList<>(rotatingItems);
+                        Collections.rotate(rotatingItemsCopy, direction);
+                        rotatingItems.clear();
+                        rotatingItems.addAll(rotatingItemsCopy);
+                        dragFromIndex.set(-1);
+                    }
+                });
+
+                cell.setOnDragDone(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent event) {
+                        dragFromIndex.set(-1);
+                        view.getLstvBusStops().getSelectionModel().clearSelection();
+                    }
+                });
+                return cell ;
+            }
+        });
+        //######################################################################
 
         registerAction(this.view.getBtnCancel(), new AbstractAction() {
             @Override
@@ -183,7 +300,7 @@ public class ListBusStopController extends PersistenceController {
         });
         
         StackPane.setAlignment(view, Pos.BOTTOM_CENTER);
-        StackPane.setAlignment(viewList, Pos.TOP_LEFT);
+        StackPane.setAlignment(viewList, Pos.TOP_RIGHT);
     }
 
     public void showView() {

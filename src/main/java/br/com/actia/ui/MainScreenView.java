@@ -64,7 +64,10 @@ public class MainScreenView {
         bpMenu = getBorderPaneMenu();
         bpAction = createBpAction();
         paneCenter = createPaneCenter();
-
+        paneCenter.setStyle("-fx-background-image: url('actiaLogo.png'); " +
+                   "-fx-background-position: center center; " +
+                   "-fx-background-repeat: stretch;");
+        
         borderPane.setLeft(bpMenu);
         borderPane.setCenter(paneCenter);
         borderPane.setRight(bpAction);
