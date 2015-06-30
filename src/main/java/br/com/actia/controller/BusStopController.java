@@ -12,7 +12,6 @@ import br.com.actia.dao.ListPoiDAO;
 import br.com.actia.dao.ListPoiDAOJPA;
 import br.com.actia.dao.ListVideoDAO;
 import br.com.actia.dao.ListVideoDAOJPA;
-import br.com.actia.event.AbstractEvent;
 import br.com.actia.event.AbstractEventListener;
 import br.com.actia.event.BusStopDeleteEvent;
 import br.com.actia.event.CrudBannerEvent;
@@ -42,6 +41,7 @@ import javafx.scene.layout.StackPane;
  * @author Armani <anderson.armani@actia.com.br>
  */
 public class BusStopController extends PersistenceController {
+    private final int DEFAULT_RADIUS = 40;
     private final Pane parentPane;
     private MainScreenView mainScreenView;
     private final BusStopView view;
@@ -219,6 +219,7 @@ public class BusStopController extends PersistenceController {
         if(position != null) {
             this.busStop.setLatitude(position.getLatitude());
             this.busStop.setLongitude(position.getLongitude());
+            this.busStop.setRadius(DEFAULT_RADIUS);
             this.view.setBusStop(this.busStop);
         }
     }
@@ -298,7 +299,7 @@ public class BusStopController extends PersistenceController {
             this.view.getTfDescription().clear();
             this.view.getTfLatitude().clear();
             this.view.getTfLongitude().clear();
-            this.view.getTfRadius().clear();
+            this.view.getTfRadius().setText(String.valueOf(DEFAULT_RADIUS));//clear();
             this.view.getCbBanner().getSelectionModel().clearSelection();
             this.view.getCbListPois().getSelectionModel().clearSelection();
             this.view.getCbListVideos().getSelectionModel().clearSelection();

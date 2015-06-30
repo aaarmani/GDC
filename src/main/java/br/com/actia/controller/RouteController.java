@@ -29,8 +29,6 @@ import br.com.actia.ui.MainScreenView;
 import br.com.actia.ui.RouteView;
 import br.com.actia.validation.RouteValidator;
 import br.com.actia.validation.Validator;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
@@ -41,16 +39,8 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.Iterator;
-
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
 
 public class RouteController extends PersistenceController {
     private RouteView view;
