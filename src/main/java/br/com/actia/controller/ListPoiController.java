@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -56,6 +57,8 @@ public class ListPoiController extends PersistenceController {
         
         this.poiDAO = new PoiDAOJPA(getPersistenceContext());
         this.listPoiAll = (Collection<Poi>)this.poiDAO.getAll();
+        
+        loadEntityToList();
         
         registerAction(this.view.getBtnCancel(), new AbstractAction() {
             @Override
@@ -240,6 +243,13 @@ public class ListPoiController extends PersistenceController {
                 view.refreshTable(dao.getAll());
             }
         });
+    }
+    
+    private void loadEntityToList() {
+        PoiDAO poiDAO = new PoiDAOJPA(getPersistenceContext());
+        this.view.getLsvEntity().getSourceItems().addAll((Collection<Poi>)poiDAO.getAll());
+        this.view.getLsvEntity().setSourceHeader(new Label(rb.getString("AvailablePois")));
+        this.view.getLsvEntity().setTargetHeader(new Label(rb.getString("SelectedPois")));
     }
     
     private void loadListPoiToEdit(ListPoi listPoi) {

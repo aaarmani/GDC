@@ -26,6 +26,7 @@ import javafx.scene.layout.StackPane;
 import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 
 /**
  *
@@ -192,6 +193,8 @@ public class ListVideoController extends PersistenceController {
     private void loadEntityToList() {
         VideoDAO videoDAO = new VideoDAOJPA(getPersistenceContext());
         this.view.getLsvEntity().getSourceItems().addAll((Collection<Video>)videoDAO.getAll());
+        this.view.getLsvEntity().setSourceHeader(new Label(rb.getString("AvailableVideos")));
+        this.view.getLsvEntity().setTargetHeader(new Label(rb.getString("SelectedVideos")));
     }
     
     private ListVideo loadListVideoFromView() {

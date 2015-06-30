@@ -26,6 +26,7 @@ import javafx.scene.layout.StackPane;
 import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 
 public class ListRSSController extends PersistenceController {
     private final ResourceBundle rb;
@@ -184,6 +185,8 @@ public class ListRSSController extends PersistenceController {
     private void loadEntityToList() {
         RSSDAO RSSDAO = new RSSDAOJPA(getPersistenceContext());
         this.view.getLsvEntity().getSourceItems().addAll((Collection<RSS>)RSSDAO.getAll());
+        this.view.getLsvEntity().setSourceHeader(new Label(rb.getString("AvailableRsss")));
+        this.view.getLsvEntity().setTargetHeader(new Label(rb.getString("SelectedRsss")));
     }
     
     private ListRSS loadListRSSFromView() {

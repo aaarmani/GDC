@@ -26,6 +26,7 @@ import javafx.scene.layout.StackPane;
 import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 
 public class ListBannerController extends PersistenceController {
     private final ResourceBundle rb;
@@ -184,6 +185,8 @@ public class ListBannerController extends PersistenceController {
     private void loadEntityToList() {
         BannerDAO bannerDAO = new BannerDAOJPA(getPersistenceContext());
         this.view.getLsvEntity().getSourceItems().addAll((Collection<Banner>)bannerDAO.getAll());
+        this.view.getLsvEntity().setSourceHeader(new Label(rb.getString("AvailableBanners")));
+        this.view.getLsvEntity().setTargetHeader(new Label(rb.getString("SelectedBanners")));
     }
     
     private ListBanner loadListBannerFromView() {

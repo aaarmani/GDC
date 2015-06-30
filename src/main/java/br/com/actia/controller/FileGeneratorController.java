@@ -106,7 +106,7 @@ public class FileGeneratorController extends PersistenceController {
                     .addAction(TransactionalAction.build()
                             .persistenceCtxOwner(FileGeneratorController.this)
                             .addAction(new AbstractAction() {
-                                private ObservableList<Route> routes;
+                                // private ObservableList<Route> routes;
 
                                 @Override
                                 protected void action() {

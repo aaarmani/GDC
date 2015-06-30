@@ -104,6 +104,9 @@ public class FileGeneratorView extends VBox {
     
     private ListSelectionView<Route> buildListRoutesToGenerate() {
         ListSelectionView<Route> lsv = new ListSelectionView<Route>();
+        lsv.setSourceHeader(new Label(rb.getString("AvailableRoutes")));
+        lsv.setTargetHeader(new Label(rb.getString("SelectedRoutes")));
+        
         return lsv;
     }
     
