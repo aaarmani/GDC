@@ -79,7 +79,7 @@ public class RouteView extends VBox {
         cbListBanners = new ComboBox<ListBanner>();
         cbListBanners.setMaxWidth(Double.MAX_VALUE);
         cbListBanners.setPromptText(rb.getString("ChooseList"));
-        // TRATAR: new AutoCompleteComboBoxListener<ListBanner>(cbListBanners);
+        new AutoCompleteComboBoxListener<ListBanner>(cbListBanners);
         
         Label lblNewListBanner = new Label(rb.getString("NewBannerList"));
         btnNewListBanner = new Button("+");
@@ -91,7 +91,7 @@ public class RouteView extends VBox {
         cbListRSSs = new ComboBox<ListRSS>();
         cbListRSSs.setMaxWidth(Double.MAX_VALUE);
         cbListRSSs.setPromptText(rb.getString("ChooseList"));
-        // TRATAR: new AutoCompleteComboBoxListener<ListRSS>(cbListRSSs);
+        new AutoCompleteComboBoxListener<ListRSS>(cbListRSSs);
         
         Label lblNewListRSS = new Label(rb.getString("NewRSSList"));
         btnNewListRSS = new Button("+");
@@ -103,7 +103,7 @@ public class RouteView extends VBox {
         cbListVideos = new ComboBox<ListVideo>();
         cbListVideos.setMaxWidth(Double.MAX_VALUE);
         cbListVideos.setPromptText(rb.getString("ChooseList"));
-        // TRATAR: new AutoCompleteComboBoxListener<ListVideo>(cbListVideos);
+        new AutoCompleteComboBoxListener<ListVideo>(cbListVideos);
         
         Label lblNewListVideo = new Label(rb.getString("NewVideoList"));
         btnNewListVideo = new Button("+");
@@ -115,7 +115,7 @@ public class RouteView extends VBox {
         cbListBusStops = new ComboBox<ListBusStop>();
         cbListBusStops.setMaxWidth(Double.MAX_VALUE);
         cbListBusStops.setPromptText(rb.getString("ChooseList"));
-        // TRATAR: new AutoCompleteComboBoxListener<ListBusStop>(cbListBusStops);
+        new AutoCompleteComboBoxListener<ListBusStop>(cbListBusStops);
         
         Label lblNewListBusStop = new Label(rb.getString("NewBusStopList"));
         btnNewListBusStop = new Button("+");
@@ -307,22 +307,22 @@ public class RouteView extends VBox {
         
         ListBanner listBanner = null;
         if(!cbListBanners.getSelectionModel().isEmpty()) {
-            listBanner = cbListBanners.getSelectionModel().getSelectedItem();
+            listBanner = cbListBanners.getItems().get(cbListBanners.getSelectionModel().getSelectedIndex());
         }
         
         ListRSS listRSS = null;
         if(!cbListRSSs.getSelectionModel().isEmpty()) {
-            listRSS = cbListRSSs.getSelectionModel().getSelectedItem();
+            listRSS = cbListRSSs.getItems().get(cbListRSSs.getSelectionModel().getSelectedIndex());
         }
         
         ListVideo listVideo = null;
         if(!cbListVideos.getSelectionModel().isEmpty()) {
-            listVideo = cbListVideos.getSelectionModel().getSelectedItem();
+            listVideo = cbListVideos.getItems().get(cbListVideos.getSelectionModel().getSelectedIndex());
         }
         
         ListBusStop listBusStop = null;
         if(!cbListBusStops.getSelectionModel().isEmpty()) {
-            listBusStop = cbListBusStops.getSelectionModel().getSelectedItem();
+            listBusStop = cbListBusStops.getItems().get(cbListBusStops.getSelectionModel().getSelectedIndex());
         }
         
         return new Route(id, name, description, listBanner, listRSS, listVideo, listBusStop);

@@ -29,6 +29,7 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
             }
         });
         this.comboBox.setOnKeyReleased(AutoCompleteComboBoxListener.this);
+        
     }
 
     @Override
@@ -68,8 +69,9 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
             }
         }
         String t = comboBox.getEditor().getText();
-
+        
         comboBox.setItems(list);
+        
         comboBox.getEditor().setText(t);
         if(!moveCaretToPos) {
             caretPos = -1;

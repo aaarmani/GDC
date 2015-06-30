@@ -102,13 +102,13 @@ public class BusStopView extends VBox {
         cbBanner = new ComboBox<Banner>();
         cbBanner.setMaxWidth(Double.MAX_VALUE);
         cbBanner.setPromptText(rb.getString("ChooseBanner"));
-        // TRATAR: new AutoCompleteComboBoxListener<Banner>(cbBanner);
+        new AutoCompleteComboBoxListener<Banner>(cbBanner);
         
         Label lblListVideo = new Label(rb.getString("Video"));
         cbListVideos = new ComboBox<ListVideo>();
         cbListVideos.setMaxWidth(Double.MAX_VALUE);
         cbListVideos.setPromptText(rb.getString("ChooseList"));
-        // TRATAR: new AutoCompleteComboBoxListener<ListVideo>(cbListVideos);
+        new AutoCompleteComboBoxListener<ListVideo>(cbListVideos);
         
         Label lblNewListVideo = new Label(rb.getString("NewVideoList"));
         btnNewListVideo = new Button("+");
@@ -120,7 +120,7 @@ public class BusStopView extends VBox {
         cbListPois = new ComboBox<ListPoi>();
         cbListPois.setMaxWidth(Double.MAX_VALUE);
         cbListPois.setPromptText(rb.getString("ChooseList"));
-        // TRATAR: new AutoCompleteComboBoxListener<ListPoi>(cbListPois);
+        new AutoCompleteComboBoxListener<ListPoi>(cbListPois);
         
         Label lblNewListPoi = new Label(rb.getString("NewPoiList"));
         btnNewListPoi = new Button("+");
@@ -325,17 +325,17 @@ public class BusStopView extends VBox {
     
         Banner banner = null;
         if(!cbBanner.getSelectionModel().isEmpty()) {
-            banner = cbBanner.getSelectionModel().getSelectedItem();
+            banner = cbBanner.getItems().get(cbBanner.getSelectionModel().getSelectedIndex());
         }
     
         ListPoi listPoi = null;
         if(!cbListPois.getSelectionModel().isEmpty()) {
-            listPoi = cbListPois.getSelectionModel().getSelectedItem();
+            listPoi = cbListPois.getItems().get(cbListPois.getSelectionModel().getSelectedIndex());
         }
         
         ListVideo listVideo = null;
         if(!cbListVideos.getSelectionModel().isEmpty()) {
-            listVideo = cbListVideos.getSelectionModel().getSelectedItem();
+            listVideo = cbListVideos.getItems().get(cbListVideos.getSelectionModel().getSelectedIndex());
         }
         
         return new BusStop(id, name, description, latitude, longitude, radius, banner, listPoi, listVideo);
