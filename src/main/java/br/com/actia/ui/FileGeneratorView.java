@@ -121,7 +121,7 @@ public class FileGeneratorView extends VBox {
         btnCancelFileGenerator.getStyleClass().add("flatButton");
         
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(btnGenerateFileGenerator, btnCancelFileGenerator);
+        hbox.getChildren().addAll(btnCancelFileGenerator, btnGenerateFileGenerator);
         hbox.getStyleClass().add("buttonBar");
         hbox.setAlignment(Pos.CENTER_RIGHT);
         
