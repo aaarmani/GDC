@@ -14,6 +14,7 @@ import br.com.actia.event.PoiNewEvent;
 import br.com.actia.javascript.object.LatLong;
 import br.com.actia.model.Poi;
 import br.com.actia.model.PoiType;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.PoiView;
 import br.com.actia.validation.PoiValidator;
 import br.com.actia.validation.Validator;
@@ -72,8 +73,7 @@ public class PoiController extends PersistenceController {
                             Poi poi = view.loadPoiFromPanel();
                             String msg = validador.validate(poi, rb);
                             if (!"".equals(msg == null ? "" : msg)) {
-                                //Dialog.showInfo("Validacão", msg, parentPane.);
-                                System.out.println(msg);
+                                Dialog.showError(rb.getString("VALIDATION"), msg);
                                 return false;
                             }
                                                 

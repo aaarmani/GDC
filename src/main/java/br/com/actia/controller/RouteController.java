@@ -25,6 +25,7 @@ import br.com.actia.model.ListBusStop;
 import br.com.actia.model.ListRSS;
 import br.com.actia.model.ListVideo;
 import br.com.actia.model.Route;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.ui.RouteView;
 import br.com.actia.validation.RouteValidator;
@@ -88,9 +89,8 @@ public class RouteController extends PersistenceController {
                         Route route = view.loadRouteFromPanel();
                         String msg = validador.validate(route, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
 
                         return true;

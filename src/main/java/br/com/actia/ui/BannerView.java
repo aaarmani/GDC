@@ -28,15 +28,11 @@ public class BannerView extends VBox {
     private MaskTextField tfName;
     private TextField tfImgName;
     private TextField tfImgPath;
-    private TextField tfAudioName;
-    private TextField tfAudioPath;
     private Button btnChooseImage;
-    private Button btnChooseAudio;
     private Button btnCancelBanner;
     private Button btnSaveBanner;
     private Button btnDeleteBanner;
     private ImageView ivImageView;
-    private Button btnPlay;
     private ResourceBundle rb;
     private EntityTable<Banner> table;
     
@@ -66,11 +62,8 @@ public class BannerView extends VBox {
 
     private GridPane buildChooser() {
         tfId = new TextField();
-        
         Label lblName = new Label(rb.getString("Name"));
-        // tfName = new TextField();
         tfName = new MaskTextField();
-        //tfName.setMask("****************");
         tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblImage = new Label(rb.getString("BNChooseImage"));
@@ -79,20 +72,11 @@ public class BannerView extends VBox {
         btnChooseImage.setId("btnChooseImage");
         btnChooseImage.getStyleClass().add("flatButton");
         
-        Label lblAudio = new Label(rb.getString("BNChooseAudio"));
-        tfAudioName = new TextField();
-        btnChooseAudio = new Button(rb.getString("Search"));
-        btnChooseAudio.setId("btnChooseAudio");
-        btnChooseAudio.getStyleClass().add("flatButton");
-        
         tfImgPath = new TextField();
-        tfAudioPath = new TextField();
         
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblName, tfName);
         grid.addRowGenerics(lblImage, tfImgName, btnChooseImage, null);
-        grid.addRowGenerics(lblAudio, tfAudioName, btnChooseAudio, null);
-        
         return grid.build();
     }
 
@@ -130,12 +114,7 @@ public class BannerView extends VBox {
         ivImageView.setCache(true);
         ivImageView.getStyleClass().add("Img");
         
-        btnPlay = new Button(rb.getString("Play"));
-        btnPlay.setId("btnPlayBanner");
-        btnPlay.getStyleClass().add("flatButton");
-        setBtToPlay();
-        
-        VBox vbox = new VBox(separator, ivImageView, btnPlay);
+        VBox vbox = new VBox(separator, ivImageView);
         vbox.getStyleClass().add("viewPane");
         
         return vbox;
@@ -181,36 +160,12 @@ public class BannerView extends VBox {
         this.tfImgPath = tfImgPath;
     }
 
-    public TextField getTfAudioName() {
-        return tfAudioName;
-    }
-
-    public void setTfAudioName(TextField tfAudioName) {
-        this.tfAudioName = tfAudioName;
-    }
-
-    public TextField getTfAudioPath() {
-        return tfAudioPath;
-    }
-
-    public void setTfAudioPath(TextField tfAudioPath) {
-        this.tfAudioPath = tfAudioPath;
-    }
-    
     public Button getBtnChooseImage() {
         return btnChooseImage;
     }
 
     public void setBtnChooseImage(Button btnChooseImage) {
         this.btnChooseImage = btnChooseImage;
-    }
-
-    public Button getBtnChooseAudio() {
-        return btnChooseAudio;
-    }
-
-    public void setBtnChooseAudio(Button btnChooseAudio) {
-        this.btnChooseAudio = btnChooseAudio;
     }
 
     public Button getBtnCancelBanner() {
@@ -235,14 +190,6 @@ public class BannerView extends VBox {
 
     public void setIvImageView(ImageView ivImageView) {
         this.ivImageView = ivImageView;
-    }
-
-    public Button getBtnPlay() {
-        return btnPlay;
-    }
-
-    public void setBtnPlay(Button btnPlay) {
-        this.btnPlay = btnPlay;
     }
 
     public Button getBtnDeleteBanner() {
@@ -274,17 +221,7 @@ public class BannerView extends VBox {
             imagePath = tfImgPath.getText();
         }
         
-        String audioName = null;
-        if(tfAudioName.getText() != null && !tfAudioName.getText().trim().isEmpty()) {
-            audioName = tfAudioName.getText();
-        }
-        
-        String audioPath = null;
-        if(tfAudioPath.getText() != null && !tfAudioPath.getText().trim().isEmpty()) {
-            audioPath = tfAudioPath.getText();
-        }
-        
-        return new Banner(id, name, imageName, imagePath, audioName, audioPath);
+        return new Banner(id, name, imageName, imagePath);
     }
 
     public void resetForm() {
@@ -292,20 +229,10 @@ public class BannerView extends VBox {
         tfName.setText("");
         tfImgName.setText("");
         tfImgPath.setText("");
-        tfAudioName.setText("");
-        tfAudioPath.setText("");
         ivImageView.setImage(null);
         btnDeleteBanner.setVisible(false);
     }
 
-    public void setBtToPlay() {
-        btnPlay.setText(rb.getString("Play"));
-    }
-
-    public void setBtToStop() {
-        btnPlay.setText(rb.getString("Stop"));
-    }
-    
     public void refreshTable(List<Banner> listEntity) {
         table.reload(listEntity);   
     }
@@ -322,8 +249,5 @@ public class BannerView extends VBox {
         tfName.setText(banner.getName());
         tfImgName.setText(banner.getImage());
         tfImgPath.setText(banner.getImagePath());
-        tfAudioName.setText(banner.getAudio());
-        tfAudioPath.setText(banner.getAudioPath());
     }
-    
 }

@@ -13,6 +13,7 @@ import br.com.actia.model.BusStop;
 import br.com.actia.model.ListBusStop;
 import br.com.actia.ui.BusStopListVerticalView;
 import br.com.actia.ui.BusStopListView;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListBusStopValidator;
 import br.com.actia.validation.Validator;
@@ -213,9 +214,8 @@ public class ListBusStopController extends PersistenceController {
                         ListBusStop listBusStop = loadBusStopListFromPanel();
                         String msg = validador.validate(listBusStop, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
                         return true;
                     }

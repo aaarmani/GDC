@@ -13,6 +13,7 @@ import br.com.actia.event.CrudListPoiEvent;
 import br.com.actia.event.CrudPoiEvent;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.Poi;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.EntityListView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListPoiValidator;
@@ -76,9 +77,8 @@ public class ListPoiController extends PersistenceController {
 
                         String msg = validador.validate(listPoi, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
                         return true;
                     }

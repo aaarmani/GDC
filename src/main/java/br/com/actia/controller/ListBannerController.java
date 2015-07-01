@@ -13,6 +13,7 @@ import br.com.actia.event.CrudListBannerEvent;
 import br.com.actia.event.CrudBannerEvent;
 import br.com.actia.model.ListBanner;
 import br.com.actia.model.Banner;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.EntityListView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListBannerValidator;
@@ -72,9 +73,8 @@ public class ListBannerController extends PersistenceController {
 
                         String msg = validador.validate(listBanner, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
                         return true;
                     }
