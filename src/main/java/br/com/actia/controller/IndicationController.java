@@ -9,6 +9,7 @@ import br.com.actia.dao.IndicationDAOJPA;
 import br.com.actia.event.CopyFileEvent;
 import br.com.actia.event.CrudIndicationEvent;
 import br.com.actia.model.Indication;
+import br.com.actia.ui.Dialog;
 import service.FileToCopy;
 import br.com.actia.ui.IndicationView;
 import br.com.actia.ui.MainScreenView;
@@ -70,11 +71,11 @@ public class IndicationController extends PersistenceController {
                     @Override
                     public boolean conditional() {
                         Indication indication = view.loadIndicationFromPanel();
-                        String msg = validador.validate(indication);
+                        String msg = validador.validate(indication, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showInfo(rb.getString("VALIDATION"), msg);
+                            System.out.println(msg);
+                            return false;
                         }
 
                         return true;

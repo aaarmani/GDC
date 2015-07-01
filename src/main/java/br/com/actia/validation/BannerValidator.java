@@ -52,9 +52,7 @@ public class BannerValidator  implements Validator<Banner> {
     private String bannerFormatValidation(Banner banner, StringBuilder sb) {
         String msg = "";
         
-        msg += imageValidation(banner.getImagePath());
-        if(banner.getAudioPath() != null && !banner.getAudioPath().isEmpty())
-            msg += audioValidation(banner.getAudioPath());
+        msg = imageValidation(banner.getImagePath());
         
         return msg;
     }
@@ -75,21 +73,6 @@ public class BannerValidator  implements Validator<Banner> {
             msg += rb.getString("FILE_FORMAT_ERR");
         }
 
-        return msg;
-    }
-    
-    private String audioValidation(String audioPath) {
-        File file = new File(audioPath);
-        String msg = "";
-        
-        /*if(mediaFile.getDuration().greaterThan(Duration.millis(MAX_VIDEO_TIME))) {
-            return "Tempo do vídeo excede " + MAX_VIDEO_TIME + " ms.";
-        }*/
-        
-        if(file.length() > CONST.AUDIO_MAX_LENGTH) {
-            msg +=  rb.getString("FILE_SIZE_ERR") + " " + CONST.AUDIO_MAX_LENGTH + " Bytes.";
-        }
-        
         return msg;
     }
 }

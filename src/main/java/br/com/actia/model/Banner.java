@@ -34,20 +34,14 @@ public class Banner implements AbstractEntity, Serializable {
     private String image;
     @Transient
     private String imagePath;
-    @Expose
-    private String audio;
-    @Transient
-    private String audioPath;
-
+    
     public Banner() {}
     
-    public Banner(Integer id, String name, String imageName, String imagePath, String audioName, String audioPath) {
+    public Banner(Integer id, String name, String imageName, String imagePath) {
         this.id = id;
         this.name = name;
         this.image = imageName;
         this.imagePath = imagePath;
-        this.audio = audioName;
-        this.audioPath = audioPath;
     }
 
     @Override
@@ -75,28 +69,12 @@ public class Banner implements AbstractEntity, Serializable {
         this.image = image;
     }
 
-    public String getAudio() {
-        return audio;
-    }
-
-    public void setAudio(String Audio) {
-        this.audio = Audio;
-    }
-
     public String getImagePath() {
         return imagePath;
     }
 
     public void setImageOrigPath(String imageOrigPath) {
         this.imagePath = imageOrigPath;
-    }
-
-    public String getAudioPath() {
-        return audioPath;
-    }
-
-    public void setAudioOrigPath(String audioOrigPath) {
-        this.audioPath = audioOrigPath;
     }
     
     @Override

@@ -39,14 +39,7 @@ public class BannerController extends PersistenceController {
     private final Validator<Banner> validador = new BannerValidator();
     private final Pane parentPane;
     private MainScreenView mainScreenView;
-    
     private File imageFile;
-    private File audioFile;
-    
-    private Media mediaFile = null;
-    private MediaPlayer mediaPlayer = null;
-    private Boolean mediaStarted = false;
-    
     private ResourceBundle rb;
     
     public BannerController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
@@ -60,7 +53,6 @@ public class BannerController extends PersistenceController {
         this.view.setMaxWidth(parentPane.getWidth());
         this.view.setMinHeight(parentPane.getHeight());
         this.view.setMinWidth(parentPane.getWidth());
-        this.view.getBtnPlay().setVisible(false);
         
         registerAction(this.view.getBtnCancelBanner(), new AbstractAction() {
             @Override
@@ -100,8 +92,6 @@ public class BannerController extends PersistenceController {
                                 protected void posAction() {
                                     view.resetForm();
                                     refreshTable();
-                                    //cleanUp();
-                                    //MOVER ARQUIVO PARA PASTA DO SISTEMA
                                     fireEvent(new CrudBannerEvent(banner));
                                     copyFileToDisk(banner);
                                     if(parent instanceof ListBannerController){
@@ -153,25 +143,6 @@ public class BannerController extends PersistenceController {
             }
         });
         
-        registerAction(this.view.getBtnChooseAudio(), new AbstractAction() {
-            @Override
-            protected void action() {
-                chooseAudio();
-            }
-            
-            @Override
-            protected void posAction() {
-                loadAudio();
-            }
-        });
-        
-        registerAction(view.getBtnPlay(), new AbstractAction() {
-            @Override
-            protected void action() {
-                playAction();
-            }
-        });
-        
         view.getTable().setMouseEvent(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent t) {
@@ -212,68 +183,10 @@ public class BannerController extends PersistenceController {
             view.getIvImageView().setImage(new Image(imageFile.toURI().toString()));
         }
     }
-    
-    private void chooseAudio() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Selecione um áudio");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("ÁUDIO", "*.3gp", "*.mp4",
-                "*.m4a", "*.aac", "*.ts", "*.flac", "*.mp3", "*.mid", "*.xmf", "*.mxmf", "*.rtttl", "*.rtx",
-                "*.ota", "*.imy", "*.ogg", "*.mkv", "*.wav"));
-        audioFile = fileChooser.showOpenDialog(null);
-    }
-    
-    private void loadAudio() {
-        if(audioFile != null) {
-            view.getTfAudioName().setText(audioFile.getName());
-            view.getTfAudioPath().setText(audioFile.getAbsolutePath());
-            view.getBtnPlay().setVisible(true);
-        }
-    }
-    
-    private void playAction() {
-        if(mediaStarted == false)
-            audioPlay();
-        else
-            audioStop();
-    }
-    
-    void audioPlay() {
-        if(audioFile == null)
-            return;
-        
-        mediaFile = new Media(audioFile.toURI().toString());
-        
-        if(mediaFile != null) {
-            mediaPlayer = new MediaPlayer(mediaFile);
-            mediaPlayer.play();
-            mediaStarted = true;
-            this.view.setBtToStop();
-            
-            mediaPlayer.setOnEndOfMedia(new Runnable() {
-                @Override
-                public void run() {
-                    audioStop();
-                }
-            });
-        }
-    }
-    
-    void audioStop() {
-        if(mediaPlayer == null)
-            return;
-        
-        mediaStarted = false;
-        this.view.setBtToPlay();
-        mediaPlayer.stop();
-    }
 
     @Override
     protected void cleanUp() {
         view.resetForm();
-        this.view.getBtnPlay().setVisible(false);
-        if(mediaPlayer != null)
-            mediaPlayer.dispose();
-
         closeView();
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
     }
@@ -306,11 +219,5 @@ public class BannerController extends PersistenceController {
     private void copyFileToDisk(Banner banner) {
         FileToCopy fcpy = new FileToCopy(FileToCopy.TYPE_IMAGE, banner.getImage(), banner.getImagePath());
         fireEvent(new CopyFileEvent(fcpy));
-        
-        if(banner.getAudio() != null && !banner.getAudio().isEmpty() && !banner.getAudioPath().isEmpty()) {
-            fcpy = new FileToCopy(FileToCopy.TYPE_AUDIO, banner.getAudio(), banner.getAudioPath());
-            fireEvent(new CopyFileEvent(fcpy));
-        }
     }
-    
 }

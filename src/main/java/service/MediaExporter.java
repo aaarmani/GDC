@@ -69,7 +69,7 @@ public class MediaExporter {
         }
     }
     
-    private void buildAudiosMedias(){
+    private void buildAudiosMedias() {
         for(Route route : this.routes){
             for(Banner banner : route.getBanners().getListBanner()){
                 if(banner.getAudio() != null && !audios.contains(banner.getAudio())){
