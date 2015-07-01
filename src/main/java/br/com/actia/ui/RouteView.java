@@ -75,7 +75,7 @@ public class RouteView extends VBox {
         tfDescription = new MaskTextField();
         tfDescription.setMaskCompleteWord(MaskTextField.FIELD_DESC);
         
-        Label lblListBanner = new Label(rb.getString("Banner"));
+        Label lblListBanner = new Label(rb.getString("Banners"));
         cbListBanners = new ComboBox<ListBanner>();
         cbListBanners.setMaxWidth(Double.MAX_VALUE);
         cbListBanners.setPromptText(rb.getString("ChooseList"));
@@ -99,7 +99,7 @@ public class RouteView extends VBox {
         btnNewListRSS.getStyleClass().add("flatButton");
         btnNewListRSS.setId("newLstRSSRoute");
 
-        Label lblListVideo = new Label(rb.getString("Video"));
+        Label lblListVideo = new Label(rb.getString("Videos"));
         cbListVideos = new ComboBox<ListVideo>();
         cbListVideos.setMaxWidth(Double.MAX_VALUE);
         cbListVideos.setPromptText(rb.getString("ChooseList"));
@@ -111,7 +111,7 @@ public class RouteView extends VBox {
         btnNewListVideo.getStyleClass().add("flatButton");
         btnNewListVideo.setId("newLstVideoRoute");
 
-        Label lblListBusStop = new Label(rb.getString("BusStop"));
+        Label lblListBusStop = new Label(rb.getString("BusStops"));
         cbListBusStops = new ComboBox<ListBusStop>();
         cbListBusStops.setMaxWidth(Double.MAX_VALUE);
         cbListBusStops.setPromptText(rb.getString("ChooseList"));
