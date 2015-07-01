@@ -1,6 +1,6 @@
 package br.com.actia.ui;
 
-import br.com.actia.model.Banner;
+import br.com.actia.model.Indication;
 import br.com.actia.model.BusStop;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.ListVideo;
@@ -34,7 +34,7 @@ public class BusStopView extends VBox {
     private Button btnDeleteBusStop;
     private Button btnNewListPoi;
     private Button btnNewListVideo;
-    private ComboBox<Banner> cbBanner;
+    private ComboBox<Indication> cbIndication;
     private ComboBox<ListPoi> cbListPois;
     private ComboBox<ListVideo> cbListVideos;
     private final ResourceBundle rb;
@@ -98,11 +98,11 @@ public class BusStopView extends VBox {
         tfRadius.setMaxWidth(180);
         tfRadius.setMaskCompleteWord(MaskTextField.FIELD_RAD);
         
-        Label lblBanner = new Label(rb.getString("Banner"));
-        cbBanner = new ComboBox<Banner>();
-        cbBanner.setMaxWidth(Double.MAX_VALUE);
-        cbBanner.setPromptText(rb.getString("ChooseBanner"));
-        new AutoCompleteComboBoxListener<Banner>(cbBanner);
+        Label lblIndication = new Label(rb.getString("Image"));
+        cbIndication = new ComboBox<Indication>();
+        cbIndication.setMaxWidth(Double.MAX_VALUE);
+        cbIndication.setPromptText(rb.getString("ChooseBusStopIndication"));
+        new AutoCompleteComboBoxListener<Indication>(cbIndication);
         
         Label lblListVideo = new Label(rb.getString("Video"));
         cbListVideos = new ComboBox<ListVideo>();
@@ -129,7 +129,7 @@ public class BusStopView extends VBox {
         btnNewListPoi.setId("newLstPoiBusStop");
         
         GridFormBuilder grid = new GridFormBuilder();
-        grid.addRowGenerics(lblName, tfName, lblDesc, tfDescription, lblBanner, cbBanner);
+        grid.addRowGenerics(lblName, tfName, lblDesc, tfDescription, lblIndication, cbIndication);
         grid.addRowGenerics(lblLat, tfLatitude, lblLong, tfLongitude, lblRadius, tfRadius);
         grid.addRowGenerics(lblListVideo, cbListVideos, btnNewListVideo, lblNewListVideo);
         grid.addRowGenerics(lblListPoi, cbListPois, btnNewListPoi, lblNewListPoi);
@@ -252,12 +252,12 @@ public class BusStopView extends VBox {
         this.btnDeleteBusStop = btnDeleteBusStop;
     }
 
-    public ComboBox<Banner> getCbBanner() {
-        return cbBanner;
+    public ComboBox<Indication> getCbIndication() {
+        return cbIndication;
     }
 
-    public void setCbBanner(ComboBox<Banner> cbBanner) {
-        this.cbBanner = cbBanner;
+    public void setCbIndication(ComboBox<Indication> cbIndication) {
+        this.cbIndication = cbIndication;
     }
 
     public ComboBox<ListPoi> getCbListPois() {
@@ -323,9 +323,9 @@ public class BusStopView extends VBox {
             radius = Float.valueOf(tfRadius.getText());
         }
     
-        Banner banner = null;
-        if(!cbBanner.getSelectionModel().isEmpty()) {
-            banner = cbBanner.getItems().get(cbBanner.getSelectionModel().getSelectedIndex());
+        Indication indication = null;
+        if(!cbIndication.getSelectionModel().isEmpty()) {
+            indication = cbIndication.getItems().get(cbIndication.getSelectionModel().getSelectedIndex());
         }
     
         ListPoi listPoi = null;
@@ -338,7 +338,7 @@ public class BusStopView extends VBox {
             listVideo = cbListVideos.getItems().get(cbListVideos.getSelectionModel().getSelectedIndex());
         }
         
-        return new BusStop(id, name, description, latitude, longitude, radius, banner, listPoi, listVideo);
+        return new BusStop(id, name, description, latitude, longitude, radius, indication, listPoi, listVideo);
     }
     
 }

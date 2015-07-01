@@ -4,8 +4,8 @@ import br.com.actia.action.AbstractAction;
 import br.com.actia.action.BooleanExpression;
 import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
-import br.com.actia.dao.BannerDAO;
-import br.com.actia.dao.BannerDAOJPA;
+import br.com.actia.dao.IndicationDAO;
+import br.com.actia.dao.IndicationDAOJPA;
 import br.com.actia.dao.BusStopDAO;
 import br.com.actia.dao.BusStopDAOJPA;
 import br.com.actia.dao.ListPoiDAO;
@@ -14,12 +14,12 @@ import br.com.actia.dao.ListVideoDAO;
 import br.com.actia.dao.ListVideoDAOJPA;
 import br.com.actia.event.AbstractEventListener;
 import br.com.actia.event.BusStopDeleteEvent;
-import br.com.actia.event.CrudBannerEvent;
+import br.com.actia.event.CrudIndicationEvent;
 import br.com.actia.event.BusStopNewEvent;
 import br.com.actia.event.CrudListPoiEvent;
 import br.com.actia.event.CrudListVideoEvent;
 import br.com.actia.javascript.object.LatLong;
-import br.com.actia.model.Banner;
+import br.com.actia.model.Indication;
 import br.com.actia.model.BusStop;
 import br.com.actia.model.ListPoi;
 import br.com.actia.model.ListVideo;
@@ -61,7 +61,7 @@ public class BusStopController extends PersistenceController {
         this.view = new BusStopView(this.rb);
         this.busStop = new BusStop();
         
-        loadBannerList();
+        loadIndicationList();
         loadListPoiList();
         loadListVideoList();
         
@@ -178,11 +178,11 @@ public class BusStopController extends PersistenceController {
             }
         });
         
-        registerEventListener(CrudBannerEvent.class,  new AbstractEventListener<CrudBannerEvent>() {
+        registerEventListener(CrudIndicationEvent.class,  new AbstractEventListener<CrudIndicationEvent>() {
             @Override
-            public void handleEvent(CrudBannerEvent event) {
-                loadBannerList();
-                System.out.println("EVENTO: CrudListBannerEvent");
+            public void handleEvent(CrudIndicationEvent event) {
+                loadIndicationList();
+                System.out.println("EVENTO: CrudListIndicationEvent");
             }
         });
         
@@ -239,9 +239,9 @@ public class BusStopController extends PersistenceController {
         listVideoController.showView();
     }
 
-    private ObservableList<Banner> getBannerList() {
-        BannerDAO bannerDAO = new BannerDAOJPA(this.getPersistenceContext());
-        return FXCollections.observableArrayList(bannerDAO.getAll());
+    private ObservableList<Indication> getIndicationList() {
+        IndicationDAO indicationDAO = new IndicationDAOJPA(this.getPersistenceContext());
+        return FXCollections.observableArrayList(indicationDAO.getAll());
     }
 
     private ObservableList<ListPoi> getListPoiList() {
@@ -261,9 +261,9 @@ public class BusStopController extends PersistenceController {
         super.cleanUp(); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void loadBannerList() {
-        ObservableList<Banner> lstBanner = getBannerList();
-        this.view.getCbBanner().getItems().addAll(lstBanner);
+    private void loadIndicationList() {
+        ObservableList<Indication> lstIndication = getIndicationList();
+        this.view.getCbIndication().getItems().addAll(lstIndication);
     }
 
     private void loadListPoiList() {
@@ -287,7 +287,7 @@ public class BusStopController extends PersistenceController {
             this.view.getTfLatitude().setText(String.valueOf(busStop.getLatitude()));
             this.view.getTfLongitude().setText(String.valueOf(busStop.getLongitude()));
             this.view.getTfRadius().setText(Float.toString(busStop.getRadius()));
-            this.view.getCbBanner().getSelectionModel().select(busStop.getBanner());
+            this.view.getCbIndication().getSelectionModel().select(busStop.getIndication());
             this.view.getCbListPois().getSelectionModel().select(busStop.getPois());
             this.view.getCbListVideos().getSelectionModel().select(busStop.getVideos());
             
@@ -300,7 +300,7 @@ public class BusStopController extends PersistenceController {
             this.view.getTfLatitude().clear();
             this.view.getTfLongitude().clear();
             this.view.getTfRadius().setText(String.valueOf(DEFAULT_RADIUS));//clear();
-            this.view.getCbBanner().getSelectionModel().clearSelection();
+            this.view.getCbIndication().getSelectionModel().clearSelection();
             this.view.getCbListPois().getSelectionModel().clearSelection();
             this.view.getCbListVideos().getSelectionModel().clearSelection();
             

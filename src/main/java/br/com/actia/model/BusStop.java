@@ -43,9 +43,9 @@ public class BusStop implements AbstractEntity, Serializable {
     @NotNull
     @Expose
     private float radius;
-    @ManyToOne @JoinColumn(name="banner_id", referencedColumnName="id")
+    @ManyToOne @JoinColumn(name="indication_id", referencedColumnName="id")
     @Expose
-    private Banner banner;
+    private Indication indication;
     @ManyToOne @JoinColumn(name="lst_poi_id", referencedColumnName="id")
     @Expose
     private ListPoi pois;
@@ -57,14 +57,14 @@ public class BusStop implements AbstractEntity, Serializable {
     public BusStop(){
     }
     
-    public BusStop(Integer id, String name, String description, Double latitude, Double longitude, float radius, Banner banner, ListPoi listPoi, ListVideo listVideo) {
+    public BusStop(Integer id, String name, String description, Double latitude, Double longitude, float radius, Indication indication, ListPoi listPoi, ListVideo listVideo) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
         this.radius = radius;
-        this.banner = banner;
+        this.indication = indication;
         this.pois = listPoi;
         this.videos = listVideo;
     }
@@ -118,12 +118,12 @@ public class BusStop implements AbstractEntity, Serializable {
         this.radius = radius;
     }
     
-    public Banner getBanner() {
-        return banner;
+    public Indication getIndication() {
+        return indication;
     }
 
-    public void setBanner(Banner banner) {
-        this.banner = banner;
+    public void setIndication(Indication indication) {
+        this.indication = indication;
     }
 
     public ListPoi getPois() {

@@ -62,8 +62,8 @@ public class MediaExporter {
             }
 
             for(BusStop busStop : route.getBusStops().getListBusStop()){
-                if(busStop.getBanner().getImage() != null && !banners.contains(busStop.getBanner().getImage())){
-                    banners.add(busStop.getBanner().getImage());
+                if(busStop.getIndication().getImage() != null && !banners.contains(busStop.getIndication().getImage())){
+                    banners.add(busStop.getIndication().getImage());
                 }
             }
         }
@@ -78,8 +78,8 @@ public class MediaExporter {
             }
 
             for(BusStop busStop : route.getBusStops().getListBusStop()){
-                if(busStop.getBanner().getAudio() != null && !audios.contains(busStop.getBanner().getAudio())){
-                    audios.add(busStop.getBanner().getAudio());
+                if(busStop.getIndication().getAudio() != null && !audios.contains(busStop.getIndication().getAudio())){
+                    audios.add(busStop.getIndication().getAudio());
                 }
             }
         }
