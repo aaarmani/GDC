@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 public class MediaExporter {
     List<Route> routes = null;
     ArrayList<String> banners = null;
+    ArrayList<String> images = null;
     ArrayList<String> audios = null;
     ArrayList<String> videos = null;
     
@@ -29,6 +30,7 @@ public class MediaExporter {
     
     public MediaExporter() {
         this.banners = new ArrayList<String>();
+        this.images = new ArrayList<String>();
         this.audios = new ArrayList<String>();
         this.videos = new ArrayList<String>();
         this.routes = new ArrayList<Route>();
@@ -39,6 +41,7 @@ public class MediaExporter {
     public MediaExporter(List<Route> routes){
         this.routes = routes;
         this.banners = new ArrayList<String>();
+        this.images = new ArrayList<String>();
         this.audios = new ArrayList<String>();
         this.videos = new ArrayList<String>();
         
@@ -60,10 +63,14 @@ public class MediaExporter {
                     banners.add(banner.getImage());
                 }
             }
-
+        }
+    }
+    
+    private void buildImagesMedias(){
+        for(Route route : this.routes){
             for(BusStop busStop : route.getBusStops().getListBusStop()){
-                if(busStop.getIndication().getImage() != null && !banners.contains(busStop.getIndication().getImage())){
-                    banners.add(busStop.getIndication().getImage());
+                if(busStop.getIndication().getImage() != null && !images.contains(busStop.getIndication().getImage())){
+                    images.add(busStop.getIndication().getImage());
                 }
             }
         }
@@ -109,6 +116,12 @@ public class MediaExporter {
         }
     }
     
+    private void createImagesFolderStructure(){
+        if(!Paths.get(this.destinationFolder + this.SEPARATOR_CHAR + "images").toFile().exists()) {
+            (new File(this.destinationFolder + this.SEPARATOR_CHAR + "images")).mkdir();
+        }
+    }
+    
     private void createAudiosFolderStructure(){
         if(!Paths.get(this.destinationFolder + this.SEPARATOR_CHAR + "audios").toFile().exists()) {
             (new File(this.destinationFolder + this.SEPARATOR_CHAR + "audios")).mkdir();
@@ -125,6 +138,7 @@ public class MediaExporter {
         if(this.destinationFolder != null) {
             if(Paths.get(this.destinationFolder).toFile().exists()) {
                 this.createBannersFolderStructure();
+                this.createImagesFolderStructure();
                 this.createAudiosFolderStructure();
                 this.createVideosFolderStructure();
             }
@@ -151,6 +165,40 @@ public class MediaExporter {
             
             if(copy) {
                 fileToCopy.setDestFile(new File(this.destinationFolder + this.SEPARATOR_CHAR + "banners" + this.SEPARATOR_CHAR + bannerName));
+                
+                if( (fileToCopy.getDestFile().exists() && fileToCopy.getOrigFile().length() != fileToCopy.getDestFile().length()) || !fileToCopy.getDestFile().exists() ) {
+//                    ResourceBundle rb = ResourceBundle.getBundle("languages.messages");
+//                    DownloadFileTask downloadFileTask = new DownloadFileTask(rb, fileToCopy.getOrigFile(), fileToCopy.getDestFile());
+//                    downloadFileTask.copyFile();
+                    
+                    //fireEvent(new CopyFileEvent(fileToCopy));
+                    
+                    this.filesToCopy.add(fileToCopy);
+                }
+            }
+        }
+    }
+    
+    private void copyImages(){
+        String imagePath = "\0";
+        FileToCopy fileToCopy = null;
+        boolean copy = false;
+        
+        for(String imageName : this.images){
+            imagePath = this.originFolder + this.SEPARATOR_CHAR + "images" + this.SEPARATOR_CHAR + imageName; 
+            
+            copy = true;
+            try {
+                System.out.println("imagePath: " + imagePath);
+                fileToCopy = new FileToCopy(FileToCopy.TYPE_IMAGE, imageName, imagePath);
+            } catch (Exception e){
+                System.out.println("Mídia não existe");
+                copy = false;
+                //e.printStackTrace();
+            }
+            
+            if(copy) {
+                fileToCopy.setDestFile(new File(this.destinationFolder + this.SEPARATOR_CHAR + "images" + this.SEPARATOR_CHAR + imageName));
                 
                 if( (fileToCopy.getDestFile().exists() && fileToCopy.getOrigFile().length() != fileToCopy.getDestFile().length()) || !fileToCopy.getDestFile().exists() ) {
 //                    ResourceBundle rb = ResourceBundle.getBundle("languages.messages");
@@ -231,10 +279,12 @@ public class MediaExporter {
     
     private void copyAllFiles(){
         this.buildBannersMedias();
+        this.buildImagesMedias();
         this.buildAudiosMedias();
         this.buildVideosMedias();
         
         this.copyBanners();
+        this.copyImages();
         this.copyAudios();
         this.copyVideos();
     }
@@ -270,6 +320,39 @@ public class MediaExporter {
         });
         threadDelBanners.setDaemon(true);
         threadDelBanners.start();
+    }
+    
+    private void deleteLeftoverImages(){
+        String[] filesList = null;
+        
+        String imagesPath = this.destinationFolder + this.SEPARATOR_CHAR + "images";
+        
+        filesList = new File(imagesPath).list();
+        
+        File fileToDelete = null;
+        ArrayList<File> filesToDelete = new ArrayList<File>();
+        for(String fileName : filesList){
+            if(!this.images.contains(fileName)){
+                System.out.println("Deleting file: " + fileName);
+                fileToDelete = new File(imagesPath + this.SEPARATOR_CHAR + fileName);
+                filesToDelete.add(fileToDelete);
+            }
+        }
+        
+        Thread threadDelImages = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(File fileToDelete : filesToDelete){
+                    try {
+                        fileToDelete.delete();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        threadDelImages.setDaemon(true);
+        threadDelImages.start();
     }
     
     private void deleteLeftoverAudios(){
@@ -340,6 +423,7 @@ public class MediaExporter {
     
     private void deleteLeftoverFiles(){
         this.deleteLeftoverBanners();
+        this.deleteLeftoverImages();
         this.deleteLeftoverAudios();
         this.deleteLeftoverVideos();
     }
