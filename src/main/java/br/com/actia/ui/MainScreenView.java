@@ -42,7 +42,8 @@ public class MainScreenView {
     private Button btnFileGenerator;
     private Button btnDowloadService;
 	private Button btnUserOptions;
-    
+    private Button btnIndication;
+        
     private Button btnBR;
     private Button btnEN;
     private Button btnES;
@@ -151,8 +152,9 @@ public class MainScreenView {
         btnListVideo = newMenuItem(rb.getString("ListVideo"), "LIST_UL");
         btnListRSS = newMenuItem(rb.getString("ListRSS"), "LIST_UL");
         btnFileGenerator = newMenuItem(rb.getString("GenerateFiles"), "GEARS");
+        btnIndication = newMenuItem(rb.getString("BusStopIndication"), "IMAGE");
         
-        vbMenu.getChildren().addAll(btnRoute, btnMapEntitys, btnBanner, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS, btnFileGenerator);
+        vbMenu.getChildren().addAll(btnRoute, btnMapEntitys, btnBanner, btnIndication, btnVideo, btnRSS, btnListPoi, btnListBanner, btnListVideo, btnListRSS, btnFileGenerator);
         return vbMenu;
     }
     
@@ -389,6 +391,14 @@ public class MainScreenView {
     
     public void setBtnFileGenerator(Button btnFileGenerator) {
         this.btnFileGenerator = btnFileGenerator;
+    }
+    
+    public Button getBtnIndication() {
+        return btnIndication;
+    }
+    
+    public void setBtnIndication(Button btnIndication) {
+        this.btnIndication = btnIndication;
     }
     
 	public Button getBtnUserOptions() {

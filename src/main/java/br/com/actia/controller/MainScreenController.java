@@ -32,7 +32,8 @@ public class MainScreenController extends PersistenceController {
     private ActionScreenController actionController;
     private FileGeneratorController fileGeneratorController;
 	private UserOptionsController userOptionsController;
-    
+    private IndicationController indicationController;
+        
     public MainScreenController(final Stage mainStage, ResourceBundle rb) {
         loadPersistenceContext();
         this.rb = rb;
@@ -142,6 +143,13 @@ public class MainScreenController extends PersistenceController {
             @Override
             protected void action() {
                 showFileGeneratorController();
+            }
+        });
+        
+        registerAction(this.view.getBtnIndication(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showIndicationController();
             }
         });
         
@@ -259,6 +267,12 @@ public class MainScreenController extends PersistenceController {
         actionController.showView();
     }
     
+    private void showIndicationController() {
+        if(indicationController == null)
+               indicationController = new IndicationController(this, this.view, this.rb);
+        indicationController.showView();
+    }
+    
     private void cleanUpOldControllers() {
         if(routeController != null) {
             routeController.cleanUp();
@@ -306,6 +320,10 @@ public class MainScreenController extends PersistenceController {
 
 		if(userOptionsController != null) {
             userOptionsController.cleanUp();
+        }
+                
+        if(indicationController != null) {
+            indicationController.cleanUp();
         }
     }
     
