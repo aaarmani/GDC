@@ -3,12 +3,13 @@ package br.com.actia.validation;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 
 import br.com.actia.model.Poi;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidatorFactory;
 
 public class PoiValidator implements Validator<Poi> {
-
+    private ResourceBundle rb;
     private static ValidatorFactory factory;
 
     static {
@@ -16,7 +17,8 @@ public class PoiValidator implements Validator<Poi> {
     }
 
     @Override
-    public String validate(Poi poi) {
+    public String validate(Poi poi, ResourceBundle rb) {
+        this.rb = rb;
         StringBuilder sb = new StringBuilder();
         if (poi != null) {
             javax.validation.Validator validator = factory.getValidator();

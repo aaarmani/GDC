@@ -70,7 +70,7 @@ public class ListRSSController extends PersistenceController {
                     public boolean conditional() {
                         ListRSS listRSS = loadListRSSFromView();
 
-                        String msg = validador.validate(listRSS);
+                        String msg = validador.validate(listRSS, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);

@@ -70,7 +70,7 @@ public class ListBannerController extends PersistenceController {
                     public boolean conditional() {
                         ListBanner listBanner = loadListBannerFromView();
 
-                        String msg = validador.validate(listBanner);
+                        String msg = validador.validate(listBanner, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);

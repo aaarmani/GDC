@@ -93,7 +93,7 @@ public class FileGeneratorController extends PersistenceController {
                             if(!view.getLsvRoutesToGenerate().getTargetItems().isEmpty()) {
                                 routes = view.getLsvRoutesToGenerate().getTargetItems();
                             }
-                            String msg = validador.validate(routes);
+                            String msg = validador.validate(routes, rb);
                             if (!"".equals(msg == null ? "" : msg)) {
                                // Dialog.showInfo("Validacão", msg, );
                                 System.out.println(msg);

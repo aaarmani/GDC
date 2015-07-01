@@ -1,6 +1,7 @@
 package br.com.actia.validation;
 
 import br.com.actia.model.ListBusStop;
+import java.util.ResourceBundle;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 
 import java.util.Set;
@@ -8,7 +9,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ValidatorFactory;
 
 public class ListBusStopValidator implements Validator<ListBusStop> {
-
+    private ResourceBundle rb;
     private static ValidatorFactory factory;
 
     static {
@@ -16,7 +17,8 @@ public class ListBusStopValidator implements Validator<ListBusStop> {
     }
 
     @Override
-    public String validate(ListBusStop listBusStop) {
+    public String validate(ListBusStop listBusStop, ResourceBundle rb) {
+        this.rb = rb;
         StringBuilder sb = new StringBuilder();
         if (listBusStop != null) {
             javax.validation.Validator validator = factory.getValidator();

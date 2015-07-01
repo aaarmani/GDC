@@ -1,13 +1,14 @@
 package br.com.actia.validation;
 
 import br.com.actia.model.Route;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 import javax.validation.ValidatorFactory;
 
 public class RouteValidator  implements Validator<Route> {
-
+    private ResourceBundle rb;
     private static ValidatorFactory factory;
 
     static {
@@ -15,7 +16,8 @@ public class RouteValidator  implements Validator<Route> {
     }
 
     @Override
-    public String validate(Route route) {
+    public String validate(Route route, ResourceBundle rb) {
+        this.rb = rb;
         StringBuilder sb = new StringBuilder();
         if (route != null) {
             javax.validation.Validator validator = factory.getValidator();

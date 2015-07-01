@@ -86,7 +86,7 @@ public class RouteController extends PersistenceController {
                     @Override
                     public boolean conditional() {
                         Route route = view.loadRouteFromPanel();
-                        String msg = validador.validate(route);
+                        String msg = validador.validate(route, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);

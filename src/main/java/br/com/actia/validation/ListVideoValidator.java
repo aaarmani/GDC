@@ -3,12 +3,13 @@ package br.com.actia.validation;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 
 import br.com.actia.model.ListVideo;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidatorFactory;
 
 public class ListVideoValidator implements Validator<ListVideo> {
-
+    private ResourceBundle rb;
     private static ValidatorFactory factory;
 
     static {
@@ -16,7 +17,8 @@ public class ListVideoValidator implements Validator<ListVideo> {
     }
 
     @Override
-    public String validate(ListVideo listVideo) {
+    public String validate(ListVideo listVideo, ResourceBundle rb) {
+        this.rb = rb;
         StringBuilder sb = new StringBuilder();
         if (listVideo != null) {
             javax.validation.Validator validator = factory.getValidator();

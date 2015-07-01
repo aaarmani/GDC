@@ -211,7 +211,7 @@ public class ListBusStopController extends PersistenceController {
                     @Override
                     public boolean conditional() {
                         ListBusStop listBusStop = loadBusStopListFromPanel();
-                        String msg = validador.validate(listBusStop);
+                        String msg = validador.validate(listBusStop, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);

@@ -74,7 +74,7 @@ public class ListPoiController extends PersistenceController {
                     public boolean conditional() {
                         ListPoi listPoi = loadListPoiFromView();
 
-                        String msg = validador.validate(listPoi);
+                        String msg = validador.validate(listPoi, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);

@@ -3,12 +3,13 @@ package br.com.actia.validation;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 
 import br.com.actia.model.ListBanner;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidatorFactory;
 
 public class ListBannerValidator implements Validator<ListBanner> {
-
+    private ResourceBundle rb;
     private static ValidatorFactory factory;
 
     static {
@@ -16,7 +17,8 @@ public class ListBannerValidator implements Validator<ListBanner> {
     }
 
     @Override
-    public String validate(ListBanner listBanner) {
+    public String validate(ListBanner listBanner, ResourceBundle rb) {
+        this.rb = rb;
         StringBuilder sb = new StringBuilder();
         if (listBanner != null) {
             javax.validation.Validator validator = factory.getValidator();

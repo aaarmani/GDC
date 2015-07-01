@@ -74,7 +74,7 @@ public class ListVideoController extends PersistenceController {
                     public boolean conditional() {
                         ListVideo listVideo = loadListVideoFromView();
 
-                        String msg = validador.validate(listVideo);
+                        String msg = validador.validate(listVideo, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);

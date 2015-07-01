@@ -1,5 +1,7 @@
 package br.com.actia.validation;
 
+import java.util.ResourceBundle;
+
 /**
  * Define um contrato para validar o estado (dados) de uma entidade persistente.
  *
@@ -16,6 +18,6 @@ public interface Validator<Entity> {
      * @return String <i>vazia</i>, caso não exista problemas de validação. Ou
      * retorna uma string com as mensagens de validação.
      */
-    public String validate(Entity e);
+    public String validate(Entity e, ResourceBundle rb);
 
 }

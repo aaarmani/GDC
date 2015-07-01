@@ -1,13 +1,14 @@
 package br.com.actia.validation;
 
 import br.com.actia.model.RSS;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import static javax.validation.Validation.buildDefaultValidatorFactory;
 import javax.validation.ValidatorFactory;
 
 public class RSSValidator  implements Validator<RSS> {
-
+    private ResourceBundle rb;
     private static ValidatorFactory factory;
 
     static {
@@ -15,7 +16,8 @@ public class RSSValidator  implements Validator<RSS> {
     }
 
     @Override
-    public String validate(RSS RSS) {
+    public String validate(RSS RSS, ResourceBundle rb) {
+        this.rb = rb;
         StringBuilder sb = new StringBuilder();
         if (RSS != null) {
             javax.validation.Validator validator = factory.getValidator();

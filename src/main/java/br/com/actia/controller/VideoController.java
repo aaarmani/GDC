@@ -13,6 +13,7 @@ import br.com.actia.event.CrudVideoEvent;
 import service.FileToCopy;
 import br.com.actia.model.Video;
 import br.com.actia.model.VideoType;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.ui.VideoView;
 import br.com.actia.validation.Validator;
@@ -78,11 +79,10 @@ public class VideoController extends PersistenceController {
                     @Override
                     public boolean conditional() {
                         Video video = view.loadVideoFromPanel();
-                        String msg = validador.validate(video);
+                        String msg = validador.validate(video, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                             //Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
 
                         return true;

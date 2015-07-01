@@ -11,6 +11,7 @@ import br.com.actia.event.CrudBannerEvent;
 import br.com.actia.model.Banner;
 import service.FileToCopy;
 import br.com.actia.ui.BannerView;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.BannerValidator;
 import br.com.actia.validation.Validator;
@@ -74,11 +75,10 @@ public class BannerController extends PersistenceController {
                     @Override
                     public boolean conditional() {
                         Banner banner = view.loadBannerFromPanel();
-                        String msg = validador.validate(banner);
+                        String msg = validador.validate(banner, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
 
                         return true;
@@ -136,7 +136,7 @@ public class BannerController extends PersistenceController {
                     }
                     @Override
                     protected void actionFailure(){
-
+                        
                     }
                 })
         );

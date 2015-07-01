@@ -77,7 +77,7 @@ public class RSSController extends PersistenceController {
                     @Override
                     public boolean conditional() {
                         RSS RSS = view.loadRSSFromPanel();
-                        String msg = validador.validate(RSS);
+                        String msg = validador.validate(RSS, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
                             // Dialog.showInfo("Validacão", msg, );
                              System.out.println(msg);

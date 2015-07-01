@@ -70,7 +70,7 @@ public class PoiController extends PersistenceController {
                         @Override
                         public boolean conditional() {
                             Poi poi = view.loadPoiFromPanel();
-                            String msg = validador.validate(poi);
+                            String msg = validador.validate(poi, rb);
                             if (!"".equals(msg == null ? "" : msg)) {
                                 //Dialog.showInfo("Validacão", msg, parentPane.);
                                 System.out.println(msg);

@@ -79,7 +79,7 @@ public class BusStopController extends PersistenceController {
                         @Override
                         public boolean conditional() {
                             BusStop busStop = view.loadBusStopFromPanel();
-                            String msg = validador.validate(busStop);
+                            String msg = validador.validate(busStop, rb);
                             if (!"".equals(msg == null ? "" : msg)) {
                                // Dialog.showInfo("Validacão", msg, );
                                 System.out.println(msg);
