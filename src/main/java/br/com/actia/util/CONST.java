@@ -16,4 +16,10 @@ public final class CONST {
     public static long BANNER_MAX_WIDTH = 1200;
     public static long BANNER_MIN_WIDTH = 1000;
     public static long BANNER_MAX_LENGTH = 100000; //Maximum lenght in bytes
+    //#Indication Image
+    public static long IMAGE_MAX_HEIGTH = 1080;
+    public static long IMAGE_MIN_HEIGTH = 360;
+    public static long IMAGE_MAX_WIDTH = 1920;
+    public static long IMAGE_MIN_WIDTH = 640;
+    public static long IMAGE_MAX_LENGTH = 400000; //Maximum lenght in bytes
 }

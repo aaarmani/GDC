@@ -56,14 +56,14 @@ public class IndicationValidator  implements Validator<Indication> {
         File file = new File(imagePath);
         String msg = "";
         
-        if(file.length() > CONST.BANNER_MAX_LENGTH) {
-            msg +=  rb.getString("FILE_SIZE_ERR") + " " + CONST.BANNER_MAX_LENGTH + " Bytes.";
+        if(file.length() > CONST.IMAGE_MAX_LENGTH) {
+            msg +=  rb.getString("FILE_SIZE_ERR") + " " + CONST.IMAGE_MAX_LENGTH + " Bytes.";
         }
         
         Image img = new Image("file:///" + file.getPath().toString());
         
-        if(img.getHeight() < CONST.BANNER_MIN_HEIGTH || img.getHeight() > CONST.BANNER_MAX_HEIGTH ||
-            img.getWidth() < CONST.BANNER_MIN_WIDTH || img.getWidth() > CONST.BANNER_MAX_WIDTH) {
+        if(img.getHeight() < CONST.IMAGE_MIN_HEIGTH || img.getHeight() > CONST.IMAGE_MAX_HEIGTH ||
+            img.getWidth() < CONST.IMAGE_MIN_WIDTH || img.getWidth() > CONST.IMAGE_MAX_WIDTH) {
             System.out.println("HEIGTH = " + img.getHeight() + " WIDTH = " + img.getWidth());
             msg += rb.getString("FILE_FORMAT_ERR");
         }
