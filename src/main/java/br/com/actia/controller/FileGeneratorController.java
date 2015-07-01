@@ -6,12 +6,10 @@ import br.com.actia.action.ConditionalAction;
 import br.com.actia.action.TransactionalAction;
 import br.com.actia.dao.RouteDAO;
 import br.com.actia.dao.RouteDAOJPA;
-import br.com.actia.event.AbstractEventListener;
 import br.com.actia.event.CopyFileEvent;
-import br.com.actia.event.CrudRouteEvent;
 import br.com.actia.gson.RouteConverter;
 import br.com.actia.model.Route;
-import br.com.actia.ui.AutoCompleteComboBoxListener;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.FileGeneratorView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.RoutesToGenerateValidator;
@@ -22,16 +20,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import service.FileToCopy;
 import service.MediaExporter;
@@ -88,15 +79,13 @@ public class FileGeneratorController extends PersistenceController {
                     .addConditional(new BooleanExpression() {
                         @Override
                         public boolean conditional() {
-                            // ObservableList<Route> routes = obsRoutesSelecteds;
                             List<Route> routes = null;
                             if(!view.getLsvRoutesToGenerate().getTargetItems().isEmpty()) {
                                 routes = view.getLsvRoutesToGenerate().getTargetItems();
                             }
                             String msg = validador.validate(routes, rb);
                             if (!"".equals(msg == null ? "" : msg)) {
-                               // Dialog.showInfo("Validacão", msg, );
-                                System.out.println(msg);
+                                Dialog.showError(rb.getString("VALIDATION"), msg);
                                 return false;
                             }
                                                 

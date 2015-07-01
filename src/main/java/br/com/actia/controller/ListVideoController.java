@@ -13,6 +13,7 @@ import br.com.actia.event.CrudListVideoEvent;
 import br.com.actia.event.CrudVideoEvent;
 import br.com.actia.model.ListVideo;
 import br.com.actia.model.Video;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.EntityListView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListVideoValidator;
@@ -76,9 +77,8 @@ public class ListVideoController extends PersistenceController {
 
                         String msg = validador.validate(listVideo, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
                         return true;
                     }

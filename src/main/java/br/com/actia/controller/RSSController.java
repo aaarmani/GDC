@@ -8,6 +8,7 @@ import br.com.actia.dao.RSSDAO;
 import br.com.actia.dao.RSSDAOJPA;
 import br.com.actia.event.CrudRSSEvent;
 import br.com.actia.model.RSS;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.ui.RSSView;
 import br.com.actia.validation.RSSValidator;
@@ -79,9 +80,8 @@ public class RSSController extends PersistenceController {
                         RSS RSS = view.loadRSSFromPanel();
                         String msg = validador.validate(RSS, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
 
                         return true;

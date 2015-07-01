@@ -73,8 +73,7 @@ public class IndicationController extends PersistenceController {
                         Indication indication = view.loadIndicationFromPanel();
                         String msg = validador.validate(indication, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            Dialog.showInfo(rb.getString("VALIDATION"), msg);
-                            System.out.println(msg);
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
                             return false;
                         }
 

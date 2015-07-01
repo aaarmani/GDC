@@ -13,6 +13,7 @@ import br.com.actia.event.CrudListRSSEvent;
 import br.com.actia.event.CrudRSSEvent;
 import br.com.actia.model.ListRSS;
 import br.com.actia.model.RSS;
+import br.com.actia.ui.Dialog;
 import br.com.actia.ui.EntityListView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.ListRSSValidator;
@@ -72,9 +73,8 @@ public class ListRSSController extends PersistenceController {
 
                         String msg = validador.validate(listRSS, rb);
                         if (!"".equals(msg == null ? "" : msg)) {
-                            // Dialog.showInfo("Validacão", msg, );
-                             System.out.println(msg);
-                             return false;
+                            Dialog.showError(rb.getString("VALIDATION"), msg);
+                            return false;
                         }
                         return true;
                     }
