@@ -25,11 +25,13 @@ public class ListPoiAdapter extends TypeAdapter<ListPoi>{
         
         writer.beginArray();
         
-        for(Poi poi: listPoi.getListPoi()){  
-            writer.beginObject();
-            writer.name("name").value(poi.getName());
-            writer.name("type").value(poi.getType().getType());
-            writer.endObject();
+        if(listPoi != null) {
+            for(Poi poi: listPoi.getListPoi()){  
+                writer.beginObject();
+                writer.name("name").value(poi.getName());
+                writer.name("type").value(poi.getType().getType());
+                writer.endObject();
+            }
         }
         
         writer.endArray();

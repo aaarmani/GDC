@@ -5,13 +5,13 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-public class AbstractConverter<T> {
+public abstract class AbstractConverter<T> {
     protected T Entity;
     protected final GsonGenerator<T> gsonGen;
     
-    protected String jsonConversion = "\0";
+    protected String jsonConversion = "";
     protected final char SEPARATOR_CHAR = File.separatorChar;
-    protected String CONTENT_FILES_DIRECTORY = "\0"; //"CONTENT_FILES";
+    protected String CONTENT_FILES_DIRECTORY = ""; //"CONTENT_FILES";
     protected String MAIN_DIRECTORY = null;
     protected String path = null;
     protected String filePath = null;
@@ -20,7 +20,7 @@ public class AbstractConverter<T> {
     
     public AbstractConverter(){ 
         this.Entity = null;
-        this.CONTENT_FILES_DIRECTORY = "\0";
+        this.CONTENT_FILES_DIRECTORY = "";
         this.gsonGen = new GsonGenerator<>();
     }
     
@@ -108,4 +108,6 @@ public class AbstractConverter<T> {
         //    ex.printStackTrace();
         //}
     }
+    
+    public abstract void buildAdapters();
 }

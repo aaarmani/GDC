@@ -1,8 +1,6 @@
 package br.com.actia.ui;
 
 import br.com.actia.model.Route;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,10 +9,6 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.geometry.Orientation;
-import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import org.controlsfx.control.ListSelectionView;
@@ -25,12 +19,8 @@ public class FileGeneratorView extends VBox {
     
     private TextField tfDirectoryPath;
     private Button btnChooseDirectory;
-    
-    //private ComboBox<Route> cbRoute;
-    //private Button btnAddRoute;
     private Button btnCancelFileGenerator;
     private Button btnGenerateFileGenerator;
-    //private ListView<Route> lstvRoutesToGenerate;
 
     private ListSelectionView<Route> lsvRoutesToGenerate;
     
