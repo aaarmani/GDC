@@ -52,6 +52,7 @@ public class BusStopController extends PersistenceController {
     
     private ListPoiController listPoiController = null;
     private ListVideoController listVideoController = null;
+    private IndicationController indicationController = null;
     
     public BusStopController(AbstractController parent, MainScreenView mainScreenView, Pane pane, ResourceBundle rb) {
         super(parent);
@@ -163,6 +164,13 @@ public class BusStopController extends PersistenceController {
             }
         });
         
+        registerAction(this.view.getBtnNewIndication(), new AbstractAction() {
+            @Override
+            protected void action() {
+                showNewIndication();
+            }
+        });
+        
         registerEventListener(CrudListVideoEvent.class, new AbstractEventListener<CrudListVideoEvent>() {
             @Override
             public void handleEvent(CrudListVideoEvent event) {
@@ -239,6 +247,12 @@ public class BusStopController extends PersistenceController {
         
         listVideoController.showView();
     }
+    private void showNewIndication() {
+     if(indicationController == null)
+            indicationController = new IndicationController(this, mainScreenView, rb);
+        
+        indicationController.showView();
+    }
 
     private ObservableList<Indication> getIndicationList() {
         IndicationDAO indicationDAO = new IndicationDAOJPA(this.getPersistenceContext());
@@ -264,6 +278,7 @@ public class BusStopController extends PersistenceController {
 
     private void loadIndicationList() {
         ObservableList<Indication> lstIndication = getIndicationList();
+        this.view.getCbIndication().getItems().clear();
         this.view.getCbIndication().getItems().addAll(lstIndication);
     }
 

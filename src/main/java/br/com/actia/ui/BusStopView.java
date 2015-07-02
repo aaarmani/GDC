@@ -34,6 +34,7 @@ public class BusStopView extends VBox {
     private Button btnDeleteBusStop;
     private Button btnNewListPoi;
     private Button btnNewListVideo;
+    private Button btnNewIndication;
     private ComboBox<Indication> cbIndication;
     private ComboBox<ListPoi> cbListPois;
     private ComboBox<ListVideo> cbListVideos;
@@ -128,10 +129,16 @@ public class BusStopView extends VBox {
         btnNewListPoi.tooltipProperty().set(new Tooltip(rb.getString("CreateNewPoiList")));
         btnNewListPoi.setId("newLstPoiBusStop");
         
+        Label lblNewIndication = new Label(rb.getString("NewIndication"));
+        btnNewIndication = new Button("+");
+        btnNewIndication.tooltipProperty().set(new Tooltip(rb.getString("CreateNewIndication")));
+        btnNewIndication.getStyleClass().add("flatButton");
+        btnNewIndication.setId("newIndication");
+        
         GridFormBuilder grid = new GridFormBuilder();
         grid.addRowGenerics(lblName, tfName, lblDesc, tfDescription, lblIndication, cbIndication);
-        grid.addRowGenerics(lblLat, tfLatitude, lblLong, tfLongitude, lblRadius, tfRadius);
-        grid.addRowGenerics(lblListVideo, cbListVideos, btnNewListVideo, lblNewListVideo);
+        grid.addRowGenerics(lblLat, tfLatitude, lblLong, tfLongitude, btnNewIndication, lblNewIndication);
+        grid.addRowGenerics(lblRadius, tfRadius, lblListVideo, cbListVideos, btnNewListVideo, lblNewListVideo);
         grid.addRowGenerics(lblListPoi, cbListPois, btnNewListPoi, lblNewListPoi);
         
         return grid.build();
@@ -286,6 +293,14 @@ public class BusStopView extends VBox {
 
     public Button getBtnNewListVideo() {
         return btnNewListVideo;
+    }
+
+    public Button getBtnNewIndication() {
+        return btnNewIndication;
+    }
+
+    public void setBtnNewIndication(Button btnNewIndication) {
+        this.btnNewIndication = btnNewIndication;
     }
 
     public void setBtnNewListVideo(Button btnNewListVideo) {
