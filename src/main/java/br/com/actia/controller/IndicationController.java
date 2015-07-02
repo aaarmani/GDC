@@ -296,7 +296,7 @@ public class IndicationController extends PersistenceController {
      * @param indication
      */
     private void copyFileToDisk(Indication indication) {
-        FileToCopy fcpy = new FileToCopy(FileToCopy.TYPE_IMAGE, indication.getImage(), indication.getImagePath());
+        FileToCopy fcpy = new FileToCopy(FileToCopy.TYPE_IMAGE_INDICATION, indication.getImage(), indication.getImagePath());
         fireEvent(new CopyFileEvent(fcpy));
         
         if(indication.getAudio() != null && !indication.getAudio().isEmpty() && !indication.getAudioPath().isEmpty()) {
