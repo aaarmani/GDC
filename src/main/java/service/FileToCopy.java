@@ -11,6 +11,7 @@ public class FileToCopy implements AbstractEntity {
     public static final int TYPE_IMAGE = 0;
     public static final int TYPE_AUDIO = 1;
     public static final int TYPE_VIDEO = 2;
+    public static final int TYPE_IMAGE_INDICATION = 3;
     private static final String CONTENT_FOLDER_NAME = "CONTENT_FILES";
     
     private File origFile;
@@ -42,6 +43,9 @@ public class FileToCopy implements AbstractEntity {
                 break;
             case TYPE_VIDEO:
                 path += "videos";
+                break;
+            case TYPE_IMAGE_INDICATION:
+                path += "images";
                 break;
             default:
                 path += "defauls";

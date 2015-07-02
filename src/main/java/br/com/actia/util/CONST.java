@@ -1,5 +1,7 @@
 package br.com.actia.util;
 
+import java.io.File;
+
 /**
  *
  * @author Armani <anderson.armani@actia.com.br>
@@ -22,4 +24,24 @@ public final class CONST {
     public static long IMAGE_MAX_WIDTH = 1920;
     public static long IMAGE_MIN_WIDTH = 640;
     public static long IMAGE_MAX_LENGTH = 400000; //Maximum lenght in bytes
+    
+    public static String getContentFolder(){
+        return System.getProperty("user.dir") + File.separatorChar + "CONTENT_FILES";
+    }
+    
+    public static String getAudiosFolder(){
+        return getContentFolder() + File.separatorChar + "audios";
+    }
+    
+    public static String getBannersFolder(){
+        return getContentFolder() + File.separatorChar + "banners";
+    }
+    
+    public static String getImagesFolder(){
+        return getContentFolder() + File.separatorChar + "images";
+    }
+    
+    public static String getVideosFolder(){
+        return getContentFolder() + File.separatorChar + "videos";
+    }
 }

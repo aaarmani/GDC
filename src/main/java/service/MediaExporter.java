@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import br.com.actia.util.CONST;
 
 public class MediaExporter {
     List<Route> routes = null;
@@ -23,7 +24,9 @@ public class MediaExporter {
     
     private final char SEPARATOR_CHAR = File.separatorChar;
     private String destinationFolder = null;
-    private String contentFolder = "CONTENT_FILES";
+    // private String contentFolder = "CONTENT_FILES";
+    // private String originFolder = System.getProperty("user.dir") + this.SEPARATOR_CHAR + this.contentFolder;
+    private String contentFolder = CONST.getContentFolder();
     private String originFolder = System.getProperty("user.dir") + this.SEPARATOR_CHAR + this.contentFolder;
     
     private ArrayList<FileToCopy> filesToCopy = null;
@@ -69,7 +72,7 @@ public class MediaExporter {
     private void buildImagesMedias(){
         for(Route route : this.routes){
             for(BusStop busStop : route.getBusStops().getListBusStop()){
-                if(busStop.getIndication().getImage() != null && !images.contains(busStop.getIndication().getImage())){
+                if(busStop.getIndication() != null && busStop.getIndication().getImage() != null && !images.contains(busStop.getIndication().getImage())){
                     images.add(busStop.getIndication().getImage());
                 }
             }
@@ -79,7 +82,7 @@ public class MediaExporter {
     private void buildAudiosMedias(){
         for(Route route : this.routes){
             for(BusStop busStop : route.getBusStops().getListBusStop()){
-                if(busStop.getIndication().getAudio() != null && !audios.contains(busStop.getIndication().getAudio())){
+                if(busStop.getIndication() != null && busStop.getIndication().getAudio() != null && !audios.contains(busStop.getIndication().getAudio())){
                     audios.add(busStop.getIndication().getAudio());
                 }
             }
