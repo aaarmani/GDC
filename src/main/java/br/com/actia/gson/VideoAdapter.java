@@ -11,7 +11,7 @@ public class VideoAdapter extends TypeAdapter<Video> {
     @Override
     public void write(JsonWriter writer, Video video) throws IOException {
         writer.beginObject();
-        writer.name("name").value(video.getName());
+        writer.name("name").value(video.getVideoName());
         writer.name("type").value(video.getType().getType());
         writer.endObject();
     }
