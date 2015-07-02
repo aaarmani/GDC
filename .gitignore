@@ -1,4 +1,5 @@
 /build/
 /dist/
+/CONTENT_FILES/
 nbproject/private/private.xml
 *.xml
