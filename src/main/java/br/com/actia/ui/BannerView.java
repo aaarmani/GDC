@@ -217,7 +217,7 @@ public class BannerView extends VBox {
         }
         
         String imagePath = null;
-        if(!tfImgPath.getText().trim().isEmpty()) {
+        if(tfImgPath.getText() != null && !tfImgPath.getText().trim().isEmpty()) {
             imagePath = tfImgPath.getText();
         }
         

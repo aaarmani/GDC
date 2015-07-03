@@ -21,8 +21,6 @@ import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 
 import java.util.List;
@@ -90,10 +88,14 @@ public class BannerController extends PersistenceController {
 
                                 @Override
                                 protected void posAction() {
+                                    banner = view.loadBannerFromPanel();
+                                    fireEvent(new CrudBannerEvent(banner));
+                                    if(banner.getImagePath() != null){
+                                        copyFileToDisk(banner);
+                                    }
                                     view.resetForm();
                                     refreshTable();
-                                    fireEvent(new CrudBannerEvent(banner));
-                                    copyFileToDisk(banner);
+                                    
                                     if(parent instanceof ListBannerController){
                                         closeView();
                                     }

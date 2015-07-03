@@ -94,11 +94,13 @@ public class IndicationController extends PersistenceController {
 
                                 @Override
                                 protected void posAction() {
+                                    indication = view.loadIndicationFromPanel();
+                                    fireEvent(new CrudIndicationEvent(indication));
+                                    if(indication.getImagePath() != null || indication.getAudioPath() != null){
+                                        copyFileToDisk(indication);
+                                    }
                                     view.resetForm();
                                     refreshTable();
-                                    //cleanUp();
-                                    fireEvent(new CrudIndicationEvent(indication));
-                                    copyFileToDisk(indication);
                                 }
                             }))
         );
@@ -296,10 +298,14 @@ public class IndicationController extends PersistenceController {
      * @param indication
      */
     private void copyFileToDisk(Indication indication) {
-        FileToCopy fcpy = new FileToCopy(FileToCopy.TYPE_IMAGE_INDICATION, indication.getImage(), indication.getImagePath());
-        fireEvent(new CopyFileEvent(fcpy));
+        FileToCopy fcpy = null;
         
-        if(indication.getAudio() != null && !indication.getAudio().isEmpty() && !indication.getAudioPath().isEmpty()) {
+        if(indication.getImage() != null && !indication.getImage().isEmpty() && indication.getImagePath() != null && !indication.getImagePath().isEmpty()) {
+            fcpy = new FileToCopy(FileToCopy.TYPE_IMAGE_INDICATION, indication.getImage(), indication.getImagePath());
+            fireEvent(new CopyFileEvent(fcpy));
+        }
+        
+        if(indication.getAudio() != null && !indication.getAudio().isEmpty() && indication.getAudioPath() != null && !indication.getAudioPath().isEmpty()) {
             fcpy = new FileToCopy(FileToCopy.TYPE_AUDIO, indication.getAudio(), indication.getAudioPath());
             fireEvent(new CopyFileEvent(fcpy));
         }

@@ -261,12 +261,12 @@ public class IndicationView extends VBox {
         }
         
         String imageName = null;
-        if(!tfImgName.getText().trim().isEmpty()) {
+        if(tfImgName != null && !tfImgName.getText().trim().isEmpty()) {
             imageName = tfImgName.getText();
         }
         
         String imagePath = null;
-        if(!tfImgPath.getText().trim().isEmpty()) {
+        if(tfImgPath.getText() != null && !tfImgPath.getText().trim().isEmpty()) {
             imagePath = tfImgPath.getText();
         }
         

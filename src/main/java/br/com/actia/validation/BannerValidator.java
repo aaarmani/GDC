@@ -52,7 +52,9 @@ public class BannerValidator  implements Validator<Banner> {
     private String bannerFormatValidation(Banner banner, StringBuilder sb) {
         String msg = "";
         
-        msg = imageValidation(banner.getImagePath());
+        if(banner.getImagePath() != null){
+            msg = imageValidation(banner.getImagePath());
+        }
         
         return msg;
     }

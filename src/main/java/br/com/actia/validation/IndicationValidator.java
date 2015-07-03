@@ -45,7 +45,9 @@ public class IndicationValidator  implements Validator<Indication> {
     private String indicationFormatValidation(Indication indication, StringBuilder sb) {
         String msg = "";
         
-        msg += imageValidation(indication.getImagePath());
+        if(indication.getImagePath() != null && !indication.getImagePath().isEmpty())
+            msg += imageValidation(indication.getImagePath());
+        
         if(indication.getAudioPath() != null && !indication.getAudioPath().isEmpty())
             msg += audioValidation(indication.getAudioPath());
         
