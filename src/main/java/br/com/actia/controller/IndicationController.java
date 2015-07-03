@@ -101,6 +101,10 @@ public class IndicationController extends PersistenceController {
                                     }
                                     view.resetForm();
                                     refreshTable();
+                                    
+                                    if(parent instanceof BusStopController){
+                                        closeView();
+                                    }
                                 }
                             }))
         );
