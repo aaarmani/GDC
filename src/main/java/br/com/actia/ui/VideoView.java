@@ -2,7 +2,9 @@ package br.com.actia.ui;
 
 import br.com.actia.model.Video;
 import br.com.actia.model.VideoType;
+import br.com.actia.util.CONST;
 import br.com.actia.validation.MaskTextField;
+import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
@@ -153,12 +155,12 @@ public class VideoView  extends VBox {
         }
         
         String videoName = null;
-        if(!tfVideoName.getText().trim().isEmpty()) {
+        if(tfVideoName.getText() != null && !tfVideoName.getText().trim().isEmpty()) {
             videoName = tfVideoName.getText();
         }
         
         String videoPath = null;
-        if(!tfVideoPath.getText().trim().isEmpty()) {
+        if(tfVideoPath.getText() != null && !tfVideoPath.getText().trim().isEmpty()) {
             videoPath = tfVideoPath.getText();
         }
         
@@ -177,7 +179,7 @@ public class VideoView  extends VBox {
         }
         tfName.setText(video.getName());
         tfVideoName.setText(video.getVideoName());
-        tfVideoPath.setText(video.getVideoPath());
+        tfVideoPath.setText(CONST.getVideosFolder() + File.separatorChar + video.getVideoName());
         
         cbVideoType.getSelectionModel().select(video.getType());
     }

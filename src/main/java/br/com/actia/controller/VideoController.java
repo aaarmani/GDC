@@ -9,6 +9,7 @@ import br.com.actia.dao.VideoDAOJPA;
 import br.com.actia.dao.VideoTypeDAO;
 import br.com.actia.dao.VideoTypeDAOJPA;
 import br.com.actia.event.CopyFileEvent;
+import br.com.actia.event.CrudBannerEvent;
 import br.com.actia.event.CrudVideoEvent;
 import service.FileToCopy;
 import br.com.actia.model.Video;
@@ -101,13 +102,14 @@ public class VideoController extends PersistenceController {
                             }
                             @Override
                             protected void posAction() {
+                                video = view.loadVideoFromPanel();
+                                fireEvent(new CrudVideoEvent(video));
+                                if(video.getVideoPath() != null){
+                                    copyFileToDisk(video);
+                                }
                                 view.resetForm();
                                 refreshTable();
-                                fireEvent(new CrudVideoEvent(video));
-                                //Move file to APP Folder
-                                FileToCopy ftcpy = new FileToCopy(FileToCopy.TYPE_VIDEO, video.getVideoName(), video.getVideoPath());
-                                fireEvent(new CopyFileEvent(ftcpy));
-                                
+
                                 if(parent instanceof ListVideoController){
                                     closeView();
                                 }
@@ -173,9 +175,12 @@ public class VideoController extends PersistenceController {
             @Override
             public void handle(MouseEvent t) {
                 if (t.getClickCount() == 2) {
+                    view.resetForm();
                     Video video = (Video)view.getTable().getEntitySelected();
                     if (video != null) {
                         view.loadVideoToEdit(video);
+                        videoFile = new File(view.getTfVideoPath().getText());
+                        showVideo();
                     }
                 }
             }
@@ -282,5 +287,14 @@ public class VideoController extends PersistenceController {
                 view.refreshTable(dao.getAll());
             }
         });
+    }
+    
+    /**
+     * 
+     * @param video
+     */
+    private void copyFileToDisk(Video video) {
+        FileToCopy fcpy = new FileToCopy(FileToCopy.TYPE_VIDEO, video.getVideoName(), video.getVideoPath());
+        fireEvent(new CopyFileEvent(fcpy));
     }
 }
