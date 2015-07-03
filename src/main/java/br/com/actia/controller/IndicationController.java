@@ -170,10 +170,16 @@ public class IndicationController extends PersistenceController {
             @Override
             public void handle(MouseEvent t) {
                 if (t.getClickCount() == 2) {
+                    view.resetForm();
                     Indication indication = (Indication)view.getTable().getEntitySelected();
                     if (indication != null) {
                         view.loadIndicationToEdit(indication);
+                        imageFile = new File(view.getTfImgPath().getText());
+                        showImage();
+                        audioFile = new File(view.getTfAudioPath().getText());
+                        loadAudio();
                     }
+                    
                 }
             }
         });

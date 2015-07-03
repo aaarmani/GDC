@@ -1,7 +1,9 @@
 package br.com.actia.ui;
 
 import br.com.actia.model.Indication;
+import br.com.actia.util.CONST;
 import br.com.actia.validation.MaskTextField;
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -317,9 +319,9 @@ public class IndicationView extends VBox {
         }
         tfName.setText(indication.getName());
         tfImgName.setText(indication.getImage());
-        tfImgPath.setText(indication.getImagePath());
+        tfImgPath.setText(CONST.getImagesFolder() + File.separatorChar + indication.getImage());
         tfAudioName.setText(indication.getAudio());
-        tfAudioPath.setText(indication.getAudioPath());
+        tfAudioPath.setText(CONST.getAudiosFolder() + File.separatorChar + indication.getAudio());
     }
     
 }
