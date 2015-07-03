@@ -1,7 +1,9 @@
 package br.com.actia.ui;
 
 import br.com.actia.model.Banner;
+import br.com.actia.util.CONST;
 import br.com.actia.validation.MaskTextField;
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,8 +22,8 @@ import java.util.List;
  */
 public class BannerView extends VBox {
     private final int MAX_HEIGHT = 600;
-    // private final int VIEWER_SIZE = 300;
-    private final int VIEWER_SIZE = 100;
+    private final int VIEWER_SIZE_HEIGHT = 100;
+    private final int VIEWER_SIZE_WIDTH = 600;
     
     private TextField tfId;
     // private TextField tfName;
@@ -107,8 +109,8 @@ public class BannerView extends VBox {
     private VBox buildViewer() {
         Separator separator = new Separator();
         ivImageView = new ImageView();
-        ivImageView.setFitWidth(VIEWER_SIZE);
-        ivImageView.setFitHeight(VIEWER_SIZE);
+        ivImageView.setFitWidth(VIEWER_SIZE_WIDTH);
+        ivImageView.setFitHeight(VIEWER_SIZE_HEIGHT);
         ivImageView.setPreserveRatio(true);
         ivImageView.setSmooth(true);
         ivImageView.setCache(true);
@@ -248,6 +250,6 @@ public class BannerView extends VBox {
         }
         tfName.setText(banner.getName());
         tfImgName.setText(banner.getImage());
-        tfImgPath.setText(banner.getImagePath());
+        tfImgPath.setText(CONST.getBannersFolder() + File.separatorChar + banner.getImage());
     }
 }

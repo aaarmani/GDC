@@ -13,6 +13,7 @@ import service.FileToCopy;
 import br.com.actia.ui.BannerView;
 import br.com.actia.ui.Dialog;
 import br.com.actia.ui.MainScreenView;
+import br.com.actia.util.CONST;
 import br.com.actia.validation.BannerValidator;
 import br.com.actia.validation.Validator;
 import java.io.File;
@@ -149,9 +150,12 @@ public class BannerController extends PersistenceController {
             @Override
             public void handle(MouseEvent t) {
                 if (t.getClickCount() == 2) {
+                    view.resetForm();
                     Banner banner = (Banner)view.getTable().getEntitySelected();
                     if (banner != null) {
                         view.loadBannerToEdit(banner);
+                        imageFile = new File(view.getTfImgPath().getText());
+                        showImage();
                     }
                 }
             }

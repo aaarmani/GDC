@@ -33,6 +33,11 @@ public class DownloadFileTask extends Task<Integer> {
     protected Integer call() throws Exception {
         updateTitle(this.origFile.getName());
         updateMessage(rb.getString("FILE_CHECK"));
+        
+        if(filesEquals()){
+            return 0;
+        }
+        
         try {
             filesIsOK();
             diskIsOK();
@@ -40,7 +45,7 @@ public class DownloadFileTask extends Task<Integer> {
         } catch(Exception e) {
             System.out.println(e.getMessage());
             updateMessage(e.getMessage());
-            this.cancel();
+            return 1;
         }
        
         updateMessage(rb.getString("FILE_COPY"));
@@ -179,6 +184,10 @@ public class DownloadFileTask extends Task<Integer> {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean filesEquals() {
+        return origFile.getAbsolutePath().equalsIgnoreCase(destFile.getAbsolutePath());
     }
 
     
