@@ -18,8 +18,8 @@ import java.util.List;
 
 public class IndicationView extends VBox {
     private final int MAX_HEIGHT = 600;
-    // private final int VIEWER_SIZE = 300;
-    private final int VIEWER_SIZE = 100;
+    private final int VIEWER_SIZE_HEIGHT = 100;
+    private final int VIEWER_SIZE_WIDTH = 200;
     
     private TextField tfId;
     // private TextField tfName;
@@ -66,9 +66,7 @@ public class IndicationView extends VBox {
         tfId = new TextField();
         
         Label lblName = new Label(rb.getString("Name"));
-        // tfName = new TextField();
         tfName = new MaskTextField();
-        //tfName.setMask("****************");
         tfName.setMaskCompleteWord(MaskTextField.FIELD_NAME);
         
         Label lblImage = new Label(rb.getString("INChooseImage"));
@@ -121,8 +119,8 @@ public class IndicationView extends VBox {
     private VBox buildViewer() {
         Separator separator = new Separator();
         ivImageView = new ImageView();
-        ivImageView.setFitWidth(VIEWER_SIZE);
-        ivImageView.setFitHeight(VIEWER_SIZE);
+        ivImageView.setFitWidth(VIEWER_SIZE_WIDTH);
+        ivImageView.setFitHeight(VIEWER_SIZE_HEIGHT);
         ivImageView.setPreserveRatio(true);
         ivImageView.setSmooth(true);
         ivImageView.setCache(true);
@@ -133,8 +131,10 @@ public class IndicationView extends VBox {
         btnPlay.getStyleClass().add("flatButton");
         setBtToPlay();
         
-        VBox vbox = new VBox(separator, ivImageView, btnPlay);
-        vbox.getStyleClass().add("viewPane");
+        HBox hbox = new HBox(ivImageView, btnPlay);
+        hbox.getStyleClass().add("viewPane");
+        
+        VBox vbox = new VBox(separator, hbox);
         
         return vbox;
     }
@@ -320,8 +320,11 @@ public class IndicationView extends VBox {
         tfName.setText(indication.getName());
         tfImgName.setText(indication.getImage());
         tfImgPath.setText(CONST.getImagesFolder() + File.separatorChar + indication.getImage());
-        tfAudioName.setText(indication.getAudio());
-        tfAudioPath.setText(CONST.getAudiosFolder() + File.separatorChar + indication.getAudio());
+        
+        if(indication.getAudio() != null && !indication.getAudio().isEmpty()) {
+            tfAudioName.setText(indication.getAudio());
+            tfAudioPath.setText(CONST.getAudiosFolder() + File.separatorChar + indication.getAudio());
+        }
     }
     
 }
