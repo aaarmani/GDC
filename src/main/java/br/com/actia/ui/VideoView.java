@@ -22,7 +22,8 @@ import javafx.scene.media.MediaView;
  */
 public class VideoView  extends VBox {
     private final int MAX_HEIGHT = 600;
-    private final int VIEWER_SIZE = 100;
+    private final int VIEWER_SIZE_HEIGHT = 100;
+    private final int VIEWER_SIZE_WIDTH = 200;
     
     private TextField tfId;
     private MaskTextField tfName;
@@ -115,8 +116,8 @@ public class VideoView  extends VBox {
     private VBox buildViewer() {
         Separator separator = new Separator();
         mediaView = new MediaView();
-        mediaView.setFitWidth(VIEWER_SIZE);
-        mediaView.setFitHeight(VIEWER_SIZE);
+        mediaView.setFitWidth(VIEWER_SIZE_WIDTH);
+        mediaView.setFitHeight(VIEWER_SIZE_HEIGHT);
         mediaView.setPreserveRatio(true);
         mediaView.setSmooth(true);
         mediaView.setCache(true);
@@ -127,7 +128,10 @@ public class VideoView  extends VBox {
         btnPlayVideo.getStyleClass().add("flatButton");
         setBtToPlay();
         
-        VBox vbox = new VBox(separator, mediaView, btnPlayVideo);
+        HBox hbox = new HBox(mediaView, btnPlayVideo);
+        hbox.getStyleClass().add("viewPane");
+        
+        VBox vbox = new VBox(separator, hbox);
         vbox.getStyleClass().add("viewPane");
         
         return vbox;
