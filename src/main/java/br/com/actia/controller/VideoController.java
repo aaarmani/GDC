@@ -199,6 +199,7 @@ public class VideoController extends PersistenceController {
     }
     
     private void showVideo() {
+        videoStop();
         if(videoFile != null) {
             //view.getTfName().setText(videoFile.getName());
             view.getTfVideoName().setText(videoFile.getName());

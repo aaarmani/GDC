@@ -223,7 +223,7 @@ public class IndicationController extends PersistenceController {
     }
     
     private void loadAudio() {
-        if(audioFile != null) {
+        if(audioFile != null && audioFile.exists()) {
             view.getTfAudioName().setText(audioFile.getName());
             view.getTfAudioPath().setText(audioFile.getAbsolutePath());
             view.getBtnPlay().setVisible(true);

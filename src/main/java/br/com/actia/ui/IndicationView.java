@@ -294,6 +294,7 @@ public class IndicationView extends VBox {
         tfAudioPath.setText("");
         ivImageView.setImage(null);
         btnDeleteIndication.setVisible(false);
+        btnPlay.setVisible(false);
     }
 
     public void setBtToPlay() {
