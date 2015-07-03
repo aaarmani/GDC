@@ -13,10 +13,8 @@ import br.com.actia.ui.Dialog;
 import br.com.actia.ui.FileGeneratorView;
 import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.RoutesToGenerateValidator;
-import br.com.actia.validation.Validator;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -29,7 +27,7 @@ import service.MediaExporter;
 
 public class FileGeneratorController extends PersistenceController {
     private FileGeneratorView view;
-    private final Validator<List<Route>> validador = new RoutesToGenerateValidator();
+    private final RoutesToGenerateValidator validador = new RoutesToGenerateValidator();
     private final Pane parentPane;
     private MainScreenView mainScreenView;
     private ResourceBundle rb;
@@ -40,7 +38,7 @@ public class FileGeneratorController extends PersistenceController {
     // private ObservableList<Route> obsRoutesSelecteds;
     
     private RouteDAO routeDAO = null;
-    private Collection<Route> listRouteAll = null;
+    private List<Route> listRouteAll = null;
     
     public FileGeneratorController(AbstractController parent, MainScreenView mainScreenView, ResourceBundle rb) {
         super(parent);
@@ -62,7 +60,7 @@ public class FileGeneratorController extends PersistenceController {
         */
         
         this.routeDAO = new RouteDAOJPA(getPersistenceContext());
-        this.listRouteAll = (Collection<Route>)this.routeDAO.getAll();
+        this.listRouteAll = this.routeDAO.getAll();
         
         loadRouteToList();
         
@@ -85,6 +83,12 @@ public class FileGeneratorController extends PersistenceController {
                             }
                             String msg = validador.validate(routes, rb);
                             if (!"".equals(msg == null ? "" : msg)) {
+                                Dialog.showError(rb.getString("VALIDATION"), msg);
+                                return false;
+                            }
+                            
+                            if(view.getTfDirectoryPath().getText().isEmpty()) {
+                                msg += rb.getString("FGChooseDirectory");
                                 Dialog.showError(rb.getString("VALIDATION"), msg);
                                 return false;
                             }
@@ -237,7 +241,7 @@ public class FileGeneratorController extends PersistenceController {
     
     private void loadRouteToList() {
         RouteDAO routeDAO = new RouteDAOJPA(getPersistenceContext());
-        this.view.getLsvRoutesToGenerate().getSourceItems().addAll((Collection<Route>)routeDAO.getAll());
+        this.view.getLsvRoutesToGenerate().getSourceItems().addAll(routeDAO.getAll());
     }
     
     private void resetForm() {
@@ -246,7 +250,7 @@ public class FileGeneratorController extends PersistenceController {
         // obsRoutesSelecteds.clear();
         
         this.view.getLsvRoutesToGenerate().getSourceItems().clear();
-        this.view.getLsvRoutesToGenerate().getSourceItems().addAll((Collection<Route>)listRouteAll);
+        this.view.getLsvRoutesToGenerate().getSourceItems().addAll(listRouteAll);
         
         this.view.getLsvRoutesToGenerate().getTargetItems().clear();
     }

@@ -205,7 +205,6 @@ public class RouteController extends PersistenceController {
             @Override
             public void handleEvent(CrudListBannerEvent event) {
                 loadListBannerList();
-                System.out.println("EVENTO: CrudListBannerEvent");
             }
         });
         
@@ -213,7 +212,6 @@ public class RouteController extends PersistenceController {
             @Override
             public void handleEvent(CrudListRSSEvent event) {
                 loadListRSSList();
-                System.out.println("EVENTO: CrudListRSSEvent");
             }
         });
         
@@ -221,7 +219,6 @@ public class RouteController extends PersistenceController {
             @Override
             public void handleEvent(CrudListVideoEvent event) {
                 loadListVideoList();
-                System.out.println("EVENTO: CrudListVideoEvent");
             }
         });
         
@@ -229,7 +226,6 @@ public class RouteController extends PersistenceController {
             @Override
             public void handleEvent(CrudListBusStopEvent event) {
                 loadListBusStopList();
-                System.out.println("EVENTO: CrudListBusStopEvent");
             }
         });
         

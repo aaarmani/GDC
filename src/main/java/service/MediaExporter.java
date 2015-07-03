@@ -1,6 +1,5 @@
 package service;
 
-import br.com.actia.event.CopyFileEvent;
 import br.com.actia.model.Banner;
 import br.com.actia.model.BusStop;
 import br.com.actia.model.Route;
@@ -8,11 +7,7 @@ import br.com.actia.model.Video;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import br.com.actia.util.CONST;
 
 public class MediaExporter {
@@ -24,10 +19,8 @@ public class MediaExporter {
     
     private final char SEPARATOR_CHAR = File.separatorChar;
     private String destinationFolder = null;
-    // private String contentFolder = "CONTENT_FILES";
-    // private String originFolder = System.getProperty("user.dir") + this.SEPARATOR_CHAR + this.contentFolder;
     private String contentFolder = CONST.getContentFolder();
-    private String originFolder = System.getProperty("user.dir") + this.SEPARATOR_CHAR + this.contentFolder;
+    private String originFolder =  this.contentFolder;
     
     private ArrayList<FileToCopy> filesToCopy = null;
     
@@ -143,7 +136,7 @@ public class MediaExporter {
     }
     
     private void copyBanners(){
-        String bannerPath = "\0";
+        String bannerPath = "";
         FileToCopy fileToCopy = null;
         boolean copy = false;
         
@@ -177,7 +170,7 @@ public class MediaExporter {
     }
     
     private void copyImages(){
-        String imagePath = "\0";
+        String imagePath = "";
         FileToCopy fileToCopy = null;
         boolean copy = false;
         
@@ -211,7 +204,7 @@ public class MediaExporter {
     }
     
     private void copyAudios(){
-        String audioPath = "\0";
+        String audioPath = "";
         FileToCopy fileToCopy = null;
         boolean copy = false;
         
@@ -243,7 +236,7 @@ public class MediaExporter {
     }
     
     private void copyVideos(){
-        String videoPath = "\0";
+        String videoPath = "";
         FileToCopy fileToCopy = null;
         boolean copy = false;
         

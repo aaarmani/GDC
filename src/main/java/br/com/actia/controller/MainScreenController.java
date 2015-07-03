@@ -280,6 +280,7 @@ public class MainScreenController extends PersistenceController {
 
         if(googleMapController != null) {
             googleMapController.cleanUp();
+            googleMapController = null;
         }
         
         if(bannerController != null) {
@@ -296,6 +297,7 @@ public class MainScreenController extends PersistenceController {
         
         if(listPoiController != null) {
             listPoiController.cleanUp();
+            listPoiController = null;
         }
      
         if(listBannerController != null) {
