@@ -14,6 +14,7 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.control.MenuItem;
 import org.apache.log4j.Logger;
 
+
 /**
  * Classe abstrata que define uma estrutura para componentes da camada controller do padrão arquitetural MVC.
  * 
