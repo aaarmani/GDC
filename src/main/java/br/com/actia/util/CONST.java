@@ -8,7 +8,7 @@ import java.io.File;
  */
 public final class CONST {
     //#Audio
-    public static long AUDIO_MAX_LENGTH = 100000; //Maximum audio lenght in bytes
+    public static long AUDIO_MAX_LENGTH = 100000000; //Maximum audio lenght in bytes
     //#video
     public static long VIDEO_MAX_TIME = 100000; //in milliseconds
     public static long VIDEO_MAX_LENGTH = 100000000; //100MB

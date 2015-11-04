@@ -91,10 +91,14 @@ public class MediaExporter {
             }
 
             for(BusStop busStop : route.getBusStops().getListBusStop()){
-                for(Video video : busStop.getVideos().getListVideo()){
-                    if(video.getVideoName() != null && !videos.contains(video.getVideoName())){
-                        videos.add(video.getVideoName());
+                try {
+                    for(Video video : busStop.getVideos().getListVideo()){
+                        if(video.getVideoName() != null && !videos.contains(video.getVideoName())){
+                            videos.add(video.getVideoName());
+                        }
                     }
+                }catch(Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
