@@ -7,7 +7,10 @@ import br.com.actia.action.TransactionalAction;
 import br.com.actia.dao.RouteDAO;
 import br.com.actia.dao.RouteDAOJPA;
 import br.com.actia.event.CopyFileEvent;
+import br.com.actia.gson.ListVideoConverter;
 import br.com.actia.gson.RouteConverter;
+import br.com.actia.model.BusStop;
+import br.com.actia.model.ListVideo;
 import br.com.actia.model.Route;
 import br.com.actia.ui.Dialog;
 import br.com.actia.ui.FileGeneratorView;
@@ -15,7 +18,10 @@ import br.com.actia.ui.MainScreenView;
 import br.com.actia.validation.RoutesToGenerateValidator;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -121,11 +127,31 @@ public class FileGeneratorController extends PersistenceController {
                                     routeConverter.setPath(view.getTfDirectoryPath().getText());
                                     routeConverter.buildFolderStructure();
                                     
+                                    Map<String, ListVideo> mapListVideo = new HashMap<String, ListVideo>();
+                                    
                                     for(Route r : routes){
                                         routeConverter.setRoute(r);
                                         routeConverter.setFilePath();
                                         routeConverter.generateAllFromRoute();
+                                        
+                                        for(BusStop b : r.getBusStops().getListBusStop()) {
+                                            if(b == null)
+                                                continue;
+                                            
+                                            ListVideo l = b.getVideos();
+                                            if(l != null)
+                                                mapListVideo.put(l.getName(), l);
+                                        }
                                     }
+                                    
+                                    //Build BusStop's ListVideos
+                                    Iterator it = mapListVideo.keySet().iterator();
+                                    while(it.hasNext()) {
+                                        ListVideo lv = mapListVideo.get(it.next());
+                                        ListVideoConverter listVideoConverter = new ListVideoConverter(lv, view.getTfDirectoryPath().getText());
+                                        listVideoConverter.generate();
+                                    }
+                                    
                                     
                                     MediaExporter mediaExporter = new MediaExporter(routes);
                                     mediaExporter.setDestinationFolder(view.getTfDirectoryPath().getText());
